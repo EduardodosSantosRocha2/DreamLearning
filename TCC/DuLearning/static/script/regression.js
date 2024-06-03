@@ -80,10 +80,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log(`selected_Independent_Variable: ${data.select_Independent_Variable}`);
+                    console.log(`Coeficiente_linear: ${data.Coeficiente_linear}`);
                     document.getElementById(
                         "result"
-                    ).innerText = `Variavel idepedente: ${data.select_Independent_Variable}`;
+                    ).innerText = `Coeficiente_linear: ${data.Coeficiente_linear}\nCoeficiente_linear: ${data.Coeficiente_angular}\nCoeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}\nCoeficiente de determinação do teste: ${data.determinationCoefficientTest}\nErro absoluto: ${data.abs}\nErro quadrático médio: ${data.MeanSquaredError}`;
                 })
                 .catch((error) => {
                     console.error("Erro:", error);
@@ -92,10 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     ).innerText = `Erro: ${error.message}`;
                 });
         });
-
-
-
-
 
 
 });
