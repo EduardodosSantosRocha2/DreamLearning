@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fazer Previsões teste</title>
+</head>
+
+<style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+
+<body>
+    <h1>Fazer Previsões</h1>
+    <form id="prediction-form" enctype="multipart/form-data">
+        <label for="classifier">Escolha o tipo de classificador:</label>
+        <select name="classifier" id="classifier">
+            <option value="" selected></option>
+            <option value="random_forest">Random Forest</option>
+            <option value="svm">SVM</option>
+            <option value="logistics_regression">LOGISTICS REGRESSION</option>
+            <option value="knn">KNN</option>
+            <option value="decision_tree">DECISION TREE</option>
+            <option value="xgboost">XGBOOST</option>
+            <option value="lightgbm">LIGHTGBM</option>
+            <option value="catboost">CATBOOST</option>
+        </select><br>
+        <label for="csv_file">Enviar arquivo CSV:</label>
+        <input type="file" name="csv_file" id="csv_file" required><br>
+        <div id="parameters"></div>
+        <div id="features"></div>
+        <button type="submit">Enviar</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+
+        document.getElementById('classifier').addEventListener('change', function (event) {
+            var select = document.querySelector('#classifier');
+            var option = select.children[select.selectedIndex];
+            var textClassifier = option.textContent;
+            console.log(textClassifier)
+            const parametersDiv = document.getElementById('parameters');
+            parametersDiv.innerHTML = '';
+                if (textClassifier === 'Random Forest') {
+                    var parametersColection = { n_estimators: 'number', criterion: 'text', random_state: 'number', max_depth: 'number' };
+                    var keys = Object.keys(parametersColection);
+                    for (var i = 0; i < 4; i++) {
+                        console.log(keys[i])
+                        console.log(parametersColection[keys[i]])
+                        const parametersLabel = document.createElement('label');
+                        parametersLabel.textContent = keys[i] + ':';
+                        parametersDiv.appendChild(parametersLabel);
+                        const parametersInput = document.createElement('input');
+                        parametersInput.type = parametersColection[keys[i]];
+                        parametersInput.step = '0.0000000001';
+                        parametersInput.name = 'parameters' + (i + 1);
+                        parametersDiv.appendChild(parametersInput);
+                        parametersDiv.appendChild(document.createElement('br'));
+                    }
+                }
+
+                if (textClassifier === 'SVM') {
+                    console.log('chegou')
+                    var parametersColection = { kernel: 'text', random_state: 'number', C: 'number' };
+                    var keys = Object.keys(parametersColection);
+                    for (var i = 0; i < 3; i++) {
+                        console.log(keys[i])
+                        console.log(parametersColection[keys[i]])
+                        const parametersLabel = document.createElement('label');
+                        parametersLabel.textContent = keys[i] + ':';
+                        parametersDiv.appendChild(parametersLabel);
+                        const parametersInput = document.createElement('input');
+                        parametersInput.type = parametersColection[keys[i]];
+                        parametersInput.step = '0.0000000001';
+                        parametersInput.name = 'parameters' + (i + 1);
+                        parametersDiv.appendChild(parametersInput);
+                        parametersDiv.appendChild(document.createElement('br'));
+                    }
+                }
+
+                if (textClassifier === 'LOGISTICS REGRESSION') {
+                    console.log('chegou')
+                    var parametersColection = {random_state: 'number', max_iter:'number', penalty: 'text', tol: 'number', C: 'number', solver: 'text'};
+                    var keys = Object.keys(parametersColection);
+                    for (var i = 0; i < 6; i++) {
+                        console.log(keys[i])
+                        console.log(parametersColection[keys[i]])
+                        const parametersLabel = document.createElement('label');
+                        parametersLabel.textContent = keys[i] + ':';
+                        parametersDiv.appendChild(parametersLabel);
+                        const parametersInput = document.createElement('input');
+                        parametersInput.type = parametersColection[keys[i]];
+                        parametersInput.step = '0.0000000001';
+                        parametersInput.name = 'parameters' + (i + 1);
+                        parametersDiv.appendChild(parametersInput);
+                        parametersDiv.appendChild(document.createElement('br'));
+                    }
+                }
+
+                if (textClassifier === 'KNN') {
+                    console.log('chegou')
+                    var parametersColection = {n_neighbors: 'number', metric:'text', p: 'number'};
+                    var keys = Object.keys(parametersColection);
+                    for (var i = 0; i < 3; i++) {
+                        console.log(keys[i])
+                        console.log(parametersColection[keys[i]])
+                        const parametersLabel = document.createElement('label');
+                        parametersLabel.textContent = keys[i] + ':';
+                        parametersDiv.appendChild(parametersLabel);
+                        const parametersInput = document.createElement('input');
+                        parametersInput.type = parametersColection[keys[i]];
+                        parametersInput.step = '0.0000000001';
+                        parametersInput.name = 'parameters' + (i + 1);
+                        parametersDiv.appendChild(parametersInput);
+                        parametersDiv.appendChild(document.createElement('br'));
+                    }
+                }     
+        });
+
+
+
+
+        document.getElementById('csv_file').addEventListener('change', function (event) {
+
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const text = e.target.result;
+                //console.log(text);
+                const lines = text.split('\\n');
+                //console.log("Lines:  " + lines);
+                const header = lines[0].split(',');
+                //console.log("Header:  " + header);
+                const featuresDiv = document.getElementById('features');
+                featuresDiv.innerHTML = '';
+                
+                for (let i = 0; i < header.length - 1; i++) {
+                    const featureLabel = document.createElement('label');
+                    featureLabel.textContent = header[i] + ':';
+                    featuresDiv.appendChild(featureLabel);
+                    const featureInput = document.createElement('input');
+                    featureInput.type = 'number';
+                    featureInput.name = 'feature' + (i + 1);
+                    featureInput.step = '0.0000000001';
+                    featuresDiv.appendChild(featureInput);
+                    featuresDiv.appendChild(document.createElement('br'));
+                }
+            };
+
+            reader.readAsText(file);
+        });
+
+        document.getElementById('prediction-form').addEventListener('submit', function (event) {
+            document.getElementById('result').innerText ='';
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao fazer a solicitação.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(`Previsão: ${data.prediction}`);
+                    document.getElementById('result').innerText = `Previsão: ${data.prediction}`;
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    document.getElementById('result').innerText = `Erro: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>

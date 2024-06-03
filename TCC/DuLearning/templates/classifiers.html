@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fazer Previsões teste</title>
+    
+  </head>
+
+  <body>
+    <h1>Fazer Previsões</h1>
+    <form id="prediction-form" enctype="multipart/form-data">
+      <label for="classifier">Escolha o tipo de classificador:</label>
+      <select name="classifier" id="classifier">
+        <option value="" selected></option>
+        <option value="random_forest">Random Forest</option>
+        <option value="svm">SVM</option>
+        <option value="logistics_regression">LOGISTICS REGRESSION</option>
+        <option value="knn">KNN</option>
+        <option value="decision_tree">DECISION TREE</option>
+        <option value="xgboost">XGBOOST</option>
+        <option value="lightgbm">LIGHTGBM</option>
+        <option value="catboost">CATBOOST</option></select
+      ><br />
+      <label for="csv_file">Enviar arquivo CSV:</label>
+      <input type="file" name="csv_file" id="csv_file" required /><br />
+      <div id="parameters"></div>
+      <div id="features"></div>
+      <button type="submit">Enviar</button>
+    </form>
+    <div id="result"></div>
+
+    <script type= "text/javascript" src="{{ url_for('static', filename='script/classifier.js') }}"></script>
+  </body>
+</html>
