@@ -53,9 +53,16 @@ app = Flask(__name__)
 def index():
     return render_template("classifiers.html")
 
+# Rota para o teste de normalidade e correlação
 @app.route("/typedata")
 def typedata():
     return render_template("typedata.html")
+
+
+@app.route("/regression")
+def regression():
+    return render_template("regression.html")
+
 
 
 
@@ -356,6 +363,34 @@ def typedatatest():
 
     # Retorna os valores dos testes
     return jsonify({"linearCorrelation":json_correlation, "continuesNormality":continuesNormality})
+
+
+
+
+
+# Rota para fazer regressão
+@app.route("/regressionPost", methods=["POST"])
+def regressionPost():
+    # Recebe os dados enviados pelo formulário
+    classifier_type = request.form["regression"]
+    print(classifier_type)
+    csv_file = request.files["csv_file"]
+    # Lê o arquivo CSV
+    csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = ',', encoding = 'utf-8')
+    print(csv_data)
+    
+    select_Independent_Variable = ""
+    
+    if(classifier_type == "simple_linear_regression"):
+        select_Independent_Variable = request.form["csv_headers"]
+    elif(classifier_type == "multiple_linear_regression"):
+        select_Independent_Variable = "mutipla"
+    
+    
+    
+    # Retorna os valores dos testes
+    return jsonify({"select_Independent_Variable": select_Independent_Variable})
+
 
 
 if __name__ == "__main__":
