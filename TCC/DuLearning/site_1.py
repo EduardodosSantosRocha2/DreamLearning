@@ -51,6 +51,10 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 # Importando a biblioteca do XGBOOST
 from xgboost import XGBRegressor
+# Importando a biblioteca do lightgbm(import lightgbm as lgb)
+    
+# Importando a biblioteca do lightgbm
+from catboost.core import CatBoostRegressor
 
 #Padronização de escala
 from sklearn.preprocessing import StandardScaler
@@ -398,7 +402,7 @@ def regressionPost():
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8')
     print(csv_data)
     #Vetores necessarios para diferentes tipos de regressão e diferentes x e y
-    name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression", "regression_with_decision_tree", "regression_with_random_forest","regression_with_xgboost"]
+    name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression", "regression_with_decision_tree", "regression_with_random_forest","regression_with_xgboost","regression_with_light_gbm", "regression_with_catboost"]
     name_Regression_poly = ["polynomial_regression"]
     name_Regression_SVR = ["regression_by_support_vectors"]
 
@@ -517,6 +521,16 @@ def regressionPost():
     elif(classifier_type == "regression_with_xgboost"):
         parameters = parameters_forms()
         reg = XGBRegressor(n_estimators=int(parameters[0]), max_depth=int(parameters[1]), learning_rate=float(parameters[2]), objective=parameters[3], random_state=int(parameters[4]))
+        X,y = all_columns()
+
+    elif(classifier_type == "regression_with_light_gbm"):
+        parameters = parameters_forms()
+        reg = lgbm.LGBMRegressor(num_leaves=int(parameters[0]), max_depth=int(parameters[1]), learning_rate=float(parameters[2]), n_estimators=int(parameters[3]), random_state=int(parameters[4]))
+        X,y = all_columns()
+    
+    elif(classifier_type == "regression_with_catboost"):
+        parameters = parameters_forms()
+        reg = CatBoostRegressor(iterations=int(parameters[0]), learning_rate=float(parameters[1]), depth = int(parameters[2]), random_state = int(parameters[3]))
         X,y = all_columns()
 
     
