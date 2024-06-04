@@ -60,6 +60,53 @@ document.addEventListener("DOMContentLoaded", function () {
                 parametersDiv.appendChild(document.createElement("br"));
             }
         }
+        else if (selectedOption === "RANDOM FOREST") {
+            console.log("chegou");
+            var parametersColection = {
+                n_estimators: "number",
+                criterion: "text",
+                max_depth: "number",
+                random_state: "number"
+            };
+            var keys = Object.keys(parametersColection);
+            for (var i = 0; i < 4; i++) {
+                console.log(keys[i]);
+                console.log(parametersColection[keys[i]]);
+                const parametersLabel = document.createElement("label");
+                parametersLabel.textContent = keys[i] + ":";
+                parametersDiv.appendChild(parametersLabel);
+                const parametersInput = document.createElement("input");
+                parametersInput.type = parametersColection[keys[i]];
+                parametersInput.step = "0.0000000001";
+                parametersInput.name = "parameters" + (i + 1);
+                parametersDiv.appendChild(parametersInput);
+                parametersDiv.appendChild(document.createElement("br"));
+            }
+        }
+        else if (selectedOption === "XGBOOST") {
+            console.log("chegou");
+            var parametersColection = {
+                n_estimators: "number",
+                max_depth: "number",
+                learning_rate: "number",
+                objective: "text",
+                random_state: "number"
+            };
+            var keys = Object.keys(parametersColection);
+            for (var i = 0; i < 5; i++) {
+                console.log(keys[i]);
+                console.log(parametersColection[keys[i]]);
+                const parametersLabel = document.createElement("label");
+                parametersLabel.textContent = keys[i] + ":";
+                parametersDiv.appendChild(parametersLabel);
+                const parametersInput = document.createElement("input");
+                parametersInput.type = parametersColection[keys[i]];
+                parametersInput.step = "0.0000000001";
+                parametersInput.name = "parameters" + (i + 1);
+                parametersDiv.appendChild(parametersInput);
+                parametersDiv.appendChild(document.createElement("br"));
+            }
+        }
     });
 
     csvFileInput.addEventListener("change", function () {

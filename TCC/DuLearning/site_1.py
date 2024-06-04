@@ -47,6 +47,10 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.svm import SVR
 # Importando a biblioteca da Arvore de decisão
 from sklearn.tree import DecisionTreeRegressor
+# Importando a biblioteca do Random Forest
+from sklearn.ensemble import RandomForestRegressor
+# Importando a biblioteca do XGBOOST
+from xgboost import XGBRegressor
 
 #Padronização de escala
 from sklearn.preprocessing import StandardScaler
@@ -394,7 +398,7 @@ def regressionPost():
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8')
     print(csv_data)
     #Vetores necessarios para diferentes tipos de regressão e diferentes x e y
-    name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression", "regression_with_decision_tree"]
+    name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression", "regression_with_decision_tree", "regression_with_random_forest","regression_with_xgboost"]
     name_Regression_poly = ["polynomial_regression"]
     name_Regression_SVR = ["regression_by_support_vectors"]
 
@@ -503,6 +507,16 @@ def regressionPost():
     elif(classifier_type == "regression_with_decision_tree"):
         parameters = parameters_forms()
         reg =  DecisionTreeRegressor(max_depth= int(parameters[0]), random_state=int(parameters[1]))
+        X,y = all_columns()
+    
+    elif(classifier_type == "regression_with_random_forest"):
+        parameters = parameters_forms()
+        reg = RandomForestRegressor(n_estimators=int(parameters[0]), criterion=parameters[1], max_depth=int(parameters[2]), random_state = int(parameters[3])) 
+        X,y = all_columns()
+
+    elif(classifier_type == "regression_with_xgboost"):
+        parameters = parameters_forms()
+        reg = XGBRegressor(n_estimators=int(parameters[0]), max_depth=int(parameters[1]), learning_rate=float(parameters[2]), objective=parameters[3], random_state=int(parameters[4]))
         X,y = all_columns()
 
     
