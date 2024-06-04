@@ -41,10 +41,15 @@ from statsmodels.stats.diagnostic import lilliefors
 
 # Importando a biblioteca da regressão linear simples, mutipla e polinomial
 from sklearn.linear_model import LinearRegression
+#Importando a biblioteca polinomial
+from sklearn.preprocessing import PolynomialFeatures
+# Importando a biblioteca da SVM 
+from sklearn.svm import SVR
+# Importando a biblioteca da Arvore de decisão
+from sklearn.tree import DecisionTreeRegressor
 
-
-
-
+#Padronização de escala
+from sklearn.preprocessing import StandardScaler
 #Metricas de desempenho
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
@@ -384,24 +389,81 @@ def regressionPost():
     classifier_type = request.form["regression"]
     print(classifier_type)
     csv_file = request.files["csv_file"]
+    separator = request.form.get('separator')
     # Lê o arquivo CSV
-    csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = ',', encoding = 'utf-8')
+    csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8')
     print(csv_data)
     #Vetores necessarios para diferentes tipos de regressão e diferentes x e y
-    name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression"]
-    name_Regression_predict = []
+    name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression", "regression_with_decision_tree"]
+    name_Regression_poly = ["polynomial_regression"]
+    name_Regression_SVR = ["regression_by_support_vectors"]
+
+
+
+
+    def parameters_forms():
+        # Recebe as características do parametros
+        parameters = []
+        i = 1
+        while True:
+            parametro = request.form.get(f"parameters{i}")
+            if parametro is None:
+                break
+            parameters.append(parametro)
+            print(f"Parametro {i}: {parametro}")
+            i += 1
+        print(f"Olha eles: {parameters}")
+        return parameters
     
 
     def train_fit(reg,x_teste, x_treino, y_teste, y_treino):    
         reg.fit(x_treino, y_treino)
-        intercept = reg.intercept_.tolist()
-        coef = reg.coef_.tolist()
         determinationCoefficientTraining = reg.score(x_treino, y_treino)
         determinationCoefficientTest  = reg.score(x_teste, y_teste)
         previsoes_teste = reg.predict(x_teste)
         absolute = mean_absolute_error(y_teste, previsoes_teste)
         MeanSquaredError = np.sqrt(mean_squared_error(y_teste, previsoes_teste))
-        return intercept,coef,determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError
+        return determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError
+    
+    def train_poly(reg,x_teste, x_treino, y_teste, y_treino):    
+        # Pré Processamento
+        grau_polinomial =PolynomialFeatures(degree=2)
+        x_poly = grau_polinomial.fit_transform(x_treino)      
+        reg.fit(x_poly, y_treino)
+        determinationCoefficientTraining = reg.score(x_poly, y_treino)       
+        x_poly_teste = grau_polinomial.fit_transform(x_teste)
+        polinomial_teste = LinearRegression()
+        polinomial_teste.fit(x_poly_teste, y_teste)
+        determinationCoefficientTest  = reg.score(x_poly_teste, y_teste)
+        previsoes_teste = polinomial_teste.predict(x_poly_teste)
+        absolute = mean_absolute_error(y_teste, previsoes_teste)
+        MeanSquaredError = np.sqrt(mean_squared_error(y_teste, previsoes_teste)) 
+        return determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError
+    
+    def train_SVR(reg,x_teste, x_treino, y_teste, y_treino):    
+        # Pré Processamento escalonando
+        x_scaler = StandardScaler()
+        x_treino_scaler = x_scaler.fit_transform(x_treino)
+        y_scaler = StandardScaler()
+        y_treino_scaler = y_scaler.fit_transform(y_treino.to_numpy().reshape(-1,1))
+        x_teste_scaler = x_scaler.transform(x_teste)
+        y_teste_scaler = y_scaler.transform(y_teste.to_numpy().reshape(-1,1))  
+        #treinando
+        reg.fit(x_treino_scaler, y_treino_scaler.ravel())# .ravel() é para retornar matriz 1D
+        #coeficientes de determinação
+        determinationCoefficientTraining = reg.score(x_treino_scaler, y_treino_scaler)
+        determinationCoefficientTest  = reg.score(x_teste_scaler, y_teste_scaler)
+        #Predict x teste
+        previsoes_teste = reg.predict(x_teste_scaler)
+        #Revertendo a transformação
+        y_teste_inverse = y_scaler.inverse_transform(y_teste_scaler)
+        previsoes_inverse = y_scaler.inverse_transform(previsoes_teste.reshape(-1, 1))
+        
+        #Metricas
+        absolute = mean_absolute_error(y_teste_inverse, previsoes_inverse)
+        MeanSquaredError = np.sqrt(mean_squared_error(y_teste_inverse, previsoes_inverse))
+
+        return determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError
     
     
     
@@ -429,6 +491,19 @@ def regressionPost():
     elif(classifier_type == "multiple_linear_regression"):
         reg =  LinearRegression()
         X,y = all_columns()
+    elif(classifier_type == "polynomial_regression"):
+        reg =  LinearRegression()
+        X,y = some_columns()
+
+    elif(classifier_type == "regression_by_support_vectors"):
+        parameters = parameters_forms()
+        reg =  SVR(kernel= parameters[0])
+        X,y = all_columns()
+    
+    elif(classifier_type == "regression_with_decision_tree"):
+        parameters = parameters_forms()
+        reg =  DecisionTreeRegressor(max_depth= int(parameters[0]), random_state=int(parameters[1]))
+        X,y = all_columns()
 
     
     #Base treino e teste 
@@ -437,20 +512,19 @@ def regressionPost():
     
     
     if classifier_type in name_Regression_fit:
-        intercept,coef,determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError = train_fit(reg,x_teste, x_treino, y_teste, y_treino)
+        determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError = train_fit(reg,x_teste, x_treino, y_teste, y_treino)
         
 
-    elif classifier_type in name_Regression_predict:
-        print("Em produçao")
+    elif classifier_type in name_Regression_poly:
+        determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError = train_poly(reg,x_teste, x_treino, y_teste, y_treino)
     
-   
-    
+    elif classifier_type in name_Regression_SVR:
+        determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError = train_SVR(reg,x_teste, x_treino, y_teste, y_treino)
     
     
     
     # Retorna os valores dos testes
-    return jsonify({"Coeficiente_linear": intercept, "Coeficiente_angular":coef,
-                    "determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
+    return jsonify({"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
                     "MeanSquaredError":MeanSquaredError})
 
 

@@ -10,22 +10,61 @@ document.addEventListener("DOMContentLoaded", function () {
     regressionSelect.addEventListener("change", function () {
         selectedOption = regressionSelect.options[regressionSelect.selectedIndex].text;
         parametersDiv.innerHTML = "";
-        if(selectedOption === "SIMPLE LINEAR"){
+        if (selectedOption === "SIMPLE LINEAR" || selectedOption === "POLYNOMIAL") {
             hideElement(featuresDiv);
-        }else{
+        } else {
             showElement(featuresDiv);
         }
         // Se a opção selecionada for "SIMPLE LINEAR" e houver um arquivo CSV selecionado
-        if (selectedOption === "SIMPLE LINEAR" && csvFileInput.files.length > 0) {
+        if (selectedOption === "SIMPLE LINEAR" || selectedOption === "POLYNOMIAL" && csvFileInput.files.length > 0) {
             handleCSVFile(csvFileInput.files[0]);
         }
-        
-       
+        else if (selectedOption === "SUPPORT VECTORS(SVR)") {
+            console.log("chegou");
+            var parametersColection = {
+                kernel: "text"
+            };
+            var keys = Object.keys(parametersColection);
+            for (var i = 0; i < 1; i++) {
+                console.log(keys[i]);
+                console.log(parametersColection[keys[i]]);
+                const parametersLabel = document.createElement("label");
+                parametersLabel.textContent = keys[i] + ":";
+                parametersDiv.appendChild(parametersLabel);
+                const parametersInput = document.createElement("input");
+                parametersInput.type = parametersColection[keys[i]];
+                parametersInput.step = "0.0000000001";
+                parametersInput.name = "parameters" + (i + 1);
+                parametersDiv.appendChild(parametersInput);
+                parametersDiv.appendChild(document.createElement("br"));
+            }
+        }
+        else if (selectedOption === "DECISION TREE") {
+            console.log("chegou");
+            var parametersColection = {
+                max_depth: "number",
+                random_state: "number"
+            };
+            var keys = Object.keys(parametersColection);
+            for (var i = 0; i < 2; i++) {
+                console.log(keys[i]);
+                console.log(parametersColection[keys[i]]);
+                const parametersLabel = document.createElement("label");
+                parametersLabel.textContent = keys[i] + ":";
+                parametersDiv.appendChild(parametersLabel);
+                const parametersInput = document.createElement("input");
+                parametersInput.type = parametersColection[keys[i]];
+                parametersInput.step = "0.0000000001";
+                parametersInput.name = "parameters" + (i + 1);
+                parametersDiv.appendChild(parametersInput);
+                parametersDiv.appendChild(document.createElement("br"));
+            }
+        }
     });
 
     csvFileInput.addEventListener("change", function () {
         // Se houver um arquivo CSV selecionado e a opção selecionada for "SIMPLE LINEAR"
-        if (regressionSelect.value === "simple_linear_regression" && csvFileInput.files.length > 0) {
+        if (regressionSelect.value === "simple_linear_regression" || regressionSelect.value === "polynomial_regression" && csvFileInput.files.length > 0) {
             handleCSVFile(csvFileInput.files[0]);
         }
     });
@@ -70,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function hideElement(element) {
         element.style.display = "none";
     }
-    
+
     function showElement(element) {
         element.style.display = "block";
     }
@@ -80,76 +119,76 @@ document.addEventListener("DOMContentLoaded", function () {
     document
         .getElementById("csv_file")
         .addEventListener("change", function (event) {
-                
-                console.log("Evento de mudança detectado");
-                const file = event.target.files[0];
-                if (!file) {
-                    console.error("Nenhum arquivo selecionado.");
+
+            console.log("Evento de mudança detectado");
+            const file = event.target.files[0];
+            if (!file) {
+                console.error("Nenhum arquivo selecionado.");
+                return;
+            }
+            console.log("Arquivo selecionado: ", file);
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const text = e.target.result;
+                if (!text) {
+                    console.error("Falha ao ler o arquivo.");
                     return;
                 }
-                console.log("Arquivo selecionado: ", file);
+                console.log("Conteúdo do arquivo: ", text);
 
-                const reader = new FileReader();
+                const lines = text.split("\n");
+                if (lines.length === 0) {
+                    console.error("Arquivo CSV vazio ou inválido.");
+                    return;
+                }
 
-                reader.onload = function (e) {
-                    const text = e.target.result;
-                    if (!text) {
-                        console.error("Falha ao ler o arquivo.");
-                        return;
-                    }
-                    console.log("Conteúdo do arquivo: ", text);
+                // Verifica se a primeira linha contém uma vírgula
+                if (lines[0].includes(",")) {
+                    separator = ",";
+                }
+                // Se não, verifica se contém um ponto e vírgula
+                else if (lines[0].includes(";")) {
+                    separator = ";";
+                } else {
+                    console.error("Separador não reconhecido.");
+                    return;
+                }
 
-                    const lines = text.split("\n");
-                    if (lines.length === 0) {
-                        console.error("Arquivo CSV vazio ou inválido.");
-                        return;
-                    }
+                let header = lines[0].split(separator);
+                if (lines.length < 2) {
+                    console.error("Arquivo CSV não contém dados suficientes.");
+                    return;
+                }
+                let text_or_number = lines[1].split(separator);
 
-                    // Verifica se a primeira linha contém uma vírgula
-                    if (lines[0].includes(",")) {
-                        separator = ",";
-                    }
-                    // Se não, verifica se contém um ponto e vírgula
-                    else if (lines[0].includes(";")) {
-                        separator = ";";
+                console.log("Cabeçalho: ", header);
+
+                featuresDiv.innerHTML = "";
+
+                for (let i = 0; i < header.length - 1; i++) {
+                    const featureLabel = document.createElement("label");
+                    featureLabel.textContent = header[i] + ":";
+                    featuresDiv.appendChild(featureLabel);
+                    const featureInput = document.createElement("input");
+                    if (!isNaN(text_or_number[i])) {
+                        featureInput.type = "number";
+                        featureInput.step = "0.0000000001";
                     } else {
-                        console.error("Separador não reconhecido.");
-                        return;
+                        featureInput.type = "text";
                     }
+                    featureInput.name = "feature" + (i + 1);
+                    featuresDiv.appendChild(featureInput);
+                    featuresDiv.appendChild(document.createElement("br"));
+                }
+            };
 
-                    let header = lines[0].split(separator);
-                    if (lines.length < 2) {
-                        console.error("Arquivo CSV não contém dados suficientes.");
-                        return;
-                    }
-                    let text_or_number = lines[1].split(separator);
+            reader.onerror = function (e) {
+                console.error("Erro ao ler o arquivo: ", e);
+            };
 
-                    console.log("Cabeçalho: ", header);
-                   
-                    featuresDiv.innerHTML = "";
-
-                    for (let i = 0; i < header.length - 1; i++) {
-                        const featureLabel = document.createElement("label");
-                        featureLabel.textContent = header[i] + ":";
-                        featuresDiv.appendChild(featureLabel);
-                        const featureInput = document.createElement("input");
-                        if (!isNaN(text_or_number[i])) {
-                            featureInput.type = "number";
-                            featureInput.step = "0.0000000001";
-                        } else {
-                            featureInput.type = "text";
-                        }
-                        featureInput.name = "feature" + (i + 1);
-                        featuresDiv.appendChild(featureInput);
-                        featuresDiv.appendChild(document.createElement("br"));
-                    }
-                };
-
-                reader.onerror = function (e) {
-                    console.error("Erro ao ler o arquivo: ", e);
-                };
-
-                reader.readAsText(file);     
+            reader.readAsText(file);
         });
 
     document
@@ -175,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log(`Coeficiente_linear: ${data.Coeficiente_linear}`);
                     document.getElementById(
                         "result"
-                    ).innerText = `Coeficiente_linear: ${data.Coeficiente_linear}\nCoeficiente_angular: ${data.Coeficiente_angular}\nCoeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}\nCoeficiente de determinação do teste: ${data.determinationCoefficientTest}\nErro absoluto: ${data.abs}\nErro quadrático médio: ${data.MeanSquaredError}`;
+                    ).innerText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}\nCoeficiente de determinação do teste: ${data.determinationCoefficientTest}\nErro absoluto: ${data.abs}\nErro quadrático médio: ${data.MeanSquaredError}`;
                 })
                 .catch((error) => {
                     console.error("Erro:", error);
