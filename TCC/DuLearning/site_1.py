@@ -39,8 +39,9 @@ import scipy.stats as stats
 import statsmodels
 from statsmodels.stats.diagnostic import lilliefors
 
-# Importando a biblioteca da regressão linear
+# Importando a biblioteca da regressão linear simples, mutipla e polinomial
 from sklearn.linear_model import LinearRegression
+
 
 
 
@@ -378,58 +379,78 @@ def typedatatest():
 # Rota para fazer regressão
 @app.route("/regressionPost", methods=["POST"])
 def regressionPost():
+
     # Recebe os dados enviados pelo formulário
     classifier_type = request.form["regression"]
-    select_Independent_Variable = request.form["csv_headers"]
     print(classifier_type)
     csv_file = request.files["csv_file"]
     # Lê o arquivo CSV
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = ',', encoding = 'utf-8')
     print(csv_data)
+    #Vetores necessarios para diferentes tipos de regressão e diferentes x e y
+    name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression"]
+    name_Regression_predict = []
     
-    reg = ""
-    intercept = ""
-    coef = ""
-    determinationCoefficientTraining = ""
-    determinationCoefficientTest = ""
-    abs = ""
-    MeanSquaredError = ""
 
-    # Obtendo o índice da coluna "LSTAT"
-    indice_coluna_LSTAT = csv_data.columns.get_loc(select_Independent_Variable)
-    # Separa as características e o alvo
-    X = csv_data.iloc[:, indice_coluna_LSTAT:indice_coluna_LSTAT+1].values
-    y = csv_data.iloc[:, 3].values
+    def train_fit(reg,x_teste, x_treino, y_teste, y_treino):    
+        reg.fit(x_treino, y_treino)
+        intercept = reg.intercept_.tolist()
+        coef = reg.coef_.tolist()
+        determinationCoefficientTraining = reg.score(x_treino, y_treino)
+        determinationCoefficientTest  = reg.score(x_teste, y_teste)
+        previsoes_teste = reg.predict(x_teste)
+        absolute = mean_absolute_error(y_teste, previsoes_teste)
+        MeanSquaredError = np.sqrt(mean_squared_error(y_teste, previsoes_teste))
+        return intercept,coef,determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError
+    
+    
+    
+    def some_columns():
+        # Obtendo o índice da coluna x
+        select_Independent_Variable = request.form["csv_headers"]
+        indice_coluna = csv_data.columns.get_loc(select_Independent_Variable)
+        # Separa as características e o alvo
+        X = csv_data.iloc[:, indice_coluna:indice_coluna+1].values
+        y =  csv_data.iloc[:, 3].values
+        return X, y
 
-    print(f"valor de x {X}")
-    print(f"valor de y {y}")
+    def all_columns():    
+        # Separa as características e o alvo
+        X = csv_data.iloc[:, :-1]
+        y = csv_data.iloc[:, -1]
+        print(X, y)
+        return X, y
+    
+ 
+    if(classifier_type == "simple_linear_regression"):
+        reg =  LinearRegression()
+        X,y = some_columns()
+        
+    elif(classifier_type == "multiple_linear_regression"):
+        reg =  LinearRegression()
+        X,y = all_columns()
 
-
-
+    
     #Base treino e teste 
     x_treino, x_teste, y_treino, y_teste = train_test_split(X, y, test_size = 0.3, random_state = 0)
     
-   
-
-    if(classifier_type == "simple_linear_regression"):
-       print("entrou")
-       reg =  LinearRegression()
-    elif(classifier_type == "multiple_linear_regression"):
-        select_Independent_Variable = "mutipla"
     
-    reg.fit(x_treino, y_treino)
-    intercept = reg.intercept_
-    print(reg.intercept_)
-    coef = reg.coef_
-    determinationCoefficientTraining = reg.score(x_treino, y_treino)
-    determinationCoefficientTest  = reg.score(x_teste, y_teste)
-    previsoes_teste = reg.predict(x_teste)
-    abs = mean_absolute_error(y_teste, previsoes_teste)
-    MeanSquaredError = np.sqrt(mean_squared_error(y_teste, previsoes_teste))
+    
+    if classifier_type in name_Regression_fit:
+        intercept,coef,determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError = train_fit(reg,x_teste, x_treino, y_teste, y_treino)
+        
+
+    elif classifier_type in name_Regression_predict:
+        print("Em produçao")
+    
+   
+    
+    
+    
     
     # Retorna os valores dos testes
-    return jsonify({"Coeficiente_linear": intercept.tolist(), "Coeficiente_angular":coef.tolist(),
-                    "determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":abs, 
+    return jsonify({"Coeficiente_linear": intercept, "Coeficiente_angular":coef,
+                    "determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
                     "MeanSquaredError":MeanSquaredError})
 
 
