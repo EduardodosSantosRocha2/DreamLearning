@@ -4,17 +4,22 @@ document.addEventListener("DOMContentLoaded", function () {
     var regressionSelect = document.getElementById("regression");
     var parametersDiv = document.getElementById("parameters");
     var featuresDiv = document.getElementById("features");
+    var resultDiv = document.getElementById("result");
+    var posicaoDiv = document.getElementById("posicao");
     var reader;
     var selectedOption = "";
 
     regressionSelect.addEventListener("change", function () {
+        resultDiv.innerHTML = "";
         selectedOption = regressionSelect.options[regressionSelect.selectedIndex].text;
         parametersDiv.innerHTML = "";
-        if (selectedOption === "SIMPLE LINEAR" || selectedOption === "POLYNOMIAL") {
-            hideElement(featuresDiv);
-        } else {
-            showElement(featuresDiv);
-        }
+
+
+        // if (selectedOption === "SIMPLE LINEAR" || selectedOption === "POLYNOMIAL") {
+        //     hideElement(featuresDiv);
+        // } else {
+        //     showElement(featuresDiv);
+        // }
         // Se a opção selecionada for "SIMPLE LINEAR" e houver um arquivo CSV selecionado
         if (selectedOption === "SIMPLE LINEAR" || selectedOption === "POLYNOMIAL" && csvFileInput.files.length > 0) {
             handleCSVFile(csvFileInput.files[0]);
@@ -84,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
         else if (selectedOption === "XGBOOST") {
-            console.log("chegou");
+            console.log("chegou xg");
             var parametersColection = {
                 n_estimators: "number",
                 max_depth: "number",
@@ -139,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 learning_rate: "number",
                 depth: "number",
                 random_state: "number",
-                
+
             };
             var keys = Object.keys(parametersColection);
             for (var i = 0; i < 4; i++) {
@@ -191,16 +196,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function populateHeaders(headers) {
-        var selectHTML = '<label for="csv_headers">Escolha a variavel idepedente:</label>';
+        var selectHTML = '<label for="csv_headers">Escolha a variável independente:</label>';
         selectHTML += '<select id="csv_headers" name="csv_headers">';
-
+    
         headers.forEach(function (header) {
             selectHTML += '<option value="' + header + '">' + header + '</option>';
         });
-
+    
         selectHTML += '</select>';
         parametersDiv.innerHTML = selectHTML;
+    
+        const Ivariable = document.getElementById("csv_headers");
+        var options = Ivariable.options;
+    
+        // Adiciona o texto inicial na div posicaoDiv
+        posicaoDiv.textContent = "feature1";
+    
+        // Adiciona o evento para atualizar a posição selecionada
+        Ivariable.addEventListener("change", function () {
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    posicaoDiv.textContent = "feature" + (i+1);
+                    break;
+                }
+            }
+        });
     }
+    
+    
+    
 
     function hideElement(element) {
         element.style.display = "none";
@@ -294,8 +318,8 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
             const formData = new FormData(this);
             formData.append("separator", separator);
+            formData.append("posicao", document.getElementById("posicao").textContent)
             console.log(formData);
-
             fetch("/regressionPost", {
                 method: "POST",
                 body: formData,
@@ -310,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log(`Coeficiente_linear: ${data.Coeficiente_linear}`);
                     document.getElementById(
                         "result"
-                    ).innerText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}\nCoeficiente de determinação do teste: ${data.determinationCoefficientTest}\nErro absoluto: ${data.abs}\nErro quadrático médio: ${data.MeanSquaredError}`;
+                    ).innerText = `prediction:${data.prediction}\nCoeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}\nCoeficiente de determinação do teste: ${data.determinationCoefficientTest}\nErro absoluto: ${data.abs}\nErro quadrático médio: ${data.MeanSquaredError}`;
                 })
                 .catch((error) => {
                     console.error("Erro:", error);

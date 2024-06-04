@@ -398,6 +398,9 @@ def regressionPost():
     print(classifier_type)
     csv_file = request.files["csv_file"]
     separator = request.form.get('separator')
+    
+    posicao = request.form.get('posicao')
+    print(f"A posicao eh {posicao}")
     # Lê o arquivo CSV
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8')
     print(csv_data)
@@ -422,6 +425,44 @@ def regressionPost():
             i += 1
         print(f"Olha eles: {parameters}")
         return parameters
+    
+    
+    def is_not_nan(value):
+        try:
+            # Tenta converter o valor para float
+            float_value = float(value)
+        except ValueError:
+            # Se a conversão falhar, não é um número válido
+            return False
+        # Verifica se o valor convertido é NaN
+        return not math.isnan(float_value)
+    
+    
+    def features_forms():
+         # Recebe as características do formulário    
+        features = []
+        if (classifier_type != "simple_linear_regression" or classifier_type != "polynomial_regression"):
+            for i in range(1, X.shape[1] + 1):
+                form_value = request.form[f"feature{i}"]
+                if is_not_nan(form_value):
+                    feature = float(form_value)
+                    print(f"feature if {feature}")
+                else:
+                    feature = form_value
+                    print(f"feature else {feature}")
+                features.append(feature)
+            
+        else:
+            form_value = request.form[posicao]
+            if is_not_nan(form_value):
+                    feature = float(form_value)
+                    print(f"feature if {feature}")
+            else:
+                feature = form_value
+                print(f"feature else {feature}")
+                features.append(feature)
+        return features
+        
     
 
     def train_fit(reg,x_teste, x_treino, y_teste, y_treino):    
@@ -549,10 +590,12 @@ def regressionPost():
     elif classifier_type in name_Regression_SVR:
         determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError = train_SVR(reg,x_teste, x_treino, y_teste, y_treino)
     
-    
+    features = features_forms()
+    print(f"features: {features}")
+    prediction = reg.predict([features])
     
     # Retorna os valores dos testes
-    return jsonify({"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
+    return jsonify({"prediction":prediction[0],"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
                     "MeanSquaredError":MeanSquaredError})
 
 
