@@ -479,7 +479,7 @@ def regressionPost():
     def features_forms():
          # Recebe as características do formulário    
         features = []
-        if (classifier_type != "simple_linear_regression" or classifier_type != "polynomial_regression"):
+        if (classifier_type != "simple_linear_regression" and classifier_type != "polynomial_regression"):
             for i in range(1, X.shape[1] + 1):
                 form_value = request.form[f"feature{i}"]
                 if is_not_nan(form_value):
@@ -498,7 +498,7 @@ def regressionPost():
             else:
                 feature = form_value
                 print(f"feature else2 {feature}")
-                features.append(feature)
+            features.append(feature)
         return features
         
     
