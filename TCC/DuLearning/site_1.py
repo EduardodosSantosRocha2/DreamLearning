@@ -345,31 +345,38 @@ def predict():
 def typedatatest():
     csv_file = request.files["csv_file"]
     separator = request.form.get('separator')
+    
     # Lê o arquivo CSV
-    csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8')
+    csv_data = pd.read_csv(io.BytesIO(csv_file.read()), sep=separator, encoding='utf-8')
+    
     print(csv_data)
-
-    #Teste Lilliefors (Kolmogorov_Sminorv) Ho = distribuição normal : p > 0.05 Ha = distribuição != normal : p <= 0.05
+    
+    # Aplica LabelEncoder se necessário
+    encoder = LabelEncoder()
+    for col in csv_data.columns:
+        if csv_data[col].dtype == 'object':
+            csv_data[col] = encoder.fit_transform(csv_data[col])
+    
+    print(csv_data)
+    
+    # Função para verificar normalidade dos dados
     def TesteLilliefors():
-        continuesNormality = False
-        for coluns in csv_data.columns:
-            estatistica, p = statsmodels.stats.diagnostic.lilliefors(csv_data[coluns], dist = 'norm')
-            if(p > 0.05):
-                continuesNormality = True
+        continuesNormality = True
+        for col in csv_data.columns:
+            estatistica, p = statsmodels.stats.diagnostic.lilliefors(csv_data[col], dist='norm')
+            if p <= 0.05:
+                continuesNormality = False
             print('Estatistica de teste: {}'.format(estatistica))
             print('p-valor: {}'.format(p))
         return continuesNormality
     
     continuesNormality = TesteLilliefors()
-
     
-    def CorrelaçãoLinear(): # Pearson (distribuição normal), Spearman (distribuição não normal), Kendall (distribuição não normal com quantidade pequena de amostras < 30)
-        #Ho = não há corrrelação linear: p > 0,05, Ha = existe correlação linear: p <= 0,05
-        if continuesNormality == True:
-            #Pearson
+    # Função para calcular correlação linear
+    def CorrelaçãoLinear():
+        if continuesNormality:
             correlation = csv_data.corr(method='pearson')
-            print(correlation)
-        elif  continuesNormality == False:
+        else:
             correlation = csv_data.corr(method='spearman')
         
         # Converter para JSON com orient='columns' para manter os cabeçalhos das colunas
@@ -378,12 +385,10 @@ def typedatatest():
 
         return json_correlation    
 
-    
     json_correlation = CorrelaçãoLinear()    
-
-
+    
     # Retorna os valores dos testes
-    return jsonify({"linearCorrelation":json_correlation, "continuesNormality":continuesNormality})
+    return jsonify({"linearCorrelation": json_correlation, "continuesNormality": continuesNormality})
 
 
 
@@ -403,11 +408,44 @@ def regressionPost():
     print(f"A posicao eh {posicao}")
     # Lê o arquivo CSV
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8')
+    csv_tranform = csv_data.copy()
     print(csv_data)
     #Vetores necessarios para diferentes tipos de regressão e diferentes x e y
     name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression", "regression_with_decision_tree", "regression_with_random_forest","regression_with_xgboost","regression_with_light_gbm", "regression_with_catboost"]
     name_Regression_poly = ["polynomial_regression"]
     name_Regression_SVR = ["regression_by_support_vectors"]
+
+
+
+    #Aplica o labelencolder
+    meu_dicionario = {}
+    meu_dicionarioencoder = {}
+
+    dicionarioParametros = {}
+
+    # Inicialize o encoder
+    encoder = LabelEncoder()
+
+    # Itere sobre todas as colunas do DataFrame
+    for coluna in csv_data.columns:
+        # Verifique se a coluna é do tipo 'object' e não é numérica
+        if csv_data[coluna].dtype == 'object' and not csv_data[coluna].apply(lambda x: isinstance(x, (int, float))).all():
+            # Imprima os valores únicos antes e depois da codificação para essa coluna
+            print(f'Coluna: {coluna}')
+            print(f'Valores unicos antes da codificacao: {csv_data[coluna].unique()}')
+            
+            meu_dicionario[coluna] = csv_data[coluna].unique().tolist()
+            
+            # Ajuste o encoder aos dados e transforme a coluna
+            csv_data[coluna] = encoder.fit_transform(csv_data[coluna])
+            
+            print(f'Valores únicos depois da codificacao: {csv_data[coluna].unique()}')
+            meu_dicionarioencoder[coluna] = csv_data[coluna].unique().tolist()
+            print('\n')
+
+    print(f"Dicionario: {meu_dicionario}")
+    print(f"Dicionario Encoder: {meu_dicionarioencoder}")
+    print(csv_tranform)
 
 
 
@@ -446,20 +484,20 @@ def regressionPost():
                 form_value = request.form[f"feature{i}"]
                 if is_not_nan(form_value):
                     feature = float(form_value)
-                    print(f"feature if {feature}")
+                    print(f"feature if1 {feature}")
                 else:
                     feature = form_value
-                    print(f"feature else {feature}")
+                    print(f"feature else1 {feature}")
                 features.append(feature)
             
         else:
             form_value = request.form[posicao]
             if is_not_nan(form_value):
                     feature = float(form_value)
-                    print(f"feature if {feature}")
+                    print(f"feature if2 {feature}")
             else:
                 feature = form_value
-                print(f"feature else {feature}")
+                print(f"feature else2 {feature}")
                 features.append(feature)
         return features
         
@@ -591,11 +629,52 @@ def regressionPost():
         determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError = train_SVR(reg,x_teste, x_treino, y_teste, y_treino)
     
     features = features_forms()
+    print(f"features final : {features}")
+   #prediction = reg.predict([features])
+
+    cont_coluns = 0
+    num_features = len(features)  # Armazena o comprimento da lista de features
+
+    for coluna in csv_tranform.columns:
+        # Verifica se o tipo da coluna é 'object' e se todos os elementos não são números
+        if csv_tranform[coluna].dtype == 'object' and not csv_tranform[coluna].apply(lambda x: isinstance(x, (int, float))).all():
+            # Verifica se o índice está dentro do alcance da lista de features
+            if cont_coluns < num_features:
+                # Codifica a feature usando o dicionário
+                features[cont_coluns] = meu_dicionarioencoder[coluna][meu_dicionario[coluna].index(features[cont_coluns])]
+        cont_coluns += 1
+
+    
+    
+    
+    
     print(f"features: {features}")
     prediction = reg.predict([features])
     
+    
+
+    
+    # if(csv_tranform.iloc[:, -1].dtype == 'object'):
+    #     # Convertendo as chaves do dicionário em uma lista
+    #     lista_chaves = list(meu_dicionarioencoder.keys())
+
+    #     # Obtendo a última chave
+    #     ultima_chave = lista_chaves[-1]
+
+    #     # Encontrando o índice da previsão na lista correspondente à última chave
+    #     indice_predicao = meu_dicionarioencoder[ultima_chave].index(prediction[0])
+
+    #     val = meu_dicionario[ultima_chave][indice_predicao]
+    
+    # else: 
+    val = prediction[0]
+
+
+
+
+    
     # Retorna os valores dos testes
-    return jsonify({"prediction":prediction[0],"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
+    return jsonify({"prediction":val,"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
                     "MeanSquaredError":MeanSquaredError})
 
 
