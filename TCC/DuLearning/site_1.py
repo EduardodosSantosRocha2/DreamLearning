@@ -93,15 +93,20 @@ def predict():
     # Recebe os dados enviados pelo formulário
     classifier_type = request.form["classifier"]
     print(classifier_type)
-    csv_file = request.files["csv_file"]
+    csv_file = request.files["csv_file"]      
     separator = request.form.get('separator')
-    
-
-    
-
     # Lê o arquivo CSV
-    csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8')
+    csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8') 
     csv_tranform = csv_data.copy()
+
+    deployBoolean = request.form.get('deployBoolean')
+    if deployBoolean == "true":
+        csv_file_deploy = request.files["csv_deploy"]
+        csv_deploy = pd.read_csv(io.BytesIO(csv_file_deploy.read()), sep= separator, encoding='utf-8')
+        print(f"-----------------------------------------------------")
+        csv_deploy = csv_deploy.to_numpy().tolist()
+        print(csv_deploy)
+        print(f"-----------------------------------------------------")
 
 
     #Aplica o labelencolder
@@ -262,79 +267,79 @@ def predict():
     accuracy_test =  print_accuracy_score_test(forecast_test, y_teste)
     accuracy_training =  print_accuracy_score_traning(forecast_training,y_treino)
 
-    def is_not_nan(value):
-        return isinstance(value, (int, float)) and not math.isnan(value)
+    # def is_not_nan(value):
+    #     return isinstance(value, (int, float)) and not math.isnan(value)
 
     
-    def is_not_nan(value):
-        try:
-            # Tenta converter o valor para float
-            float_value = float(value)
-        except ValueError:
-            # Se a conversão falhar, não é um número válido
-            return False
-        # Verifica se o valor convertido é NaN
-        return not math.isnan(float_value)
-
-    # Recebe as características do formulário
-    features = []
-    for i in range(1, X.shape[1] + 1):
-        form_value = request.form[f"feature{i}"]
-        if is_not_nan(form_value):
-            feature = float(form_value)
-            print(f"feature if {feature}")
-        else:
-            feature = form_value
-            print(f"feature else {feature}")
-        features.append(feature)
-
-    print(f"features aaaaa: {features}")
-    print(csv_data)
-    print(csv_tranform)
-
-    cont_coluns = 0
-    num_features = len(features)  # Armazena o comprimento da lista de features
-
-    for coluna in csv_tranform.columns:
-        # Verifica se o tipo da coluna é 'object' e se todos os elementos não são números
-        if csv_tranform[coluna].dtype == 'object' and not csv_tranform[coluna].apply(lambda x: isinstance(x, (int, float))).all():
-            # Verifica se o índice está dentro do alcance da lista de features
-            if cont_coluns < num_features:
-                # Codifica a feature usando o dicionário
-                features[cont_coluns] = meu_dicionarioencoder[coluna][meu_dicionario[coluna].index(features[cont_coluns])]
-        cont_coluns += 1
+    # def is_not_nan(value):
+    #     try:
+    #         # Tenta converter o valor para float
+    #         float_value = float(value)
+    #     except ValueError:
+    #         # Se a conversão falhar, não é um número válido
+    #         return False
+    #     # Verifica se o valor convertido é NaN
+    #     return not math.isnan(float_value)
 
     
-    
-    
-    
-    print(f"features: {features}")
-    prediction = clf.predict([features])
-    
-    
+    if deployBoolean == "true":
+        # # Recebe as características do formulário
+        # features = []
+        # for i in range(1, X.shape[1] + 1):
+        #     form_value = request.form[f"feature{i}"]
+        #     if is_not_nan(form_value):
+        #         feature = float(form_value)
+        #         print(f"feature if {feature}")
+        #     else:
+        #         feature = form_value
+        #         print(f"feature else {feature}")
+        #     features.append(feature)
 
+        # print(f"features aaaaa: {features}")
+        print(csv_data)
+        print(csv_tranform)
+
+        cont_coluns = 0
+        deploy = csv_deploy
+        print(f"Deploy tem tamanho: {len(deploy)}")
+
+        for i in range(len(deploy)):
+            num_features = len(deploy[i])  # Armazena o comprimento da lista de features
+            cont_coluns  = 0
+            for coluna in csv_tranform.columns:
+                # Verifica se o tipo da coluna é 'object' e se todos os elementos não são números
+                if csv_tranform[coluna].dtype == 'object' and not csv_tranform[coluna].apply(lambda x: isinstance(x, (int, float))).all():
+                    # Verifica se o índice está dentro do alcance da lista de features
+                    if cont_coluns < num_features:
+                        # Codifica a feature usando o dicionário
+                        deploy[i][cont_coluns] = meu_dicionarioencoder[coluna][meu_dicionario[coluna].index(deploy[i][cont_coluns])]
+                cont_coluns += 1
+
+        
+        print(f"Printando o deploy : {deploy}")
+        prediction = clf.predict(deploy)
+        
+        
+        if(csv_tranform.iloc[:, -1].dtype == 'object'):
+            # Convertendo as chaves do dicionário em uma lista
+            lista_chaves = list(meu_dicionarioencoder.keys())
+
+            # Obtendo a última chave
+            ultima_chave = lista_chaves[-1]
+
+            # Encontrando o índice da previsão na lista correspondente à última chave
+            indice_predicao = meu_dicionarioencoder[ultima_chave].index(prediction[0])
+
+            val = meu_dicionario[ultima_chave][indice_predicao]
+        
+        else: 
+            val = prediction.tolist()
     
-    if(csv_tranform.iloc[:, -1].dtype == 'object'):
-        # Convertendo as chaves do dicionário em uma lista
-        lista_chaves = list(meu_dicionarioencoder.keys())
+        return jsonify({"prediction": f"{val}", "accuracy_test": accuracy_test, "accuracy_training":accuracy_training })
 
-        # Obtendo a última chave
-        ultima_chave = lista_chaves[-1]
-
-        # Encontrando o índice da previsão na lista correspondente à última chave
-        indice_predicao = meu_dicionarioencoder[ultima_chave].index(prediction[0])
-
-        val = meu_dicionario[ultima_chave][indice_predicao]
-    
-    else: 
-        val = prediction[0]
-    
-
-
-
-
+    else:
     # Retorna a previsão
-    return jsonify({"prediction": f"{val}", "accuracy_test": accuracy_test, "accuracy_training":accuracy_training })
+        return jsonify({"accuracy_test": accuracy_test, "accuracy_training":accuracy_training })
 
 
 
@@ -401,15 +406,31 @@ def regressionPost():
     # Recebe os dados enviados pelo formulário
     classifier_type = request.form["regression"]
     print(classifier_type)
-    csv_file = request.files["csv_file"]
+    csv_file = request.files["csv_file"] 
     separator = request.form.get('separator')
-    
     posicao = request.form.get('posicao')
     print(f"A posicao eh {posicao}")
+
+    deployBoolean = request.form.get('deployBoolean')
+   
+    
+
     # Lê o arquivo CSV
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8')
     csv_tranform = csv_data.copy()
     print(csv_data)
+
+
+    if deployBoolean == "true":
+        csv_file_deploy = request.files["csv_deploy"]
+        csv_deploy = pd.read_csv(io.BytesIO(csv_file_deploy.read()), sep= separator, encoding='utf-8')
+        print(f"-----------------------------------------------------")
+        csv_deploy = csv_deploy.to_numpy().tolist()
+        print(csv_deploy)
+        print(f"-----------------------------------------------------")
+    
+    
+    
     #Vetores necessarios para diferentes tipos de regressão e diferentes x e y
     name_Regression_fit = ["simple_linear_regression", "multiple_linear_regression", "regression_with_decision_tree", "regression_with_random_forest","regression_with_xgboost","regression_with_light_gbm", "regression_with_catboost"]
     name_Regression_poly = ["polynomial_regression"]
@@ -465,41 +486,41 @@ def regressionPost():
         return parameters
     
     
-    def is_not_nan(value):
-        try:
-            # Tenta converter o valor para float
-            float_value = float(value)
-        except ValueError:
-            # Se a conversão falhar, não é um número válido
-            return False
-        # Verifica se o valor convertido é NaN
-        return not math.isnan(float_value)
+    # def is_not_nan(value):
+    #     try:
+    #         # Tenta converter o valor para float
+    #         float_value = float(value)
+    #     except ValueError:
+    #         # Se a conversão falhar, não é um número válido
+    #         return False
+    #     # Verifica se o valor convertido é NaN
+    #     return not math.isnan(float_value)
     
     
-    def features_forms():
-         # Recebe as características do formulário    
-        features = []
-        if (classifier_type != "simple_linear_regression" and classifier_type != "polynomial_regression"):
-            for i in range(1, X.shape[1] + 1):
-                form_value = request.form[f"feature{i}"]
-                if is_not_nan(form_value):
-                    feature = float(form_value)
-                    print(f"feature if1 {feature}")
-                else:
-                    feature = form_value
-                    print(f"feature else1 {feature}")
-                features.append(feature)
+    # def features_forms():
+    #      # Recebe as características do formulário    
+    #     features = []
+    #     if (classifier_type != "simple_linear_regression" and classifier_type != "polynomial_regression"):
+    #         for i in range(1, X.shape[1] + 1):
+    #             form_value = request.form[f"feature{i}"]
+    #             if is_not_nan(form_value):
+    #                 feature = float(form_value)
+    #                 print(f"feature if1 {feature}")
+    #             else:
+    #                 feature = form_value
+    #                 print(f"feature else1 {feature}")
+    #             features.append(feature)
             
-        else:
-            form_value = request.form[posicao]
-            if is_not_nan(form_value):
-                    feature = float(form_value)
-                    print(f"feature if2 {feature}")
-            else:
-                feature = form_value
-                print(f"feature else2 {feature}")
-            features.append(feature)
-        return features
+    #     else:
+    #         form_value = request.form[posicao]
+    #         if is_not_nan(form_value):
+    #                 feature = float(form_value)
+    #                 print(f"feature if2 {feature}")
+    #         else:
+    #             feature = form_value
+    #             print(f"feature else2 {feature}")
+    #         features.append(feature)
+    #     return features
         
     
 
@@ -628,54 +649,62 @@ def regressionPost():
     elif classifier_type in name_Regression_SVR:
         determinationCoefficientTraining,determinationCoefficientTest,absolute,MeanSquaredError = train_SVR(reg,x_teste, x_treino, y_teste, y_treino)
     
-    features = features_forms()
-    print(f"features final : {features}")
-   #prediction = reg.predict([features])
+#     features = features_forms()
+#     print(f"features final : {features}")
+#    #prediction = reg.predict([features])
 
-    cont_coluns = 0
-    num_features = len(features)  # Armazena o comprimento da lista de features
+#     cont_coluns = 0
+#     num_features = len(features)  # Armazena o comprimento da lista de features
 
-    for coluna in csv_tranform.columns:
-        # Verifica se o tipo da coluna é 'object' e se todos os elementos não são números
-        if csv_tranform[coluna].dtype == 'object' and not csv_tranform[coluna].apply(lambda x: isinstance(x, (int, float))).all():
-            # Verifica se o índice está dentro do alcance da lista de features
-            if cont_coluns < num_features:
-                # Codifica a feature usando o dicionário
-                features[cont_coluns] = meu_dicionarioencoder[coluna][meu_dicionario[coluna].index(features[cont_coluns])]
-        cont_coluns += 1
-
-    
-    
-    
-    
-    print(f"features: {features}")
-    prediction = reg.predict([features])
-    
-    
+#     for coluna in csv_tranform.columns:
+#         # Verifica se o tipo da coluna é 'object' e se todos os elementos não são números
+#         if csv_tranform[coluna].dtype == 'object' and not csv_tranform[coluna].apply(lambda x: isinstance(x, (int, float))).all():
+#             # Verifica se o índice está dentro do alcance da lista de features
+#             if cont_coluns < num_features:
+#                 # Codifica a feature usando o dicionário
+#                 features[cont_coluns] = meu_dicionarioencoder[coluna][meu_dicionario[coluna].index(features[cont_coluns])]
+#         cont_coluns += 1
 
     
-    # if(csv_tranform.iloc[:, -1].dtype == 'object'):
-    #     # Convertendo as chaves do dicionário em uma lista
-    #     lista_chaves = list(meu_dicionarioencoder.keys())
-
-    #     # Obtendo a última chave
-    #     ultima_chave = lista_chaves[-1]
-
-    #     # Encontrando o índice da previsão na lista correspondente à última chave
-    #     indice_predicao = meu_dicionarioencoder[ultima_chave].index(prediction[0])
-
-    #     val = meu_dicionario[ultima_chave][indice_predicao]
     
-    # else: 
-    val = prediction[0]
 
 
 
 
     
-    # Retorna os valores dos testes
-    return jsonify({"prediction":val,"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
+    
+    
+    # print(f"features: {features}")
+    if deployBoolean == "true":
+        print(csv_data)
+        print(csv_tranform)
+
+        cont_coluns = 0
+        deploy = csv_deploy
+        print(f"Deploy tem tamanho: {len(deploy)}")
+
+        for i in range(len(deploy)):
+            num_features = len(deploy[i])  # Armazena o comprimento da lista de features
+            cont_coluns  = 0
+            for coluna in csv_tranform.columns:
+                # Verifica se o tipo da coluna é 'object' e se todos os elementos não são números
+                if csv_tranform[coluna].dtype == 'object' and not csv_tranform[coluna].apply(lambda x: isinstance(x, (int, float))).all():
+                    # Verifica se o índice está dentro do alcance da lista de features
+                    if cont_coluns < num_features:
+                        # Codifica a feature usando o dicionário
+                        deploy[i][cont_coluns] = meu_dicionarioencoder[coluna][meu_dicionario[coluna].index(deploy[i][cont_coluns])]
+                cont_coluns += 1
+
+        
+        print(f"Printando o deploy : {deploy}")
+        prediction = reg.predict(deploy)
+        val = prediction.tolist()
+        return jsonify({"prediction":val,"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
                     "MeanSquaredError":MeanSquaredError})
+    else:    
+        # Retorna os valores dos testes
+        return jsonify({"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
+                        "MeanSquaredError":MeanSquaredError})
 
 
 

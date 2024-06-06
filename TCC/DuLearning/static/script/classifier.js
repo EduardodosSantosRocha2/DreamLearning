@@ -1,8 +1,67 @@
+function stars() {
+    let count = 500;
+    let scene = document.querySelector(".scene");
+    let i = 0;
+    while (i < count) {
+        let star = document.createElement("i");
+        let x = Math.floor(Math.random() * window.innerWidth);
+        let y = Math.floor(Math.random() * window.innerHeight);
+        let duration = Math.random() * 10;
+        let size = Math.random() * 2;
+        star.style.left = x + 'px';
+        star.style.top = y + 'px';
+        star.style.width = 1 + size + 'px';
+        star.style.height = 1 + size + 'px';
+        star.style.animationDuration = 5 + duration + 's';
+        star.style.animationDelay = duration + 's';
+        scene.appendChild(star)
+        i++;
+    }
+}
+stars();
+
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    
+
     var separator = "";
+    var deployBoolean = "";
+
+
+
+    const radioButtons = document.querySelectorAll('input[name="answer-dark"]');
+    const deployDiv = document.querySelector('.deploy');
+
+    function toggleDeployDiv() {
+        const selectedValue = document.querySelector('input[name="answer-dark"]:checked').value;
+        console.log("Escolha: " + selectedValue)
+        if (selectedValue === 'yes') {
+            deployDiv.style.display = 'block';
+            deployBoolean = "true";
+        } else {
+            deployDiv.style.display = 'none';
+            deployBoolean = "false";
+        }
+    }
+
+    // Adiciona o event listener para cada rádio button
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', toggleDeployDiv);
+    });
+
+    // Verifica o estado inicial dos rádios
+    toggleDeployDiv();
+
+
+
+
+
+
+    
+    
     document
         .getElementById("classifier")
         .addEventListener("change", function (event) {
@@ -251,32 +310,32 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("Arquivo CSV não contém dados suficientes.");
                 return;
             }
-            let text_or_number = lines[1].split(separator);
+        //     let text_or_number = lines[1].split(separator);
 
-            console.log("Cabeçalho: ", header);
-            const featuresDiv = document.getElementById("features");
-            featuresDiv.innerHTML = "";
+        //     console.log("Cabeçalho: ", header);
+        //     const featuresDiv = document.getElementById("features");
+        //     featuresDiv.innerHTML = "";
 
-            for (let i = 0; i < header.length - 1; i++) {
-                const featureLabel = document.createElement("label");
-                featureLabel.textContent = header[i] + ":";
-                featuresDiv.appendChild(featureLabel);
-                const featureInput = document.createElement("input");
-                if (!isNaN(text_or_number[i])) {
-                    featureInput.type = "number";
-                    featureInput.step = "0.0000000001";
-                } else {
-                    featureInput.type = "text";
-                }
-                featureInput.name = "feature" + (i + 1);
-                featuresDiv.appendChild(featureInput);
-                featuresDiv.appendChild(document.createElement("br"));
-            }
-        };
+        //     for (let i = 0; i < header.length - 1; i++) {
+        //         const featureLabel = document.createElement("label");
+        //         featureLabel.textContent = header[i] + ":";
+        //         featuresDiv.appendChild(featureLabel);
+        //         const featureInput = document.createElement("input");
+        //         if (!isNaN(text_or_number[i])) {
+        //             featureInput.type = "number";
+        //             featureInput.step = "0.0000000001";
+        //         } else {
+        //             featureInput.type = "text";
+        //         }
+        //         featureInput.name = "feature" + (i + 1);
+        //         featuresDiv.appendChild(featureInput);
+        //         featuresDiv.appendChild(document.createElement("br"));
+        //     }
+        // };
 
-        reader.onerror = function (e) {
-            console.error("Erro ao ler o arquivo: ", e);
-        };
+        // reader.onerror = function (e) {
+        //     console.error("Erro ao ler o arquivo: ", e);
+         };
 
         reader.readAsText(file);
         });
@@ -288,6 +347,7 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault();
             const formData = new FormData(this);
             formData.append("separator", separator);
+            formData.append("deployBoolean",deployBoolean)
             console.log(formData);
 
             fetch("/predict", {
@@ -301,13 +361,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log(`Previsão: ${data.prediction}`);
-                    console.log(`Accuracy test: ${data.accuracy_test}`);
-                    console.log(`Accuracy training: ${data.accuracy_training}`);
-                    document.getElementById(
-                        "result"
-                    ).innerText = `Previsão: ${data.prediction}\nAcuracia teste: ${data.accuracy_test}%\nAcuracia treino: ${data.accuracy_training}%`;
-                })
+                    let resultText = `Acuracia teste: ${data.accuracy_test}%<br>`;
+                    resultText += `Acuracia treino: ${data.accuracy_training}%<br>`;
+                    
+                    // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
+                    if (data.prediction !== undefined && data.prediction !== null) {
+                        resultText = `Previsão: ${data.prediction}<br>` + resultText;
+                    }
+                
+                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText}</div>`;
+                })         
                 .catch((error) => {
                     console.error("Erro:", error);
                     document.getElementById(

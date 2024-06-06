@@ -1,9 +1,9 @@
 
-function stars(){
+function stars() {
     let count = 500;
     let scene = document.querySelector(".scene");
     let i = 0;
-    while(i < count){
+    while (i < count) {
         let star = document.createElement("i");
         let x = Math.floor(Math.random() * window.innerWidth);
         let y = Math.floor(Math.random() * window.innerHeight);
@@ -20,6 +20,20 @@ function stars(){
     }
 }
 stars();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     var separator = "";
     var csvFileInput = document.getElementById("csv_file");
@@ -30,6 +44,45 @@ document.addEventListener("DOMContentLoaded", function () {
     var posicaoDiv = document.getElementById("posicao");
     var reader;
     var selectedOption = "";
+    var deployBoolean = "";
+
+
+
+    const radioButtons = document.querySelectorAll('input[name="answer-dark"]');
+    const deployDiv = document.querySelector('.deploy');
+
+    function toggleDeployDiv() {
+        const selectedValue = document.querySelector('input[name="answer-dark"]:checked').value;
+        console.log("Escolha: " + selectedValue)
+        if (selectedValue === 'yes') {
+            deployDiv.style.display = 'block';
+            deployBoolean = "true";
+        } else {
+            deployDiv.style.display = 'none';
+            deployBoolean = "false";
+        }
+    }
+
+    // Adiciona o event listener para cada rádio button
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', toggleDeployDiv);
+    });
+
+    // Verifica o estado inicial dos rádios
+    toggleDeployDiv();
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     regressionSelect.addEventListener("change", function () {
         resultDiv.innerHTML = "";
@@ -221,33 +274,33 @@ document.addEventListener("DOMContentLoaded", function () {
     function populateHeaders(headers) {
         var selectHTML = '<label for="csv_headers">Escolha a variável independente:</label>';
         selectHTML += '<select id="csv_headers" name="csv_headers">';
-    
+
         headers.forEach(function (header) {
             selectHTML += '<option value="' + header + '">' + header + '</option>';
         });
-    
+
         selectHTML += '</select>';
         parametersDiv.innerHTML = selectHTML;
-    
+
         const Ivariable = document.getElementById("csv_headers");
         var options = Ivariable.options;
-    
+
         // Adiciona o texto inicial na div posicaoDiv
         posicaoDiv.textContent = "feature1";
-    
+
         // Adiciona o evento para atualizar a posição selecionada
         Ivariable.addEventListener("change", function () {
             for (var i = 0; i < options.length; i++) {
                 if (options[i].selected) {
-                    posicaoDiv.textContent = "feature" + (i+1);
+                    posicaoDiv.textContent = "feature" + (i + 1);
                     break;
                 }
             }
         });
     }
-    
-    
-    
+
+
+
 
     function hideElement(element) {
         element.style.display = "none";
@@ -304,34 +357,34 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("Arquivo CSV não contém dados suficientes.");
                     return;
                 }
-                let text_or_number = lines[1].split(separator);
+            //     let text_or_number = lines[1].split(separator);
 
-                console.log("Cabeçalho: ", header);
+            //     console.log("Cabeçalho: ", header);
 
-                featuresDiv.innerHTML = "";
+            //     featuresDiv.innerHTML = "";
 
-                for (let i = 0; i < header.length - 1; i++) {
-                    const featureLabel = document.createElement("label");
-                    featureLabel.textContent = header[i] + ":";
-                    featuresDiv.appendChild(featureLabel);
-                    const featureInput = document.createElement("input");
-                    if (!isNaN(text_or_number[i])) {
-                        featureInput.type = "number";
-                        featureInput.step = "0.0000000001";
-                    } else {
-                        featureInput.type = "text";
-                    }
-                    featureInput.name = "feature" + (i + 1);
-                    featuresDiv.appendChild(featureInput);
-                    featuresDiv.appendChild(document.createElement("br"));
-                }
-            };
+            //     for (let i = 0; i < header.length - 1; i++) {
+            //         const featureLabel = document.createElement("label");
+            //         featureLabel.textContent = header[i] + ":";
+            //         featuresDiv.appendChild(featureLabel);
+            //         const featureInput = document.createElement("input");
+            //         if (!isNaN(text_or_number[i])) {
+            //             featureInput.type = "number";
+            //             featureInput.step = "0.0000000001";
+            //         } else {
+            //             featureInput.type = "text";
+            //         }
+            //         featureInput.name = "feature" + (i + 1);
+            //         featuresDiv.appendChild(featureInput);
+            //         featuresDiv.appendChild(document.createElement("br"));
+            //     }
+            // };
 
-            reader.onerror = function (e) {
-                console.error("Erro ao ler o arquivo: ", e);
-            };
+            // reader.onerror = function (e) {
+            //     console.error("Erro ao ler o arquivo: ", e);
+              };
 
-            reader.readAsText(file);
+              reader.readAsText(file);
         });
 
     document
@@ -342,6 +395,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const formData = new FormData(this);
             formData.append("separator", separator);
             formData.append("posicao", document.getElementById("posicao").textContent)
+            formData.append("deployBoolean",deployBoolean)
             console.log(formData);
             fetch("/regressionPost", {
                 method: "POST",
@@ -355,10 +409,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then((data) => {
                     console.log(`Coeficiente_linear: ${data.Coeficiente_linear}`);
-                    document.getElementById(
-                        "result"
-                    ).innerText = `prediction:${data.prediction}\nCoeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}\nCoeficiente de determinação do teste: ${data.determinationCoefficientTest}\nErro absoluto: ${data.abs}\nErro quadrático médio: ${data.MeanSquaredError}`;
-                })
+                    let resultText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}<br>`;
+                    resultText += `Coeficiente de determinação do teste: ${data.determinationCoefficientTest}<br>`;
+                    resultText += `Erro absoluto: ${data.abs}<br>`;
+                    resultText += `Erro quadrático médio: ${data.MeanSquaredError}`;
+                    
+                    // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
+                    if (data.prediction !== undefined && data.prediction !== null) {
+                        resultText = `Previsão: ${data.prediction}<br>` + resultText;
+                    }
+                
+                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText}</div>`;
+                })                                           
                 .catch((error) => {
                     console.error("Erro:", error);
                     document.getElementById(
