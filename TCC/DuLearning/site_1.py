@@ -29,6 +29,8 @@ import pandas as pd
 import io
 import math
 import numpy as np
+import json
+import plotly.graph_objects as go
 
 # Regressão
  
@@ -83,6 +85,10 @@ def typedata():
 @app.route("/regression")
 def regression():
     return render_template("regression.html")
+
+@app.route("/analisegrafica")
+def analisegrafica():
+    return render_template('graphicAnalysis.html')
 
 
 
@@ -699,12 +705,85 @@ def regressionPost():
         print(f"Printando o deploy : {deploy}")
         prediction = reg.predict(deploy)
         val = prediction.tolist()
-        return jsonify({"prediction":val,"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
-                    "MeanSquaredError":MeanSquaredError})
+        return jsonify({"prediction":val,"determinationCoefficientTraining": round((determinationCoefficientTraining *100), 3), "determinationCoefficientTest": round((determinationCoefficientTest*100),3), "abs":round((absolute), 3), 
+                    "MeanSquaredError":round((MeanSquaredError), 3)})
     else:    
         # Retorna os valores dos testes
-        return jsonify({"determinationCoefficientTraining": determinationCoefficientTraining, "determinationCoefficientTest": determinationCoefficientTest, "abs":absolute, 
-                        "MeanSquaredError":MeanSquaredError})
+        return jsonify({"determinationCoefficientTraining": round((determinationCoefficientTraining *100), 3), "determinationCoefficientTest": round((determinationCoefficientTest*100),3), "abs":round((absolute), 3), 
+                    "MeanSquaredError":round((MeanSquaredError), 3)})
+
+
+
+@app.route('/graphicAnalysisPost', methods=['POST'])
+def submit_selections():
+    csv_file = request.files.get('csvFile')
+    selections = request.form.get('selections')
+    selections = json.loads(selections)
+    print(selections)
+    # Processar o CSV
+    separator = ","
+    csv_data = pd.read_csv(io.BytesIO(csv_file.read()), sep=separator, encoding='utf-8')
+    print(csv_data)
+    
+    
+    
+    def createGraph(key, values, data):
+        
+        if values == "histogramas":
+            graf = go.Figure(data=[go.Histogram(x=csv_data[key], nbinsx=60)])
+            graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key)
+            graf_json = graf.to_json()
+            data[key] = graf_json
+
+        elif values == "gráficos de pizza":
+            counts = csv_data[key].value_counts()
+            print(f"counts: {counts}\ncounts.index: {counts.index}\ncounts.values: {counts.values}")
+            graf = go.Figure(data=[go.Pie(labels=counts.index, values=counts.values)])
+            graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key)
+            graf_json = graf.to_json()
+            data[key] = graf_json
+
+
+        elif values == "gráficos de linha":
+            counts = csv_data[key].value_counts()
+            graf = go.Figure(data=[go.Scatter(x=counts.index, y=counts.values, mode='lines+markers', name='Distribuição por ' + key)])
+            graf.update_layout(width=800, height=500, title_text='Distribuição por ' + key)
+            graf_json = graf.to_json()
+            data[key] = graf_json
+        
+        elif values == "gráficos de barras":
+            counts = csv_data[key].value_counts()
+            graf = go.Figure(data=[go.Bar(x=counts.index,y=counts.values,name='Distribuição por ' + key)])
+            graf.update_layout(title='Distribuição por ' + key, xaxis_title='Categoria', yaxis_title='Frequência', width=800, height=500)
+            graf_json = graf.to_json()
+            data[key] = graf_json
+        
+        elif values == "gráficos de dispersão":
+            counts = csv_data[key].value_counts()
+            graf = go.Figure(data=[go.Scatter(x=counts.index, y=counts.values, mode='markers', name='Distribuição por ' + key)])
+            graf.update_layout(width=800, height=500, title='Distribuição por ' + key, xaxis_title='X',yaxis_title='Y')
+            graf_json = graf.to_json()
+            data[key] = graf_json
+        
+        elif values == "boxplot":
+            counts = csv_data[key].value_counts()
+            graf = go.Figure(data=[go.Box( y= counts.values ,name='Distribuição por ' + key)])
+            graf.update_layout(width=800, height=500,  yaxis_title='Valores', title='Distribuição por ' + key)
+            graf_json = graf.to_json()
+            data[key] = graf_json
+        
+        return data
+    
+    def typeGraph(selections):
+        data = dict()
+        for key, values in selections.items():
+          data = createGraph(key, values, data)  
+        return data
+    
+    data = typeGraph(selections)
+    print(f" Tipo : {type(data)}")
+    return jsonify(data)
+
 
 
 

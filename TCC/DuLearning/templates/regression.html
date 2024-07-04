@@ -43,7 +43,7 @@
 
     
     <div class="scene">
-      <h1 class="center">Fazer Previsões</h1>
+      <h1 class="center">Algoritimos de Regressão</h1>
       <div class="background"> 
         <form id="prediction-form" enctype="multipart/form-data">
           <label for="regression">Escolha o tipo de classificador:</label>
@@ -65,25 +65,26 @@
           
           
           <label for="csv_file" class="nes-btn">
-            <span>Select your file</span>
+            <span>Selecione o arquivo</span>
             <input type="file" name="csv_file" id="csv_file" required /><br />
           </label>
           
           
           <div id="parameters" class="nes-field"></div>
+          <div id="result"></div>
           <div id="features" ></div>
 
           <section class="nes-container with-title" id="section">  
-            <h3 class="title">Deseja realizar deploy de dados?</h3>
+            <h3 class="title">Deseja realizar teste de dados?</h3>
             <div>
               <label>
                 <input type="radio" class="nes-radio is-dark" name="answer-dark" value="yes" />
-                <span>Yes</span>
+                <span>Sim</span>
               </label>
             
               <label>
                 <input type="radio" class="nes-radio is-dark" name="answer-dark" value="no" checked />
-                <span>No</span>
+                <span>Não</span>
               </label>
             </div>
           </section> 
@@ -91,15 +92,16 @@
           
           <div class="deploy">
             <label for="csv_deploy" class="nes-btn">
-              <span>Select your file to deploy</span>
+              <span>Selecione o arquivo para teste</span>
               <input type="file" name="csv_deploy" id="csv_deploy"/><br />
             </label>
           </div>
           
           <div id="posicao"></div>
           <button type="submit" class="nes-btn is-success">Enviar</button>
+          <div id="result1"></div>
         </form>
-        <div id="result"></div>
+        
       </div>
     </div> 
 

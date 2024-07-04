@@ -409,17 +409,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then((data) => {
                     console.log(`Coeficiente_linear: ${data.Coeficiente_linear}`);
-                    let resultText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}<br>`;
-                    resultText += `Coeficiente de determinação do teste: ${data.determinationCoefficientTest}<br>`;
+                    let resultText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}%<br>`;
+                    resultText += `Coeficiente de determinação do teste: ${data.determinationCoefficientTest}%<br>`;
                     resultText += `Erro absoluto: ${data.abs}<br>`;
                     resultText += `Erro quadrático médio: ${data.MeanSquaredError}`;
+                    resultText1 = "";
                     
                     // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
                     if (data.prediction !== undefined && data.prediction !== null) {
-                        resultText = `Previsão: ${data.prediction}<br>` + resultText;
+                        resultText1 = `Previsão: ${data.prediction}<br>`;
                     }
                 
                     document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText}</div>`;
+                    document.getElementById("result1").innerHTML = `<div class="preformatted-text">${resultText1}</div>`;
                 })                                           
                 .catch((error) => {
                     console.error("Erro:", error);
