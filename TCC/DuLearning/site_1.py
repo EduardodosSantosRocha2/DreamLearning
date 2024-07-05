@@ -69,25 +69,27 @@ app = Flask(__name__)
 
 
 
-
+@app.route("/")
+def home():
+    return render_template("home.html")
 
 # Rota para o frontend
-@app.route("/")
+@app.route("/Classificacao")
 def index():
     return render_template("classifiers.html")
 
 # Rota para o teste de normalidade e correlação
-@app.route("/typedata")
+@app.route("/Normalidadeecorrelação")
 def typedata():
     return render_template("typedata.html")
 
 
-@app.route("/regression")
+@app.route("/Regressao")
 def regression():
     return render_template("regression.html")
 
-@app.route("/analisegrafica")
-def analisegrafica():
+@app.route("/Analisegrafica")
+def graphicAnalysis():
     return render_template('graphicAnalysis.html')
 
 
