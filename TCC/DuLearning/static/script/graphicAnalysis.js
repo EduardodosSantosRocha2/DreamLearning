@@ -207,14 +207,14 @@ document.getElementById("graphic").addEventListener("change", function (event) {
     var textClassifier = option.textContent;
     console.log(textClassifier);
 
-    if (textClassifier === "Análise Gráfica") {
+    if (textClassifier === "Análise Gráfica Completa") {
         boolean = true;
         clearOptionsContainer(); 
 
         if (csvContent) {
             processCSV(csvContent); 
         }
-    } else if (textClassifier === "Comparação Entre Duas Variaveis") {
+    } else if (textClassifier === "Análise Gráfica Duas Variaveis") {
         boolean = false;
         clearOptionsContainer();
         if (csvContent) {
