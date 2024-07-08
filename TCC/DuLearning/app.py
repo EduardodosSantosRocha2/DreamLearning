@@ -10,11 +10,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 # Importando a biblioteca da ÁRVORE DE DECISÃO
 from sklearn.tree import DecisionTreeClassifier
-# Importando a biblioteca do XGBOOST (pip install xgboost) ou no colab(!pip install xgboost)
+# Importando a biblioteca do XGBOOST (pip install xgboost) ou no colab(pip install xgboost)
 from xgboost import XGBClassifier
-# Importando a biblioteca do LIGHTGBM (!pip install lightgbm) ou no colab(!pip install lightgbm)
+# Importando a biblioteca do LIGHTGBM (!pip install lightgbm) ou no colab(pip install lightgbm)
 import lightgbm as lgbm
-# Importando a biblioteca do CATBOOST (!pip install catboost) ou no colab(!pip install catboost)
+# Importando a biblioteca do CATBOOST (!pip install catboost) ou no colab(pip install catboost)
 from catboost import CatBoostClassifier
 
 # Importando a biblioteca LABELENCOLDER para TRANSFORMAÇÃO DE VARIAVEIS CATEGORICAS EM NUMERICAS
@@ -64,7 +64,12 @@ from sklearn.preprocessing import StandardScaler
 #Metricas de desempenho
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
+#Biblioteca Eclat Regras de associaçao(pip install pyECLAT), Apriori (pip install mlxtend)
+from pyECLAT import ECLAT
+from mlxtend.frequent_patterns import apriori, association_rules
 
+import warnings
+warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
 
@@ -93,7 +98,9 @@ def regression():
 def graphicAnalysis():
     return render_template('graphicAnalysis.html')
 
-
+@app.route("/RegrasAssociacao")
+def associationRules():
+    return render_template('associationRules.html')
 
 
 # Rota para fazer previsões
@@ -718,7 +725,7 @@ def regressionPost():
 
 
 @app.route('/graphicAnalysisPost', methods=['POST'])
-def submit_selections():
+def submit_selections_graphicAnalysis():
     typeGraphic = request.form.get('typeGraphic')
     print(f"typeGraphic {typeGraphic}")
     csv_file = request.files.get('csvFile')
@@ -849,6 +856,54 @@ def submit_selections():
         data = typeGraph2Var(selections)
         print(f" Tipo : {type(data)}")
         return jsonify(data)
+
+
+
+@app.route('/associationRulesPost', methods=['POST'])
+def submit_selections_associationRules():
+    typeGraphic = request.form.get('typeGraphic')
+    print(f"typeGraphic {typeGraphic}")
+    csv_file = request.files.get('csvFile')
+    selections = request.form.get('selections')
+    selections = json.loads(selections)
+    print(selections)
+    # Processar o CSV
+    separator = ","
+    csv_data = pd.read_csv(io.BytesIO(csv_file.read()), sep=separator, encoding='utf-8')
+    print(csv_data)
+    
+    def listTranform():
+        var1 = list(selections.values())[1]
+        var2 = list(selections.values())[2]
+        print(var1, var2)
+        dados = csv_data.groupby(var1)[var2].apply(list).tolist()
+        dados = pd.DataFrame(dados)
+        return dados
+    
+    def applyEclat():
+        data = listTranform()
+        eclat = ECLAT(data = data, verbose = True)
+        df2 = eclat.df_bin
+        return df2
+
+    def generatingAssociation(df2):
+       associacao = apriori(df2, min_support=0.05, use_colnames=True)
+       associacao.sort_values("support", ascending=False).head(10)
+       metric = list(selections.values())[0]
+       regras = association_rules(associacao, metric=metric)
+       print(regras)
+       resultado = regras.sort_values("support", ascending=False)
+       return resultado  
+    
+    
+    df2 = applyEclat()
+    result = generatingAssociation(df2)
+    print(result)
+    result = result.head(20).to_html(classes='table table-striped', border=0)
+    return jsonify({"dados": result})
+
+
+   
 
 
 
