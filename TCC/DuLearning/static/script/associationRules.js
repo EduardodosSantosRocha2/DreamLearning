@@ -1,3 +1,7 @@
+
+
+let spinner = document.getElementById('spinner');
+spinner.style.display = 'none';
 let csvFile = null;
 let csvContent = null;
 
@@ -44,7 +48,8 @@ document.getElementById('csvFileInput').addEventListener('change', function (eve
 });
 
 document.getElementById("showSelections").addEventListener('click', function () {
-    var graphDataDiv = document.getElementById('graphData');
+    spinner.style.display = 'block';
+    $('#associationRules').html("");
     const container = document.getElementById('optionsContainer');
     const selections = {};
 
@@ -78,6 +83,8 @@ document.getElementById("showSelections").addEventListener('click', function () 
             return response.json();
         })
         .then((data) => {
+           document.getElementById("result").innerText = ""; 
+           spinner.style.display = 'none';
            console.log(data.dados);
            $('#associationRules').html(data.dados);
 
@@ -110,6 +117,7 @@ document.getElementById("showSelections").addEventListener('click', function () 
            });
         })
         .catch((error) => {
+            spinner.style.display = 'none';
             console.error("Erro:", error);
             document.getElementById("result").innerText = `Erro: ${error.message}`;
         });
@@ -156,13 +164,13 @@ function processCSVgraphicAnalysis(csvText) {
         return div;
     }
 
-    container.appendChild(createDropdown("Escolha a Metrica de associação", metricTypes));
+
     
+    container.appendChild(createDropdown("Escolha a Metrica de associação", metricTypes));
     const span = document.createElement('span');
     span.textContent = "*A metrica indicada é o lift"
     span.style.color = 'red';
     container.appendChild(span);
-    
     container.appendChild(createDropdown("Escolha o identificador", graphOptions));
     container.appendChild(createDropdown("Escolha a Variável a coluna que agrupa os itens", graphOptions));
 }

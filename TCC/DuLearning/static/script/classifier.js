@@ -1,3 +1,8 @@
+let spinner = document.getElementById('spinner');
+spinner.style.display = 'none';
+
+
+
 function stars() {
     let count = 500;
     let scene = document.querySelector(".scene");
@@ -343,6 +348,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document
         .getElementById("prediction-form")
         .addEventListener("submit", function (event) {
+            spinner.style.display = 'block';
             document.getElementById("result").innerText = "";
             event.preventDefault();
             const formData = new FormData(this);
@@ -361,6 +367,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     return response.json();
                 })
                 .then((data) => {
+                    document.getElementById(
+                        "result"
+                    ).innerText = "";
+                    spinner.style.display = 'none';
                     let resultText = `Acuracia teste: ${data.accuracy_test}%<br>`;
                     resultText += `Acuracia treino: ${data.accuracy_training}%<br>`;
                     
@@ -379,3 +389,5 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
         });
 });
+
+

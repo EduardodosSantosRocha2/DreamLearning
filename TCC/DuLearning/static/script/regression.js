@@ -1,4 +1,5 @@
-
+let spinner = document.getElementById('spinner');
+spinner.style.display = 'none';
 function stars() {
     let count = 500;
     let scene = document.querySelector(".scene");
@@ -390,7 +391,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document
         .getElementById("prediction-form")
         .addEventListener("submit", function (event) {
+            document.getElementById(
+                "result"
+            ).innerText = "";
+            
+            spinner.style.display = 'block';
             document.getElementById("result").innerText = "";
+
             event.preventDefault();
             const formData = new FormData(this);
             formData.append("separator", separator);
@@ -408,6 +415,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.json();
                 })
                 .then((data) => {
+                    spinner.style.display = 'none';
                     console.log(`Coeficiente_linear: ${data.Coeficiente_linear}`);
                     let resultText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}%<br>`;
                     resultText += `Coeficiente de determinação do teste: ${data.determinationCoefficientTest}%<br>`;

@@ -1,6 +1,11 @@
+let spinner = document.getElementById('spinner');
+spinner.style.display = 'none';
+
 let csvFile = null;
 let csvContent = null;
 let boolean  = true;
+
+
 
 function stars() {
     let count = 500;
@@ -86,7 +91,10 @@ document.getElementById('csvFileInput').addEventListener('change', function (eve
 });
 
 document.getElementById("showSelections").addEventListener('click', function () {
+    document.getElementById("result").innerText = "";
+    spinner.style.display = 'block';
     var graphDataDiv = document.getElementById('graphData');
+    graphDataDiv.innerHTML = '';
     const container = document.getElementById('optionsContainer');
     const selections = {};
 
@@ -121,6 +129,7 @@ document.getElementById("showSelections").addEventListener('click', function () 
                 return response.json();
             })
             .then((data) => {
+                spinner.style.display = 'none';
                 graphDataDiv.innerHTML = '';
                 let i = 1;
                 for (const key in data) {
