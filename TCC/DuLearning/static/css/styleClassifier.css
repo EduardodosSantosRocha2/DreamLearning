@@ -1,5 +1,5 @@
 #section {
-    margin-top: 10%;
+    margin-top: 3%;
 }
 
 .social-icon img {
@@ -10,6 +10,19 @@
 .center {
     text-align: center;
     color: white;
+    margin-top: 2%;
+}
+
+.deploy{
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+#but{
+    margin-top: 3%;
+}
+
+#parameters{
+    margin-top: 2%;
 }
 
 /* Estilos para a navbar */
@@ -66,6 +79,7 @@
 #result {
     max-height: calc(100vh - 200px); /* Ajuste o valor conforme necessário */
     overflow-y: auto;
+    margin-top: 3%;
 }
 
 footer {

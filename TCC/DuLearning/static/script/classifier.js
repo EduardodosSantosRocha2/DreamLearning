@@ -94,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     parametersInput.type = parametersColection[keys[i]];
                     parametersInput.step = "0.0000000001";
                     parametersInput.name = "parameters" + (i + 1);
+                    parametersInput.className  = "nes-input";
                     parametersDiv.appendChild(parametersInput);
                     parametersDiv.appendChild(document.createElement("br"));
                 }
@@ -117,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     parametersInput.type = parametersColection[keys[i]];
                     parametersInput.step = "0.0000000001";
                     parametersInput.name = "parameters" + (i + 1);
+                    parametersInput.className  = "nes-input";
                     parametersDiv.appendChild(parametersInput);
                     parametersDiv.appendChild(document.createElement("br"));
                 }
@@ -143,6 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     parametersInput.type = parametersColection[keys[i]];
                     parametersInput.step = "0.0000000001";
                     parametersInput.name = "parameters" + (i + 1);
+                    parametersInput.className  = "nes-input";
                     parametersDiv.appendChild(parametersInput);
                     parametersDiv.appendChild(document.createElement("br"));
                 }
@@ -166,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     parametersInput.type = parametersColection[keys[i]];
                     parametersInput.step = "0.0000000001";
                     parametersInput.name = "parameters" + (i + 1);
+                    parametersInput.className  = "nes-input";
                     parametersDiv.appendChild(parametersInput);
                     parametersDiv.appendChild(document.createElement("br"));
                 }
@@ -189,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     parametersInput.type = parametersColection[keys[i]];
                     parametersInput.step = "0.0000000001";
                     parametersInput.name = "parameters" + (i + 1);
+                    parametersInput.className  = "nes-input";
                     parametersDiv.appendChild(parametersInput);
                     parametersDiv.appendChild(document.createElement("br"));
                 }
@@ -214,6 +219,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     parametersInput.type = parametersColection[keys[i]];
                     parametersInput.step = "0.0000000001";
                     parametersInput.name = "parameters" + (i + 1);
+                    parametersInput.className  = "nes-input";
                     parametersDiv.appendChild(parametersInput);
                     parametersDiv.appendChild(document.createElement("br"));
                 }
@@ -240,6 +246,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     parametersInput.type = parametersColection[keys[i]];
                     parametersInput.step = "0.0000000001";
                     parametersInput.name = "parameters" + (i + 1);
+                    parametersInput.className  = "nes-input";
                     parametersDiv.appendChild(parametersInput);
                     parametersDiv.appendChild(document.createElement("br"));
                 }
@@ -266,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     parametersInput.type = parametersColection[keys[i]];
                     parametersInput.step = "0.0000000001";
                     parametersInput.name = "parameters" + (i + 1);
+                    parametersInput.className  = "nes-input";
                     parametersDiv.appendChild(parametersInput);
                     parametersDiv.appendChild(document.createElement("br"));
                 }
@@ -376,10 +384,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                     // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
                     if (data.prediction !== undefined && data.prediction !== null) {
-                        resultText = `Previsão: ${data.prediction}<br>` + resultText;
+                        resultText = `Previsão: ${data.prediction}<br>`+resultText;  
                     }
+
+                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>"+resultText+"</p>"}</div>`;
+                    
                 
-                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText}</div>`;
+                   
                 })         
                 .catch((error) => {
                     console.error("Erro:", error);

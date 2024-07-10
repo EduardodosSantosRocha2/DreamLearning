@@ -172,5 +172,5 @@ function processCSVgraphicAnalysis(csvText) {
     span.style.color = 'red';
     container.appendChild(span);
     container.appendChild(createDropdown("Escolha o identificador", graphOptions));
-    container.appendChild(createDropdown("Escolha a Variável a coluna que agrupa os itens", graphOptions));
+    container.appendChild(createDropdown("Escolha a coluna que agrupa os itens", graphOptions));
 }

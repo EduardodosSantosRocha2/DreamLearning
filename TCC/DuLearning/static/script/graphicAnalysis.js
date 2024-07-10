@@ -39,7 +39,7 @@ function clearOptionsContainer() {
 function processCSV(csvText) {
     const lines = csvText.split('\n');
     const headers = lines[0].split(',');
-    headers.pop();  // Remove the last column
+    // headers.pop();  // Remove the last column
 
     const container = document.getElementById('optionsContainer');
     container.innerHTML = '';

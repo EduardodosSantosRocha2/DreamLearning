@@ -351,11 +351,11 @@ def predict():
         else: 
             val = prediction.tolist()
     
-        return jsonify({"prediction": f"{val}", "accuracy_test": accuracy_test, "accuracy_training":accuracy_training })
+        return jsonify({"prediction": f"{val}","accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3)})
 
     else:
     # Retorna a previsão
-        return jsonify({"accuracy_test": accuracy_test, "accuracy_training":accuracy_training })
+        return jsonify({"accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3)})
 
 
 
@@ -743,7 +743,7 @@ def submit_selections_graphicAnalysis():
         
         if values == "histogramas":
             graf = go.Figure(data=[go.Histogram(x=csv_data[key], nbinsx=60)])
-            graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key)
+            graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key, paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
 
@@ -751,7 +751,7 @@ def submit_selections_graphicAnalysis():
             counts = csv_data[key].value_counts()
             print(f"counts: {counts}\ncounts.index: {counts.index}\ncounts.values: {counts.values}")
             graf = go.Figure(data=[go.Pie(labels=counts.index, values=counts.values)])
-            graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key)
+            graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key, paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
 
@@ -759,28 +759,28 @@ def submit_selections_graphicAnalysis():
         elif values == "gráficos de linha":
             counts = csv_data[key].value_counts()
             graf = go.Figure(data=[go.Scatter(x=counts.index, y=counts.values, mode='lines+markers', name='Distribuição por ' + key)])
-            graf.update_layout(width=800, height=500, title_text='Distribuição por ' + key)
+            graf.update_layout(width=800, height=500, title_text='Distribuição por ' + key,paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
         
         elif values == "gráficos de barras":
             counts = csv_data[key].value_counts()
             graf = go.Figure(data=[go.Bar(x=counts.index,y=counts.values,name='Distribuição por ' + key)])
-            graf.update_layout(title='Distribuição por ' + key, xaxis_title='Categoria', yaxis_title='Frequência', width=800, height=500)
+            graf.update_layout(title='Distribuição por ' + key, xaxis_title='Categoria', yaxis_title='Frequência', width=800, height=500,paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
         
         elif values == "gráficos de dispersão":
             counts = csv_data[key].value_counts()
             graf = go.Figure(data=[go.Scatter(x=counts.index, y=counts.values, mode='markers', name='Distribuição por ' + key)])
-            graf.update_layout(width=800, height=500, title='Distribuição por ' + key, xaxis_title='X',yaxis_title='Y')
+            graf.update_layout(width=800, height=500, title='Distribuição por ' + key, xaxis_title='X',yaxis_title='Y', paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
         
         elif values == "boxplot":
             counts = csv_data[key].value_counts()
             graf = go.Figure(data=[go.Box( y= counts.values ,name='Distribuição por ' + key)])
-            graf.update_layout(width=800, height=500,  yaxis_title='Valores', title='Distribuição por ' + key)
+            graf.update_layout(width=800, height=500,  yaxis_title='Valores', title='Distribuição por ' + key, paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
         return data
@@ -788,7 +788,7 @@ def submit_selections_graphicAnalysis():
 
     def createGraph2Var(graphicType, var1, var2, data):
         # Agrupando por idade e sexo e contando a quantidade de cada combinação
-        df_grouped = csv_data.groupby([var1, var2]).size().reset_index(name='count')
+        df_grouped = csv_data.groupby([var1, var2]).size().reset_index(name='soma')
         print(f"agrupados: {df_grouped}")
 
         # Encontrando as categorias únicas
@@ -800,28 +800,33 @@ def submit_selections_graphicAnalysis():
         
         if graphicType == "Histogramas":
             # Criando o gráfico de histograma
-            hist_fig = px.histogram(csv_data, x=var1, color=var2, title=f'Histograma de {var1} por {var2}', color_discrete_map=color_discrete_map)
+            hist_fig = px.histogram(csv_data, x=var1, color=var2, title=f'Histograma de {var1} por {var2}', color_discrete_map=color_discrete_map, width=800, height=500)
+            hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             # Convertendo o gráfico para JSON
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
         
         elif(graphicType == "Gráficos de Barras"):
-            hist_fig = px.bar(df_grouped, x= var1, y='count', color=var2,title=f'Gráficos de barras de {var1} por {var2}', barmode='stack',color_discrete_map=color_discrete_map)
+            hist_fig = px.bar(df_grouped, x= var1, y='soma', color=var2,title=f'Gráficos de barras de {var1} por {var2}', barmode='stack',color_discrete_map=color_discrete_map, width=800, height=500)
+            hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
         
         elif(graphicType == "Gráficos de Linha"):
-            hist_fig = px.line(df_grouped, x= var1, y='count', color=var2,title=f'Gráficos de linha de {var1} por {var2}',color_discrete_map=color_discrete_map)
+            hist_fig = px.line(df_grouped, x= var1, y='soma', color=var2,title=f'Gráficos de linha de {var1} por {var2}',color_discrete_map=color_discrete_map, width=800, height=500)
+            hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
 
         elif(graphicType == "Gráficos de Pizza"):
-            hist_fig = px.pie(df_grouped,names=var1,values='count', color=var2,title=f'Gráficos de pizza de {var1} por {var2}', color_discrete_map=color_discrete_map)
+            hist_fig = px.pie(df_grouped,names=var1,values='soma', color=var2,title=f'Gráficos de pizza de {var1} por {var2}', color_discrete_map=color_discrete_map, width=800, height=500)
+            hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
         
         elif(graphicType == "Gráficos de Dispersão"):
-            hist_fig = px.scatter(df_grouped,x= var1, y='count',color=var2,title=f'Gráficos de pizza de {var1} por {var2}', color_discrete_map=color_discrete_map)
+            hist_fig = px.scatter(df_grouped,x= var1, y='soma',color=var2,title=f'Gráficos de dispersão de {var1} por {var2}', color_discrete_map=color_discrete_map, width=800, height=500)
+            hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
 

@@ -117,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 parametersInput.step = "0.0000000001";
                 parametersInput.name = "parameters" + (i + 1);
                 parametersInput.classList.add("nes-input");
+                parametersInput.className  = "nes-input";
                 parametersDiv.appendChild(parametersInput);
                 parametersDiv.appendChild(document.createElement("br"));
             }
@@ -138,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 parametersInput.type = parametersColection[keys[i]];
                 parametersInput.step = "0.0000000001";
                 parametersInput.name = "parameters" + (i + 1);
+                parametersInput.className  = "nes-input";
                 parametersDiv.appendChild(parametersInput);
                 parametersDiv.appendChild(document.createElement("br"));
             }
@@ -161,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 parametersInput.type = parametersColection[keys[i]];
                 parametersInput.step = "0.0000000001";
                 parametersInput.name = "parameters" + (i + 1);
+                parametersInput.className  = "nes-input";
                 parametersDiv.appendChild(parametersInput);
                 parametersDiv.appendChild(document.createElement("br"));
             }
@@ -186,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 parametersInput.step = "0.0000000001";
                 parametersInput.name = "parameters" + (i + 1);
                 parametersDiv.appendChild(parametersInput);
+                parametersInput.className  = "nes-input";
                 parametersDiv.appendChild(document.createElement("br"));
             }
         }
@@ -209,6 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 parametersInput.type = parametersColection[keys[i]];
                 parametersInput.step = "0.0000000001";
                 parametersInput.name = "parameters" + (i + 1);
+                parametersInput.className  = "nes-input";
                 parametersDiv.appendChild(parametersInput);
                 parametersDiv.appendChild(document.createElement("br"));
             }
@@ -234,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 parametersInput.type = parametersColection[keys[i]];
                 parametersInput.step = "0.0000000001";
                 parametersInput.name = "parameters" + (i + 1);
+                parametersInput.className  = "nes-input";
                 parametersDiv.appendChild(parametersInput);
                 parametersDiv.appendChild(document.createElement("br"));
             }

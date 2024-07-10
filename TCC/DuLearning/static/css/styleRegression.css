@@ -10,7 +10,23 @@
 .center {
     text-align: center;
     color: white;
+    margin-top: 2%;
 }
+
+.deploy{
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+#but{
+    margin-top: 3%;
+}
+
+#parameters{
+    margin-top: 2%;
+}
+
+
+
 
 /* Estilos para a navbar */
 .navbar-custom {

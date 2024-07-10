@@ -10,7 +10,11 @@
     <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleClassifier.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleHome.css') }}">
+
+    <style>
+      
+  </style>
   </head>
 
   <body>
@@ -47,9 +51,29 @@
       </div>
     </nav>
 
-    <div class="scene">  
-    
-    </div>
+    <div class="scene"> 
+      <div class="banner">
+      <div class="slider" style="--quantity: 10">
+          <div class="item" style="--position: 1"><img src="{{ url_for('static', filename='img/dragon_1.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 2"><img src="{{ url_for('static', filename='img/dragon_2.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 3"><img src="{{ url_for('static', filename='img/dragon_3.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 4"><img src="{{ url_for('static', filename='img/dragon_4.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 5"><img src="{{ url_for('static', filename='img/dragon_5.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 6"><img src="{{ url_for('static', filename='img/dragon_6.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 7"><img src="{{ url_for('static', filename='img/dragon_7.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 8"><img src="{{ url_for('static', filename='img/dragon_8.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 9"><img src="{{ url_for('static', filename='img/dragon_9.jpg') }}" alt=""></div>
+          <div class="item" style="--position: 10"><img src="{{ url_for('static', filename='img/dragon_10.jpg') }}" alt=""></div>
+      </div>
+      <div class="content">
+          <h1 style="color: aliceblue;">
+              DREAM LEARNING
+          </h1>
+        
+          <div class="model"  style="background-image: url({{ url_for('static', filename='img/model.png') }});" alt=""></div>
+      </div>
+  </div>
+</div>
  
     <div class="container">
       <footer class="mt-5 py-3 text-black">
@@ -65,6 +89,6 @@
       </footer>
     </div>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='script/classifier.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='script/home.js') }}"></script>
   </body>
 </html>
