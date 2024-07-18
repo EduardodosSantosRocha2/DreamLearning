@@ -26,7 +26,30 @@ function stars() {
 stars();
 
 
+function toggleCode() {
+    const codeBlock = document.getElementById('codeBlock');
+    codeBlock.style.display = codeBlock.style.display === 'block' ? 'none' : 'block';
+}
 
+function copyCode(event) {
+    const code = document.querySelector('#codeBlock code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        showNotification(event.pageY, event.pageX, 'Copiado!');
+    }, () => {
+        showNotification(event.pageY, event.pageX, 'Falha ao copiar o código.');
+    });
+}
+
+function showNotification(top, left, message = 'Código copiado!') {
+    const notification = document.getElementById('notification');
+    notification.querySelector('p').innerText = message;
+    notification.style.display = 'block';
+    notification.style.top = `${top - 50}px`; // Ajuste a posição vertical conforme necessário
+    notification.style.left = `${left - 100}px`; // Ajuste a posição horizontal conforme necessário
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 1500); // O balão ficará visível por 1.5 segundos
+}
 
 
 
@@ -61,12 +84,6 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleDeployDiv();
 
 
-
-
-
-
-    
-    
     document
         .getElementById("classifier")
         .addEventListener("change", function (event) {
@@ -388,9 +405,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
 
                     document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>"+resultText+"</p>"}</div>`;
-                    
-                
-                   
+                    console.log(data.code)
+                    document.getElementById("windowcode").innerHTML = data.code;
+                                       
                 })         
                 .catch((error) => {
                     console.error("Erro:", error);
