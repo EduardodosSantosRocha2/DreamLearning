@@ -145,3 +145,91 @@ footer {
     margin-top: 3%;
 }
 
+
+
+.container-code{
+    margin-top: 5%;
+}
+
+/* Code block styles */
+.code-container {
+    margin-top: 3%;
+    background-color: #111425;
+    display: none; 
+    padding: 15px;
+    border-radius: 5px;
+    border: 2px solid #000000; 
+    overflow-x: auto;
+    text-align: left;
+}
+
+pre {
+    margin: 0;
+    color: #f8f8f2; 
+    text-align: left; 
+}
+
+/* Code element styles */
+code {
+    display: block;
+    white-space: pre; 
+    text-align: left; 
+}
+
+/* Syntax highlighting */
+
+.bib {
+    color: #7403d1; 
+}
+
+.keyword {
+    color: #f79ddc; 
+}
+.link{
+    color: #d88c00; 
+}
+.for {
+    color: #f1fa8c; 
+}
+.if {
+    color: #f06671; 
+}
+
+.else {
+    color: #aff752; 
+}
+
+.function {
+    color: #50fa7b; 
+}
+
+.comment {
+    color: #6272a4; 
+}
+
+.columns {
+    color: #87c9ff; 
+}
+.instance{
+    color: #e4eba8; 
+}
+
+.intfloat{
+    color: #a8eba8; 
+}
+
+.object{
+    color: #f3cf8d; 
+}
+
+.pip{
+    color: #fa5050;
+}
+
+
+/* Notificação estilo balão */
+.nes-balloon {
+    position: absolute;
+    z-index: 1000;
+    display: none; 
+}

@@ -756,10 +756,10 @@ def submit_selections_graphicAnalysis():
     print(f"typeGraphic {typeGraphic}")
     csv_file = request.files.get('csvFile')
     selections = request.form.get('selections')
+    separator = request.form.get('separator')
     selections = json.loads(selections)
     print(selections)
     # Processar o CSV
-    separator = ","
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()), sep=separator, encoding='utf-8')
     print(csv_data)
     
@@ -813,6 +813,7 @@ def submit_selections_graphicAnalysis():
     
 
     def createGraph2Var(graphicType, var1, var2, data):
+        code = f"""<span class= "comment">#Leitura do arquivo csv</span>\n<span class="bib">import</span> pandas <span class="bib">as</span> pd\n<span>dataframe = pd.read_csv(</span><span class= "link">'Adicione o caminho para o seu csv',sep ='{separator}', encoding = 'utf-8'</span>)</span>\n\n<span class= "comment">#Biblioteca grafica</span>\n<span class="bib">import</span> plotly.express <span class="bib">as</span> px\n"""
         # Agrupando por idade e sexo e contando a quantidade de cada combinação
         df_grouped = csv_data.groupby([var1, var2]).size().reset_index(name='soma')
         print(f"agrupados: {df_grouped}")
@@ -829,34 +830,45 @@ def submit_selections_graphicAnalysis():
             hist_fig = px.histogram(csv_data, x=var1, color=var2, title=f'Histograma de {var1} por {var2}', color_discrete_map=color_discrete_map, width=800, height=500)
             hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             # Convertendo o gráfico para JSON
-            graf_json = hist_fig.to_json()
+            graf_json = hist_fig.to_json()         
             data[graphicType] = graf_json
+            code+= f"""<span class="keyword">histograma </span><span>= px.</span><span class="function">histogram</span><span class="object">(dataframe, x= "{var1}", color= "{var2}", title= 'Histograma de {var1} por {var2}', width= 800, height= 500)</span>\n<span class="keyword">histograma.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">histograma</span>.<span class="function">show</span>()</span>"""
+
         
         elif(graphicType == "Gráficos de Barras"):
             hist_fig = px.bar(df_grouped, x= var1, y='soma', color=var2,title=f'Gráficos de barras de {var1} por {var2}', barmode='stack',color_discrete_map=color_discrete_map, width=800, height=500)
             hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
+            code+= f"""\n<span class="comment">#Agrupando por {var1} e {var2} e contando a quantidade de cada combinação</span>\n<span class="keyword">df_grouped</span><span>= dataframe.</span><span class="function">groupby</span><span class="object">(["{var1}", "{var2}"]).size().reset_index(name='soma')</span>\n<span class="function">print</span><span>(f"agrupados: {{df_grouped}}")</span>\n\n<span class="comment">#Gerando Gráfico</span>\n<span class="keyword">grafico_barra</span><span>= px.</span><span class="function">bar</span><span class="object">(df_grouped, x= '{var1}', y='soma', color='{var2}',title='Gráficos de barras de {var1} por {var2}',barmode='stack',width=800, height=500)</span>\n<span class="keyword">grafico_barra.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_barra</span>.<span class="function">show</span>()</span>"""
+
         
         elif(graphicType == "Gráficos de Linha"):
             hist_fig = px.line(df_grouped, x= var1, y='soma', color=var2,title=f'Gráficos de linha de {var1} por {var2}',color_discrete_map=color_discrete_map, width=800, height=500)
             hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
+            code+= f"""\n<span class="comment">#Agrupando por {var1} e {var2} e contando a quantidade de cada combinação</span>\n<span class="keyword">df_grouped</span><span>= dataframe.</span><span class="function">groupby</span><span class="object">(["{var1}", "{var2}"]).size().reset_index(name='soma')</span>\n<span class="function">print</span><span>(f"agrupados: {{df_grouped}}")</span>\n\n<span class="comment">#Gerando Gráfico</span>\n<span class="keyword">grafico_linha</span><span>= px.</span><span class="function">line</span><span class="object">(df_grouped, x= '{var1}', y='soma', color='{var2}',title='Gráficos de linhas de {var1} por {var2}',width=800, height=500)</span>\n<span class="keyword">grafico_linha.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_linha</span>.<span class="function">show</span>()</span>"""
+
 
         elif(graphicType == "Gráficos de Pizza"):
             hist_fig = px.pie(df_grouped,names=var1,values='soma', color=var2,title=f'Gráficos de pizza de {var1} por {var2}', color_discrete_map=color_discrete_map, width=800, height=500)
             hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
+            code+= f"""\n<span class="comment">#Agrupando por {var1} e {var2} e contando a quantidade de cada combinação</span>\n<span class="keyword">df_grouped</span><span>= dataframe.</span><span class="function">groupby</span><span class="object">(["{var1}", "{var2}"]).size().reset_index(name='soma')</span>\n<span class="function">print</span><span>(f"agrupados: {{df_grouped}}")</span>\n\n<span class="comment">#Gerando Gráfico</span>\n<span class="keyword">grafico_pizza</span><span>= px.</span><span class="function">pie</span><span class="object">(df_grouped, x= '{var1}', y='soma', color='{var2}',title='Gráficos de pizza de {var1} por {var2}',width=800, height=500)</span>\n<span class="keyword">grafico_pizza.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_pizza</span>.<span class="function">show</span>()</span>"""
+
         
         elif(graphicType == "Gráficos de Dispersão"):
             hist_fig = px.scatter(df_grouped,x= var1, y='soma',color=var2,title=f'Gráficos de dispersão de {var1} por {var2}', color_discrete_map=color_discrete_map, width=800, height=500)
             hist_fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = hist_fig.to_json()
             data[graphicType] = graf_json
+            code+= f"""\n<span class="comment">#Agrupando por {var1} e {var2} e contando a quantidade de cada combinação</span>\n<span class="keyword">df_grouped</span><span>= dataframe.</span><span class="function">groupby</span><span class="object">(["{var1}", "{var2}"]).size().reset_index(name='soma')</span>\n<span class="function">print</span><span>(f"agrupados: {{df_grouped}}")</span>\n\n<span class="comment">#Gerando Gráfico</span>\n<span class="keyword">grafico_dispersao</span><span>= px.</span><span class="function">scatter</span><span class="object">(df_grouped, x= '{var1}', y='soma', color='{var2}',title='Gráficos de dispersão de {var1} por {var2}',width=800, height=500)</span>\n<span class="keyword">grafico_dispersao.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_dispersao</span>.<span class="function">show</span>()</span>"""
 
-        return data
+        print(f"O codigo é {code}")
+
+        return data, code
     
     
     
@@ -865,7 +877,7 @@ def submit_selections_graphicAnalysis():
         for key, values in selections.items():
           print(f"Chave: {key}\nValor: {values}\n")
           if(typeGraphic == "true"):
-            data = createGraph(key, values, data)  
+            data,code = createGraph(key, values, data)  
         return data
     
     def typeGraph2Var(selections):
@@ -873,20 +885,21 @@ def submit_selections_graphicAnalysis():
         graphicType = list(selections.values())[0]
         var1 = list(selections.values())[1]
         var2 = list(selections.values())[2]
-        data = createGraph2Var(graphicType, var1, var2, data)
+        print(f"v1 {var1} v2 {var2}")
+        data,code = createGraph2Var(graphicType, var1, var2, data)
         print(f"Data {data}")
-        return data
+        return data, code
     
     
     if(typeGraphic == "true"):
-        data = typeGraph(selections)
+        data,code = typeGraph(selections)
         print(f" Tipo : {type(data)}")
-        return jsonify(data)
+        return jsonify({"data":data, "code":code})
 
     elif(typeGraphic == "false"):
-        data = typeGraph2Var(selections)
+        data,code = typeGraph2Var(selections)
         print(f" Tipo : {type(data)}")
-        return jsonify(data)
+        return jsonify({"data":data, "code":code})
 
 
 
@@ -896,10 +909,10 @@ def submit_selections_associationRules():
     print(f"typeGraphic {typeGraphic}")
     csv_file = request.files.get('csvFile')
     selections = request.form.get('selections')
+    separator = request.form.get('separator')
     selections = json.loads(selections)
     print(selections)
     # Processar o CSV
-    separator = ","
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()), sep=separator, encoding='utf-8')
     print(csv_data)
     
@@ -931,7 +944,8 @@ def submit_selections_associationRules():
     result = generatingAssociation(df2)
     print(result)
     result = result.head(20).to_html(classes='table table-striped', border=0)
-    return jsonify({"dados": result})
+    code = f"""<span class= "comment">#Leitura do arquivo csv</span>\n<span class="bib">import</span> pandas <span class="bib">as</span> pd\n<span>dataframe = pd.read_csv(</span><span class= "link">'Adicione o caminho para o seu csv',sep ='{separator}', encoding = 'utf-8'</span>)</span>\n\n<span class="comment">#Agrupa os dados</span>\n<span><span class="keyword">dados</span>= dataframe.<span class="function">groupby</span>("{list(selections.values())[1]}")["{list(selections.values())[2]}"].apply(list).tolist()</span>\n\n<span class="comment">#Converte a lista de listas em um DataFrame do pandas</span>\n<span class="keyword">dados</span><span>= pd.</span><span class="function">DataFrame</span><span>(dados)</span>\n\n<span class="comment">#(!pip install pyECLAT) no colab ou (pip install pyECLAT) no terminal</span>\n<span class="bib">from </span><span>pyECLAT </span><span class="bib">import </span><span> ECLAT</span>\n\n<span class="comment">#Cria uma instância do algoritmo ECLAT, passando os dados e ativando a verbosidade para exibir mensagens de progresso</span>\n<span><span class="keyword">eclat</span>= <span class="function">ECLAT</span>(data = dados, verbose = True)</span>\n\n<span class="comment">#Gera o DataFrame binarizado a partir dos dados processados pelo ECLAT</span>\n<span><span class="keyword">dataframe_eclat</span>= eclat.<span class="function">df_bin</span></span>\n\n<span class="comment">#Importa as funções apriori e association_rules da biblioteca mlxtend.frequent_patterns</span>\n<span><span class="bib">from </span>mlxtend.frequent_patterns <span class="bib">import </span><span class="function">apriori, association_rules</span></span>\n\n<span class="comment">#Aplica o algoritmo apriori no DataFrame binarizado com suporte mínimo de 0.05, mantendo os nomes das colunas</span>\n<span><span class="keyword">associacao</span>= <span class="function">apriori</span>(dataframe_eclat, min_support=0.05, use_colnames=True)</span>\n\n<span class="comment">#Ordena as regras de associação pelo suporte em ordem decrescente e exibe as 10 principais</span>\n<span><span class="link">associacao</span>.<span class="function">sort_values</span>("support", ascending=False).head(10)</span>\n\n<span class="comment">#Gera as regras de associação com base na métrica "{list(selections.values())[0]}"</span>\n<span><span class="keyword">regras</span>= <span class="function">association_rules</span>(associacao, metric="{list(selections.values())[0]}")</span>\n\n<span class="comment">#Imprime as regras geradas</span>\n<span><span class="function">print</span>(regras)</span>\n\n<span class="comment">#Ordena as regras pelo suporte em ordem decrescente e imprime as 20 principais</span>\n<span><span class="keyword">resultado</span>= regras.<span class="function">sort_values</span>("support", ascending=False)</span>\n\n<span><span class="function">print</span>(resultado.head(20))</span>\n\n"""
+    return jsonify({"dados": result, "code":code})
 
 
    

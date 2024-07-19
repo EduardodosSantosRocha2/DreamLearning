@@ -78,6 +78,23 @@
 		<div class="spinner" id= "spinner"></div>
 		<div id="graphData"></div>
 		<div id="result"></div>
+
+		<div class="container-code">
+			<button type="button" class="nes-btn is-primary" onclick="toggleCode()">Mostrar Código</button>
+			<button type="button" class="nes-btn is-warning" onclick="copyCode(event)">Copiar código</button>
+
+			<section class="code-container" id="codeBlock">
+				<pre>
+<code id = "windowcode">
+</code>
+				</pre>
+			</section>
+
+			<!-- Balão de notificação -->
+			<div id="notification" class="nes-balloon from-left">
+				<p>Código copiado para a área de transferência!</p>
+			</div>
+		</div>
 	</div>
 </div>
     

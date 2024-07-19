@@ -4,6 +4,8 @@ spinner.style.display = 'none';
 let csvFile = null;
 let csvContent = null;
 let boolean  = true;
+let separator = "";
+
 
 
 
@@ -29,6 +31,41 @@ function stars() {
 }
 stars();
 
+
+
+function toggleCode() {
+    const codeBlock = document.getElementById('codeBlock');
+    codeBlock.style.display = codeBlock.style.display === 'block' ? 'none' : 'block';
+}
+
+function copyCode(event) {
+    const code = document.querySelector('#codeBlock code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        showNotification(event.pageY, event.pageX, 'Copiado!');
+    }, () => {
+        showNotification(event.pageY, event.pageX, 'Falha ao copiar o código.');
+    });
+}
+
+function showNotification(top, left, message = 'Código copiado!') {
+    const notification = document.getElementById('notification');
+    notification.querySelector('p').innerText = message;
+    notification.style.display = 'block';
+    notification.style.top = `${top - 50}px`; // Ajuste a posição vertical conforme necessário
+    notification.style.left = `${left - 100}px`; // Ajuste a posição horizontal conforme necessário
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 1500); // O balão ficará visível por 1.5 segundos
+}
+
+
+
+
+
+
+
+
+
 function clearOptionsContainer() {
     var div = document.getElementById("optionsContainer");
     if (div) {
@@ -38,7 +75,19 @@ function clearOptionsContainer() {
 
 function processCSV(csvText) {
     const lines = csvText.split('\n');
-    const headers = lines[0].split(',');
+    // Verifica se a primeira linha contém uma vírgula
+    if (lines[0].includes(",")) {
+        separator = ",";
+    }
+    // Se não, verifica se contém um ponto e vírgula
+    else if (lines[0].includes(";")) {
+        separator = ";";
+    } else {
+        console.error("Separador não reconhecido.");
+        return;
+    }
+    console.log("Meu separator"+ separator)
+    const headers = lines[0].split(separator);
     // headers.pop();  // Remove the last column
 
     const container = document.getElementById('optionsContainer');
@@ -117,6 +166,7 @@ document.getElementById("showSelections").addEventListener('click', function () 
         formData.append('csvFile', csvFile);
         formData.append('selections', JSON.stringify(selections));
         formData.append('typeGraphic', boolean);
+        formData.append('separator', separator);
 
         fetch('/graphicAnalysisPost', {
             method: 'POST',
@@ -131,6 +181,8 @@ document.getElementById("showSelections").addEventListener('click', function () 
             .then((data) => {
                 spinner.style.display = 'none';
                 graphDataDiv.innerHTML = '';
+                var code = data.code;
+                var data = data.data
                 let i = 1;
                 for (const key in data) {
                     if (data.hasOwnProperty(key)) {
@@ -145,8 +197,9 @@ document.getElementById("showSelections").addEventListener('click', function () 
                         // Plotar os gráficos
                         Plotly.react(innerDiv, graphData.data, graphData.layout);
                         i++;
-                    }
+                    } 
                 }
+                document.getElementById("windowcode").innerHTML = code;
             })
             .catch((error) => {
                 console.error("Erro:", error);
@@ -158,7 +211,18 @@ document.getElementById("showSelections").addEventListener('click', function () 
 
 function processCSVgraphicAnalysis(csvText) {
     const lines = csvText.split('\n');
-    const headers = lines[0].split(',');
+    // Verifica se a primeira linha contém uma vírgulaa
+    if (lines[0].includes(",")) {
+        separator = ",";
+    }
+    // Se não, verifica se contém um ponto e vírgula
+    else if (lines[0].includes(";")) {
+        separator = ";";
+    } else {
+        console.error("Separador não reconhecido.");
+        return;
+    }
+    const headers = lines[0].split(separator);
     headers.pop(); 
 
     const container = document.getElementById('optionsContainer');

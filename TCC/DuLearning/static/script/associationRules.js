@@ -4,6 +4,7 @@ let spinner = document.getElementById('spinner');
 spinner.style.display = 'none';
 let csvFile = null;
 let csvContent = null;
+let separator = ""
 
 function stars() {
     let count = 500;
@@ -26,6 +27,48 @@ function stars() {
     }
 }
 stars();
+
+
+
+function toggleCode() {
+    const codeBlock = document.getElementById('codeBlock');
+    codeBlock.style.display = codeBlock.style.display === 'block' ? 'none' : 'block';
+}
+
+function copyCode(event) {
+    const code = document.querySelector('#codeBlock code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        showNotification(event.pageY, event.pageX, 'Copiado!');
+    }, () => {
+        showNotification(event.pageY, event.pageX, 'Falha ao copiar o código.');
+    });
+}
+
+function showNotification(top, left, message = 'Código copiado!') {
+    const notification = document.getElementById('notification');
+    notification.querySelector('p').innerText = message;
+    notification.style.display = 'block';
+    notification.style.top = `${top - 50}px`; // Ajuste a posição vertical conforme necessário
+    notification.style.left = `${left - 100}px`; // Ajuste a posição horizontal conforme necessário
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 1500); // O balão ficará visível por 1.5 segundos
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function clearOptionsContainer() {
     var div = document.getElementById("optionsContainer");
@@ -71,6 +114,7 @@ document.getElementById("showSelections").addEventListener('click', function () 
         const formData = new FormData();
         formData.append('csvFile', csvFile);
         formData.append('selections', JSON.stringify(selections));
+        formData.append('separator', separator);
 
         fetch('/associationRulesPost', {
             method: 'POST',
@@ -115,6 +159,7 @@ document.getElementById("showSelections").addEventListener('click', function () 
                const walk = (x - startX) * 2; // 3 é a velocidade do deslocamento
                slider.scrollLeft = scrollLeft - walk;
            });
+           document.getElementById("windowcode").innerHTML = data.code;
         })
         .catch((error) => {
             spinner.style.display = 'none';
@@ -127,7 +172,19 @@ document.getElementById("showSelections").addEventListener('click', function () 
 function processCSVgraphicAnalysis(csvText) {
     csvText = csvText.replace(/\r/g, '');
     const lines = csvText.split('\n');
-    const headers = lines[0].split(',');
+    // Verifica se a primeira linha contém uma vírgula
+    if (lines[0].includes(",")) {
+        separator = ",";
+    }
+    // Se não, verifica se contém um ponto e vírgula
+    else if (lines[0].includes(";")) {
+        separator = ";";
+    } else {
+        console.error("Separador não reconhecido.");
+        return;
+    }
+    console.log("Meu separator"+ separator)
+    const headers = lines[0].split(separator);
 
     const container = document.getElementById('optionsContainer');
     container.innerHTML = '';
