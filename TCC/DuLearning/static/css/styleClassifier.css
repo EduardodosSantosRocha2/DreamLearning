@@ -184,6 +184,10 @@ code {
     color: #f06671; 
 }
 
+.else {
+    color: #aff752; 
+}
+
 .function {
     color: #50fa7b; 
 }
@@ -205,6 +209,10 @@ code {
 
 .object{
     color: #f3cf8d; 
+}
+
+.pip{
+    color: #fa5050;
 }
 
 
