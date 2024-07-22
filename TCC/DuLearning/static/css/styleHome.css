@@ -171,6 +171,10 @@ label{
     background-color: rgba(255, 255, 255, 0.8); /* Fundo branco transparente */
 }
 
+.navbar-nav{
+    gap: 20px;
+}
+
 .navbar-brand img {
     border-radius: 50%; /* Torna a logo redonda */
     width: 40px; /* Define um tamanho para a logo */

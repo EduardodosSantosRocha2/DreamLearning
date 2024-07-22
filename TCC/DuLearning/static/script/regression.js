@@ -24,6 +24,32 @@ stars();
 
 
 
+function toggleCode() {
+    const codeBlock = document.getElementById('codeBlock');
+    codeBlock.style.display = codeBlock.style.display === 'block' ? 'none' : 'block';
+}
+
+function copyCode(event) {
+    const code = document.querySelector('#codeBlock code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        showNotification(event.pageY, event.pageX, 'Copiado!');
+    }, () => {
+        showNotification(event.pageY, event.pageX, 'Falha ao copiar o código.');
+    });
+}
+
+function showNotification(top, left, message = 'Código copiado!') {
+    const notification = document.getElementById('notification');
+    notification.querySelector('p').innerText = message;
+    notification.style.display = 'block';
+    notification.style.top = `${top - 50}px`; // Ajuste a posição vertical conforme necessário
+    notification.style.left = `${left - 100}px`; // Ajuste a posição horizontal conforme necessário
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 1500); // O balão ficará visível por 1.5 segundos
+}
+
+
 
 
 
@@ -425,8 +451,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log(`Coeficiente_linear: ${data.Coeficiente_linear}`);
                     let resultText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}%<br>`;
                     resultText += `Coeficiente de determinação do teste: ${data.determinationCoefficientTest}%<br>`;
-                    resultText += `Erro absoluto: ${data.abs}<br>`;
-                    resultText += `Erro quadrático médio: ${data.MeanSquaredError}`;
+                    resultText += `Erro médio absoluto: ${data.abs}<br>`;
+                    resultText += `Raiz erro quadrático médio: ${data.MeanSquaredError}`;
                     resultText1 = "";
                     
                     // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
@@ -436,6 +462,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                     document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText}</div>`;
                     document.getElementById("result1").innerHTML = `<div class="preformatted-text">${resultText1}</div>`;
+                    
+                    document.getElementById("windowcode").innerHTML = data.code;
                 })                                           
                 .catch((error) => {
                     console.error("Erro:", error);
