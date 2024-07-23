@@ -783,15 +783,17 @@ def submit_selections_graphicAnalysis():
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()), sep=separator, encoding='utf-8')
     print(csv_data)
     code = ""
+
     
     
     def createGraph(key, values, data):
-    
         if values == "histogramas":
             graf = go.Figure(data=[go.Histogram(x=csv_data[key], nbinsx=60)])
             graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key, paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
+            code = f"""<span class="keyword">histograma </span><span>= px.</span><span class="function">histogram</span><span class="object">(dataframe, x= "{key}", title= 'Histograma de {key}', width= 800, height= 500)</span>\n<span class="keyword">histograma.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">histograma</span>.<span class="function">show</span>()</span>"""
+
 
         elif values == "gráficos de pizza":
             counts = csv_data[key].value_counts()
@@ -800,6 +802,8 @@ def submit_selections_graphicAnalysis():
             graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key, paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
+            code = f"""<span class="keyword">grafico_pizza </span><span>= px.</span><span class="function">pie</span><span class="object">(dataframe, names= "{key}", title= 'Gráfico de Pizza de {key}', width= 800, height= 500)</span>\n<span class="keyword">grafico_pizza.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_pizza</span>.<span class="function">show</span>()</span>"""
+
 
 
         elif values == "gráficos de linha":
@@ -808,28 +812,36 @@ def submit_selections_graphicAnalysis():
             graf.update_layout(width=800, height=500, title_text='Distribuição por ' + key,paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
-        
+            code = f"""<span><span class="keyword">dataframe_agrupado</span> = dataframe.<span class="function">groupby</span>(["{key}"]).size().reset_index(name='soma')</span>\n<span class="keyword">grafico_linha </span><span>= px.</span><span class="function">line</span><span class="object">(dataframe_agrupado, x= "{key}", y="soma", title= 'Gráfico de linha de {key}', width= 800, height= 500)</span>\n<span class="keyword">grafico_linha.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_linha</span>.<span class="function">show</span>()</span>"""
+
         elif values == "gráficos de barras":
             counts = csv_data[key].value_counts()
             graf = go.Figure(data=[go.Bar(x=counts.index,y=counts.values,name='Distribuição por ' + key)])
             graf.update_layout(title='Distribuição por ' + key, xaxis_title='Categoria', yaxis_title='Frequência', width=800, height=500,paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
-        
+            code = f"""<span><span class="keyword">dataframe_agrupado</span> = dataframe.<span class="function">groupby</span>(["{key}"]).size().reset_index(name='soma')</span>\n<span class="keyword">grafico_barras</span><span>= px.</span><span class="function">bar</span><span class="object">(dataframe_agrupado, x= "{key}", y= "soma", title= 'Gráfico de barras de {key}', width= 800, height= 500)</span>\n<span class="keyword">grafico_barras.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_barras</span>.<span class="function">show</span>()</span>"""
+
+
         elif values == "gráficos de dispersão":
             counts = csv_data[key].value_counts()
             graf = go.Figure(data=[go.Scatter(x=counts.index, y=counts.values, mode='markers', name='Distribuição por ' + key)])
             graf.update_layout(width=800, height=500, title='Distribuição por ' + key, xaxis_title='X',yaxis_title='Y', paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
-        
+            code = f"""<span><span class="keyword">dataframe_agrupado</span> = dataframe.<span class="function">groupby</span>(["{key}"]).size().reset_index(name='soma')</span>\n<span class="keyword">grafico_dispersao</span><span>= px.</span><span class="function">scatter</span><span class="object">(dataframe_agrupado, x= "{key}", y= "soma", title= 'Gráfico de dispersão de {key}', width= 800, height= 500)</span>\n<span class="keyword">grafico_dispersao.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_dispersao</span>.<span class="function">show</span>()</span>"""
+
+
         elif values == "boxplot":
             counts = csv_data[key].value_counts()
             graf = go.Figure(data=[go.Box( y= counts.values ,name='Distribuição por ' + key)])
             graf.update_layout(width=800, height=500,  yaxis_title='Valores', title='Distribuição por ' + key, paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
-        return data, code
+            code = f"""<span class="keyword">grafico_boxplot</span><span>= px.</span><span class="function">box</span><span class="object">(dataframe, x= "{key}", title= 'Gráfico BoxPlot de {key}', width= 800, height= 500)</span>\n<span class="keyword">grafico_boxplot.</span><span class="function">update_layout</span><span>(<span class="object">paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)'</span>)</span>\n<span><span class="keyword">grafico_boxplot</span>.<span class="function">show</span>()</span>"""
+
+
+        return data,code
     
 
     def createGraph2Var(graphicType, var1, var2, data):
@@ -893,11 +905,17 @@ def submit_selections_graphicAnalysis():
     
     
     def typeGraph(selections):
+        code = ""
+        codecopy = "" 
         data = dict()
         for key, values in selections.items():
           print(f"Chave: {key}\nValor: {values}\n")
           if(typeGraphic == "true"):
-            data,code = createGraph(key, values, data)  
+            codecopy = code +"\n\n"
+            data,code = createGraph(key, values, data)
+            code = codecopy + code  
+            print(f"{code}\n")    
+        code = f"""<span class= "comment">#Leitura do arquivo csv</span>\n<span class="bib">import</span> pandas <span class="bib">as</span> pd\n<span>dataframe = pd.read_csv(</span><span class= "link">'Adicione o caminho para o seu csv',sep ='{separator}', encoding = 'utf-8'</span>)</span>\n\n<span class= "comment">#Biblioteca grafica</span>\n<span class="bib">import</span> plotly.express <span class="bib">as</span> px\n"""+code  
         return data, code
     
     def typeGraph2Var(selections):
