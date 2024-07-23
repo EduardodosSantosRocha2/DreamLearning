@@ -898,7 +898,7 @@ def submit_selections_graphicAnalysis():
           print(f"Chave: {key}\nValor: {values}\n")
           if(typeGraphic == "true"):
             data,code = createGraph(key, values, data)  
-        return data
+        return data, code
     
     def typeGraph2Var(selections):
         data = dict()
