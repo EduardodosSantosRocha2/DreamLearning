@@ -782,11 +782,11 @@ def submit_selections_graphicAnalysis():
     # Processar o CSV
     csv_data = pd.read_csv(io.BytesIO(csv_file.read()), sep=separator, encoding='utf-8')
     print(csv_data)
-    
+    code = ""
     
     
     def createGraph(key, values, data):
-        
+    
         if values == "histogramas":
             graf = go.Figure(data=[go.Histogram(x=csv_data[key], nbinsx=60)])
             graf.update_layout(width=800, height=500, title_text='Distribuição por '+ key, paper_bgcolor='rgba(0,0,0,0)',  plot_bgcolor='rgba(0,0,0,0)')
@@ -829,7 +829,7 @@ def submit_selections_graphicAnalysis():
             graf.update_layout(width=800, height=500,  yaxis_title='Valores', title='Distribuição por ' + key, paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
             graf_json = graf.to_json()
             data[key] = graf_json
-        return data
+        return data, code
     
 
     def createGraph2Var(graphicType, var1, var2, data):
