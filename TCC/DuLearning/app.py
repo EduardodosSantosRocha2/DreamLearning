@@ -106,6 +106,10 @@ def associationRules():
 def videoAulas():
     return render_template("videoAulas.html")
 
+@app.route("/videoAulaRandomForest")
+def videoAulasRandomForest():
+    return render_template("videoAulaRandomForest.html")
+
 # Rota para fazer previsões
 @app.route("/predict", methods=["POST"])
 def predict():

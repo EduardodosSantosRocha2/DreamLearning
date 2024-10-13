@@ -7,7 +7,7 @@
     "sposter": "static/img/randomForest.png",
     "bposter": "static/img/randomForest1.png",
     "genre": "AM",
-    "url": "videoAulaRandomForest.html"
+    "url": "/videoAulaRandomForest"
 },
 {
     "name": "SVM",
