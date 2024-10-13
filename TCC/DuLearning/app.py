@@ -102,6 +102,9 @@ def graphicAnalysis():
 def associationRules():
     return render_template('associationRules.html')
 
+@app.route("/VideoAulas")
+def videoAulas():
+    return render_template("videoAulas.html")
 
 # Rota para fazer previsões
 @app.route("/predict", methods=["POST"])

@@ -1,0 +1,137 @@
+[{
+    "name": "Random Forest",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/randomForest.png",
+    "bposter": "static/img/randomForest1.png",
+    "genre": "AM",
+    "url": "videoAulaRandomForest.html"
+},
+{
+    "name": "SVM",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/svm.png",
+    "bposter": "static/img/svm1.png",
+    "genre": "AM",
+    "url": "videoAulaSvm.html"
+},
+
+{
+    "name": "Regressão Logistica",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/regressaologistica.png",
+    "bposter": "static/img/regressaologistica1.png",
+    "genre": "AM",
+    "url": "videoAulaRegressaoLogistica.html"
+},
+
+{
+    "name": "KNN",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/knn.png",
+    "bposter": "static/img/knn1.png",
+    "genre": "AM",
+    "url": "videoAulaKnn.html"
+},
+
+{
+    "name": "Arvore de decisão",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/arvore.png",
+    "bposter": "static/img/arvore1.png",
+    "genre": "AM",
+    "url": "videoAulaArvoreDecisao.html"
+},
+
+{
+    "name": "XGboost",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/xgboost.png",
+    "bposter": "static/img/xgboost1.png",
+    "genre": "AM",
+    "url": "videoAulaXGboost.html"
+},
+{
+    "name": "LightGBM",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/lightgbm.png",
+    "bposter": "static/img/lightgbm1.png",
+    "genre": "AM",
+    "url": "videoAulaLightGBM.html"
+},
+{
+    "name": "CatBoost",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/catboost.png",
+    "bposter": "static/img/catboost1.png",
+    "genre": "AM",
+    "url": "videoAulaCatBoost.html"
+},
+{
+    "name": "Regressão Linear",
+    "type": "Regressão",
+    "type2": "",
+    "conttypes":1,
+    "date": "2024",
+    "sposter": "static/img/regressaoLinear.png",
+    "bposter": "static/img/regressaoLinear1.png",
+    "genre": "AM",
+    "url": "videoAulaRegressaoLinear.html"
+},
+{
+    "name": "Regressão Linear Multipla",
+    "type": "Regressão",
+    "type2": "",
+    "conttypes":1,
+    "date": "2024",
+    "sposter": "static/img/regressaoLinearmultipla.png",
+    "bposter": "static/img/regressaoLinearmultipla1.png",
+    "genre": "AM",
+    "url": "videoAulaRegressaoLinearMultipla.html"
+}, 
+{
+    "name": "Regressão Polinomial",
+    "type": "Regressão",
+    "type2": "",
+    "conttypes":1,
+    "date": "2024",
+    "sposter": "static/img/regressaopolinomial.png",
+    "bposter": "static/img/regressaopolinomial1.png",
+    "genre": "AM",
+    "url": "videoAulaRegressaoPolinomial.html"
+},
+{
+    "name": "Regras de Associação",
+    "type": "Associação",
+    "type2": "",
+    "conttypes":0,
+    "date": "2024",
+    "sposter": "static/img/regrasAssociacao.png",
+    "bposter": "static/img/regrasAssociacao1.png",
+    "genre": "AM",
+    "url": "videoAulaRegrasdeAssociacao.html"
+}
+]
