@@ -1,25 +1,35 @@
 let spinner = document.getElementById('spinner');
 spinner.style.display = 'none';
 function stars() {
-    let count = 500;
-    let scene = document.querySelector(".scene");
-    let i = 0;
-    while (i < count) {
-        let star = document.createElement("i");
-        let x = Math.floor(Math.random() * window.innerWidth);
-        let y = Math.floor(Math.random() * window.innerHeight);
-        let duration = Math.random() * 10;
-        let size = Math.random() * 2;
-        star.style.left = x + 'px';
-        star.style.top = y + 'px';
-        star.style.width = 1 + size + 'px';
-        star.style.height = 1 + size + 'px';
-        star.style.animationDuration = 5 + duration + 's';
-        star.style.animationDelay = duration + 's';
-        scene.appendChild(star)
-        i++;
+    const count = 500;
+    const scene = document.querySelector(".scene");
+    const fragment = document.createDocumentFragment();
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement("i");
+        star.className = "istars";
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        const duration = 5 + Math.random() * 10;
+        const size = 1 + Math.random() * 2;
+
+        star.style.cssText = `
+            left: ${x}px;
+            top: ${y}px;
+            width: ${size}px;
+            height: ${size}px;
+            animation-duration: ${duration}s;
+            animation-delay: ${Math.random() * duration}s;
+        `;
+
+        fragment.appendChild(star);
     }
+
+    scene.appendChild(fragment);
 }
+
 stars();
 
 
