@@ -7,6 +7,11 @@
     <title>Login</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleLogin.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -16,17 +21,17 @@
                 <form action = "">
                     <h1>Login</h1>
                     <div class="input-box">
-                        <input type="text" placeholder="Usuario" required>
+                        <input type="text" id="email" placeholder="Email" required>
                         <i class='bx bxs-user' ></i>
                     </div>
                     <div class="input-box">
-                        <input type="password" placeholder="Senha" required>
+                        <input type="password" id="password" placeholder="Senha" required>
                         <i class='bx bxs-lock-alt' ></i>
                     </div> 
                     <div class="forgot-link">
-                        <a href="#">Esqueceu a senha?</a>
+                        <a href="#" onclick="recoverPassword()">Esqueceu a senha?</a>
                     </div>   
-                    <button type="submit" class="btn">Login</button>
+                    <button type="button" class="btn" onclick="login()">Login</button>
                     <p> Login com rede social </p>
                     <div class="social-icons">
                         <a href="#"><i class='bx bxl-google' ></i></a>
@@ -43,18 +48,14 @@
                 <form action = "">
                     <h1>Cadastrar</h1>
                     <div class="input-box">
-                        <input type="text" placeholder="Usuario" required>
-                        <i class='bx bxs-user' ></i>
-                    </div>
-                    <div class="input-box">
-                        <input type="email" placeholder="Email" required>
+                        <input type="email" id="emailnew" placeholder="Email" required>
                         <i class='bx bxs-envelope' ></i>                
                     </div>
                     <div class="input-box">
-                        <input type="password" placeholder="Senha" required>
+                        <input type="password" id="passwordnew" placeholder="Senha" required>
                         <i class='bx bxs-lock-alt' ></i>
                     </div>  
-                    <button type="submit" class="btn">Cadastrar</button>
+                    <button type="button" class="btn" onclick="register()">Cadastrar</button>
                     <p> Login com rede social </p>
                     <div class="social-icons">
                         <a href="#"><i class='bx bxl-google' ></i></a>
@@ -66,18 +67,24 @@
             </div>
             <div class="toggle-box">
                 <div class="toggle-panel toggle-left">
-                    <h1>Olá, Sonhador!</h1>
+                    <h2>Olá, Sonhador!</h2>
                     <p>Criar conta?</p>
                     <button class="btn register-btn">Cadastrar</button>
                 </div>
                 <div class="toggle-panel toggle-right">
-                    <h1>Bem vindo, Sonhador!</h1>
+                    <h3>Bem vindo, Sonhador!</h3>
                     <p>Você possui conta?</p>
                     <button class="btn login-btn">Entrar</button>
                 </div>      
             </div>
         </div>
     </div>
+     
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+    <script src="{{ url_for('static', filename='script/firebase-init.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='script/login.js') }}"></script>
+
+    
 </body>
 </html>
