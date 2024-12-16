@@ -114,6 +114,10 @@ def videoAulas():
 def videoAulasRandomForest():
     return render_template("videoAulaRandomForest.html")
 
+@app.route("/Historico")
+def historic():
+    return render_template("historico.html")
+
 # Rota para fazer previsões
 @app.route("/predict", methods=["POST"])
 def predict():
