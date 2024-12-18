@@ -1,0 +1,227 @@
+#section {
+    margin-top: 3%;
+}
+
+.social-icon img {
+    width: 30px; /* Defina o tamanho desejado */
+    height: auto; /* Mantém a proporção */
+}
+
+.center {
+    text-align: center;
+    color: white;
+    margin-top: 2%;
+}
+
+.deploy{
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
+#but{
+    margin-top: 3%;
+}
+
+#parameters{
+    margin-top: 2%;
+}
+
+/* Estilos para a navbar */
+.navbar-custom {
+    background-color: rgba(255, 255, 255, 0.8); /* Fundo branco transparente */
+}
+.navbar-nav{
+    gap: 12px;
+}
+
+.navbar-brand img {
+    border-radius: 50%; /* Torna a logo redonda */
+    width: 40px; /* Define um tamanho para a logo */
+    height: 40px;
+}
+
+.scene {
+    min-height: 100vh; /* Ajusta a altura mínima para o tamanho da tela */
+    position: relative;
+    background: linear-gradient(#111425,#3751e0);
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.scene i {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: animate linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+        transform: translateY();
+    }
+    10%, 90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+}
+
+.background {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    margin: 3% auto; /* Centraliza horizontalmente e adiciona margem vertical */
+}
+
+#result {
+    max-height: calc(100vh - 200px); /* Ajuste o valor conforme necessário */
+    overflow-y: auto;
+    margin-top: 3%;
+}
+
+footer {
+    margin-top: 50px; /* Adiciona margem superior para separar do conteúdo anterior */
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* Estilos responsivos */
+@media (max-width: 767px) {
+    .background {
+        width: 90%; /* Garante que a largura seja 100% em telas pequenas */
+        padding: 10px; /* Ajusta o padding para melhor visualização em dispositivos móveis */
+    }
+
+    form {
+        width: 90%; /* Garante que o formulário ocupe toda a largura disponível */
+    }
+
+    .nes-select, input[type="file"], button {
+        width: 100%; /* Ajusta os inputs e botões para ocupar toda a largura */
+        box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
+    }
+
+    .nes-select select, input[type="file"] {
+        width: 100%; /* Ajusta os selects e inputs para ocupar toda a largura */
+        box-sizing: border-box;
+    }
+
+    label.nes-btn {
+        width: 100%; /* Garante que o botão de label ocupe toda a largura */
+    }
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #3751e0; /* Cor azul */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 50px auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+
+.container-code{
+    margin-top: 5%;
+}
+
+/* Code block styles */
+.code-container {
+    margin-top: 3%;
+    background-color: #111425;
+    display: none; 
+    padding: 15px;
+    border-radius: 5px;
+    border: 2px solid #000000; 
+    overflow-x: auto;
+    text-align: left;
+}
+
+pre {
+    margin: 0;
+    color: #f8f8f2; 
+    text-align: left; 
+}
+
+/* Code element styles */
+code {
+    display: block;
+    white-space: pre; 
+    text-align: left; 
+}
+
+/* Syntax highlighting */
+
+.bib {
+    color: #7403d1; 
+}
+
+.keyword {
+    color: #f79ddc; 
+}
+.link{
+    color: #d88c00; 
+}
+.for {
+    color: #f1fa8c; 
+}
+.if {
+    color: #f06671; 
+}
+
+.else {
+    color: #aff752; 
+}
+
+.function {
+    color: #50fa7b; 
+}
+
+.comment {
+    color: #6272a4; 
+}
+
+.columns {
+    color: #87c9ff; 
+}
+.instance{
+    color: #e4eba8; 
+}
+
+.intfloat{
+    color: #a8eba8; 
+}
+
+.object{
+    color: #f3cf8d; 
+}
+
+.pip{
+    color: #fa5050;
+}
+
+
+/* Notificação estilo balão */
+.nes-balloon {
+    position: absolute;
+    z-index: 1000;
+    display: none; 
+}

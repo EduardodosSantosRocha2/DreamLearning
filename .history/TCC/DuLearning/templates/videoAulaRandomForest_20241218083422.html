@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleVideo.css') }}">
+    
+    <title>Random Forest</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <a class="navbar-brand" href="#">
+          <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo"> <!-- Adicione o caminho correto para a sua logo -->
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+  
+            <li class="nav-item">
+              <a class="nav-link" href="/Home">Home</a>
+              </li>  
+              <li class="nav-item">
+                  <a class="nav-link" href="/Classificacao">Classificação</a>
+                </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Regressao">Regressão</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Analisegrafica">Análise Gráfica</a>
+            </li>
+
+            <!--<li class="nav-item">
+                      <a class="nav-link" href="/Normalidadeecorrelação">Normalidade e Correlação</a>
+                  </li>-->
+            <li class="nav-item">
+              <a class="nav-link" href="/RegrasAssociacao">Regras de Associação</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" href="/VideoAulas">Aulas<span class="sr-only">(current)</span></a>
+            </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/Historico">Histórico</span></a>
+            </li>
+          </ul>
+          <button type="button" class="nes-btn is-primary" onclick="logout()" style="margin-left: auto;">Sair</button>
+        </div>
+      </nav>
+
+
+
+<div class="center">
+    <header>
+
+        <nav>
+            <div class="logo_ul">
+                <!-- <img src="img/logo.png" alt="logo"> -->
+                <ul>
+                    <!--<li>
+                        <a href="/">Home</a>
+                    </li>-->
+                    <li>
+                        <a href="#" id="classificao">Classifição</a>
+                    </li>
+                    <li>
+                        <a href="#" id="regressao">Regressão</a>
+                    </li>
+                    <li>
+                        <a href="#" id="associacao">Regras de associação</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="title">Random Forest</h1>
+            <!-- <div class="details">
+                <h6>A Netflix Original Film</h6>
+                <h5 id="gen">Thriller</h5>
+                <h4 id="date">2021</h4>
+                <h3 id="rate"><span>IMDB</span><i class="bi bi-star-fill"></i> 9.6</h3>
+            </div> -->
+            <div class="btns">
+                <!-- <a href="#" id="play">Assistir <i class="bi bi-play-fill"></i></a>
+                <a href="#" id="dowload_main"><i class="bi bi-cloud-arrow-down-fill"></i></a> -->
+            </div>
+
+        </div>
+        <div class="video-section">
+            <!-- Vídeo do YouTube -->
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/m1lv458bxdg?si=1P6VVfbZ8dpDAMCM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+            </div>
+            <!-- Texto abaixo do vídeo -->
+            <div class="video-description">
+               <!-- <h2>The Boys</h2>
+                <p>
+                    A Terra é habitada por super-heróis que são um inspiração para a humanidade. Porém, esses protetores têm um lado sinistro que a maioria das pessoas desconhece. Se eles usam seus poderes para o mal, Hughie, Billy e o resto do time devem detê-los.
+                </p>
+            </div>-->
+        </div>
+
+        <section>
+            <h2>Populares</h2>
+            <i class="bi bi-chevron-left" style="margin-top: 180px;"></i>
+            <i class="bi bi-chevron-right" style="margin-top: 180px;"></i>
+            <div class="cards">
+                 <!-- <a href="#" class="card">
+                    <img src="{{ url_for('static', filename='img/the boys.jpg') }}" alt="" class="poster">
+                    <div class="rest_card">
+                        <img src="{{ url_for('static', filename='img/the boys1.jpg') }}" alt="">
+                        <div class="cont">
+                            <h4>The Boys</h4>
+                            <div class="sub">
+                                <p>Action, 2021</p>
+                                <h3><span>IMDB</span><i class="bi bi-star-fill"></i> 9.6</h3>
+                            </div>
+                        </div>
+                    </div> -->
+                </a>
+        </section>
+
+    
+
+    </header>
+
+   
+</div>
+
+
+
+<script src="{{ url_for('static', filename='script/videoAulasplay.js') }}"></script>
+</body>
+</html>

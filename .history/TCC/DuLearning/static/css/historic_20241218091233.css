@@ -1,0 +1,256 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.social-icon img {
+    width: 30px; 
+    height: auto; 
+}
+
+.navbar-custom {
+    background-color: rgba(255, 255, 255, 0.8); 
+}
+.navbar-nav{
+    gap: 5px;
+    ma
+}
+
+.navbar-brand img {
+    border-radius: 50%; 
+    width: 40px; 
+    height: 40px;
+}
+
+.scene {
+    min-height: 120vh; 
+    position: relative;
+    background-attachment: fixed;
+    overflow: hidden;
+    background: linear-gradient(#111425,#3751e0);
+    z-index: 1;
+}
+
+.scene i {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: animate linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+        transform: translateY();
+    }
+    10%, 90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+}
+
+footer {
+    margin-top: 50px; 
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.timeline{
+    position: relative;
+    max-width: 1600px;
+    margin: 100px auto;
+}
+
+.containertimeline {
+    padding: 10px 50px;
+    position: relative;
+    width: 50%;
+    opacity: 0; 
+    transform: translateY(-30px);
+    animation: movedown 1s linear forwards;
+}
+
+@keyframes movedown {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px); 
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); 
+    }
+}
+
+.containertimeline:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.containertimeline:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.containertimeline:nth-child(3) {
+    animation-delay: 1s;
+}
+
+.containertimeline:nth-child(4) {
+    animation-delay: 1.5s;
+}
+
+.containertimeline:nth-child(5) {
+    animation-delay: 2s;
+}
+
+
+
+.text-box{
+    padding: 20px 30px;
+    background: #fff;
+    position: relative;
+    border-radius: 6px;
+    font-size: 8px;
+}
+
+.left-container{
+    left: 0;
+}
+
+.right-container{
+    left: 50%;
+}
+
+.containertimeline img{
+    position: absolute;
+    width: 40px;
+    border-radius: 50%;
+    right: -20px;
+    top: 32px;
+    z-index: 12;
+}
+
+.right-container img{
+    left: -20px;
+}
+
+.timeline::after{
+    content: '';
+    position:absolute;
+    width: 6px;
+    height: 100%;
+    background: #fff;
+    top: 0;
+    left: 50%;
+    margin-left: -3px;
+    z-index: -1;
+    animation: moveline 4s linear forwards;
+}
+
+@keyframes moveline {
+    0%{
+        height: 0;
+    }
+    100%{
+       height: 100%; 
+    }
+}
+.text-box h2{
+    font-weight: 700;
+}
+
+.text-box h7{
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.text-box p{
+
+    font-size: 12px;
+    color:red;
+}
+
+.left-container-arrow{
+    height: 0;
+    width: 0;
+    position: absolute;
+    top: 20px;
+    z-index: 1;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid #fff;
+    right: -15px;
+}
+
+.right-container-arrow{
+    height: 0;
+    width: 0;
+    position: absolute;
+    top: 20px;
+    z-index: 1;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 15px solid #fff;
+    left: -15px;
+}
+
+
+@media screen and (max-width:600px){
+   .timeline{
+        margin: 50px auto;
+   }
+   .timeline::after{
+    left: 31px;
+    }
+    .containertimeline{
+        width: 100%;
+        padding-left: 80px;
+        padding-right: 25px;
+    }
+    
+    .text-box{
+        font-size: 13px;
+    }
+
+    .text-box h7{
+        margin-bottom: 10px;
+    }
+
+    .right-container{
+        left: 0;
+    }
+
+    .left-container img, .right-container img{
+       left: 10px; 
+    }
+    .left-container-arrow, .right-container-arrow{
+        border-right: 15px solid #fff;
+        border-left:0 ;
+        left: -15px;
+    }
+}
+
+
+.icon-buttons button:nth-child(1) {
+    margin-left: 0;
+}
+
+.icon-buttons button:nth-child(2) {
+    margin-left: 20px;
+}
+
+
+
+
+button i{
+   font-size: 20px;   
+}
+
+button i:hover{
+    color: #3751e0;
+ }

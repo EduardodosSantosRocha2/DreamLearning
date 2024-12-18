@@ -1,0 +1,324 @@
+@import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+.banner{
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+.banner .slider{
+    position: absolute;
+    width: 200px;
+    height: 250px;
+    top: 10%;
+    left: calc(50% - 100px);
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    animation: autoRun 20s linear infinite;
+    z-index: 2;
+}
+@keyframes autoRun{
+    from{
+        transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);
+    }to{
+        transform: perspective(1000px) rotateX(-16deg) rotateY(360deg);
+    }
+}
+
+.banner .slider .item{
+    position: absolute;
+    inset: 0 0 0 0;
+    transform: 
+        rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(550px);
+}
+.banner .slider .item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.banner .content{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1400px, 100vw);
+    height: max-content;
+    padding-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+.banner .content h1{
+    font-family: 'ICA Rubrik';
+    font-size: 16em;
+    line-height: 1em;
+    color: #25283B;
+    position: relative;
+}
+.banner .content h1::after{
+    position: absolute;
+    inset: 0 0 0 0;
+    content: attr(data-content);
+    z-index: 2;
+    -webkit-text-stroke: 2px #d2d2d2;
+    color: transparent;
+}
+.banner .content .author{
+    font-family: Poppins;
+    text-align: right;
+    max-width: 200px;
+}
+.banner .content h2{
+    font-size: 3em;
+}
+.banner .content .model{
+    background-image: url(images/model.png);
+    width: 100%;
+    height: 75vh;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-size: auto 130%;
+    background-repeat: no-repeat;
+    background-position: top center;
+    z-index: 1;
+}
+@media screen and (max-width: 1023px) {
+    .banner .slider{
+        width: 160px;
+        height: 200px;
+        left: calc(50% - 80px);
+    }
+    .banner .slider .item{
+        transform: 
+            rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+            translateZ(300px);
+    }
+    .banner .content h1{
+        text-align: center;
+        width: 100%;
+        text-shadow: 0 10px 20px #000;
+        font-size: 7em;
+    }
+    .banner .content .author{
+        color: #fff;
+        padding: 20px;
+        text-shadow: 0 10px 20px #000;
+        z-index: 2;
+        max-width: unset;
+        width: 100%;
+        text-align: center;
+        padding: 0 30px;
+    }
+}
+@media screen and (max-width: 767px) {
+    .banner .slider{
+        width: 100px;
+        height: 150px;
+        left: calc(50% - 50px);
+    }
+    .banner .slider .item{
+        transform: 
+            rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+            translateZ(180px);
+    }
+    .banner .content h1{
+        font-size: 5em;
+    }
+}
+
+
+
+
+
+h1{
+    color: #f8f9fa;
+}
+label{
+    color: #111425;
+}
+
+.js-plotly-plot{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
+#section {
+    margin-top: 10%;
+}
+
+.social-icon img {
+    width: 30px; /* Defina o tamanho desejado */
+    height: auto; /* Mantém a proporção */
+}
+
+.center {
+    text-align: center;
+    color: white;
+    margin-top: 2%;
+}
+
+/* Estilos para a navbar */
+.navbar-custom {
+    background-color: rgba(255, 255, 255, 0.8); /* Fundo branco transparente */
+}
+
+.navbar-nav{
+    gap: 12px;
+}
+
+.navbar-brand img {
+    border-radius: 50%; /* Torna a logo redonda */
+    width: 40px; /* Define um tamanho para a logo */
+    height: 40px;
+}
+
+.scene {
+    min-height: 100vh; /* Ajusta a altura mínima para o tamanho da tela */
+    position: relative;
+    background: linear-gradient(#111425,#3751e0);
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.scene i {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: animate linear infinite;
+}
+
+.background {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 80%;
+    text-align: center;
+    margin: 3% auto; /* Centraliza horizontalmente e adiciona margem vertical */
+}
+
+
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+        transform: translateY();
+    }
+    10%, 90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+}
+
+
+footer {
+    margin-top: 50px; /* Adiciona margem superior para separar do conteúdo anterior */
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    cursor: grab;
+}
+.table-responsive:active {
+    cursor: grabbing;
+}
+
+
+
+
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #3751e0; /* Cor azul */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 50px auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+/* Estilos responsivos */
+@media (max-width: 767px) {
+    .background {
+        width: 90%; /* Garante que a largura seja 100% em telas pequenas */
+        padding: 10px; /* Ajusta o padding para melhor visualização em dispositivos móveis */
+    }
+
+    form {
+        width: 90%; /* Garante que o formulário ocupe toda a largura disponível */
+    }
+
+    .nes-select, input[type="file"], button {
+        width: 100%; /* Ajusta os inputs e botões para ocupar toda a largura */
+        box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
+    }
+
+    .nes-select select, input[type="file"] {
+        width: 100%; /* Ajusta os selects e inputs para ocupar toda a largura */
+        box-sizing: border-box;
+    }
+
+    label.nes-btn {
+        width: 100%; /* Garante que o botão de label ocupe toda a largura */
+    }
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body::before{
+    position: absolute;
+    width: min(1400px, 90vw);
+    top: 10%;
+    left: 50%;
+    height: 90%;
+    transform: translateX(-50%);
+    content: '';
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: top center;
+    pointer-events: none;
+}
+
+
+
+
