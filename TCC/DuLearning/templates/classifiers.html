@@ -61,14 +61,14 @@
                 <div class="nes-select">
                     <select name="classifier" id="classifier" class="nes-select">
                         <option value="" selected></option>
-                        <option value="random_forest">Random Forest</option>
-                        <option value="svm">SVM</option>
-                        <option value="logistics_regression">LOGISTICS REGRESSION</option>
-                        <option value="knn">KNN</option>
-                        <option value="decision_tree">DECISION TREE</option>
-                        <option value="xgboost">XGBOOST</option>
-                        <option value="lightgbm">LIGHTGBM</option>
-                        <option value="catboost">CATBOOST</option>
+                        <option value="Random Forest">Random Forest</option>
+                        <option value="SVM">SVM</option>
+                        <option value="LOGISTICS REGRESSION">LOGISTICS REGRESSION</option>
+                        <option value="KNN">KNN</option>
+                        <option value="DECISION TREE">DECISION TREE</option>
+                        <option value="XGBOOST">XGBOOST</option>
+                        <option value="LIGHTGBM">LIGHTGBM</option>
+                        <option value="CATBOOST">CATBOOST</option>
                     </select><br />
                 </div>  
                 
@@ -139,7 +139,7 @@
         </footer>
       </div>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='script/classifier.js') }}"></script>
+    
     <div vw class="enabled">
 		<div vw-access-button class="active"></div>
 		<div vw-plugin-wrapper>
@@ -150,5 +150,15 @@
 	  <script>
 		  new window.VLibras.Widget('https://vlibras.gov.br/app');
 	  </script>
+      
+      <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+      <script src="{{ url_for('static', filename='script/firebase-init.js') }}"></script>
+      <script src="{{ url_for('static', filename='script/logout.js') }}"></script>
+      <script src="{{ url_for('static', filename='script/auth-guard.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='script/classifier.js') }}"></script>
+
+
 </body>
 </html>

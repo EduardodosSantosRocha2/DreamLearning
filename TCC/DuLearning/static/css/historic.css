@@ -24,7 +24,7 @@
 }
 
 .scene {
-    min-height: 100vh; 
+    min-height: 120vh; 
     position: relative;
     background-attachment: fixed;
     overflow: hidden;
@@ -66,35 +66,47 @@ footer {
     margin: 100px auto;
 }
 
-.containertimeline{
+.containertimeline {
     padding: 10px 50px;
     position: relative;
     width: 50%;
+    opacity: 0; 
+    transform: translateY(-30px);
     animation: movedown 1s linear forwards;
-    opacity: 0;
 }
+
 @keyframes movedown {
-    0%{
-        opacity: 1;
-        transform: translateY(-30px);
+    0% {
+        opacity: 0;
+        transform: translateY(-30px); 
     }
-    100%{
+    100% {
         opacity: 1;
-        transform: translateY(0px);
+        transform: translateY(0); 
     }
 }
-.containertimeline:nth-child(1){
+
+.containertimeline:nth-child(1) {
     animation-delay: 0s;
 }
-.containertimeline:nth-child(2){
+
+.containertimeline:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.containertimeline:nth-child(3) {
     animation-delay: 1s;
 }
-.containertimeline:nth-child(3){
+
+.containertimeline:nth-child(4) {
+    animation-delay: 1.5s;
+}
+
+.containertimeline:nth-child(5) {
     animation-delay: 2s;
 }
-.containertimeline:nth-child(4){
-    animation-delay: 3s;
-}
+
+
 
 .text-box{
     padding: 20px 30px;

@@ -64,15 +64,15 @@
           <div class="nes-select">
             <select name="regression" id="regression" class="nes-select">
               <option value="" selected></option>
-              <option value="simple_linear_regression">SIMPLE LINEAR</option>
-              <option value="multiple_linear_regression">MULTIPLE LINEAR</option>
-              <option value="polynomial_regression">POLYNOMIAL</option>
-              <option value="regression_by_support_vectors">SUPPORT VECTORS(SVR)</option>
-              <option value="regression_with_decision_tree">DECISION TREE</option>
-              <option value="regression_with_random_forest">RANDOM FOREST</option>
-              <option value="regression_with_xgboost">XGBOOST</option>
-              <option value="regression_with_light_gbm">LIGHT GBM</option>
-              <option value="regression_with_catboost">CATBOOST</option>
+              <option value="SIMPLE LINEAR">SIMPLE LINEAR</option>
+              <option value="MULTIPLE LINEAR">MULTIPLE LINEAR</option>
+              <option value="POLYNOMIAL">POLYNOMIAL</option>
+              <option value="SUPPORT VECTORS(SVR)">SUPPORT VECTORS(SVR)</option>
+              <option value="DECISION TREE">DECISION TREE</option>
+              <option value="RANDOM FOREST">RANDOM FOREST</option>
+              <option value="XGBOOST">XGBOOST</option>
+              <option value="LIGHT GBM">LIGHT GBM</option>
+              <option value="CATBOOST">CATBOOST</option>
               
             </select><br />
           </div>
@@ -152,18 +152,24 @@
           </div>
         </div>
       </footer>
-    </div>
-    
-    <script type="text/javascript" src="{{ url_for('static', filename='script/regression.js') }}"></script>
+    </div>  
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper>
         <div class="vw-plugin-top-wrapper"></div>
       </div>
-      </div>
+    </div>
       <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
       <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
       </script>
+      
+      <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+      <script src="{{ url_for('static', filename='script/firebase-init.js') }}"></script>
+      <script src="{{ url_for('static', filename='script/logout.js') }}"></script>
+      <script src="{{ url_for('static', filename='script/auth-guard.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='script/regression.js') }}"></script>
   </body>
 </html>

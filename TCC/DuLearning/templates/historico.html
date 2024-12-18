@@ -58,89 +58,9 @@
     
     <div class="scene">
 
-        <div class="timeline">
-            <div class="containertimeline left-container">
-                <img src="{{ url_for('static', filename='img/knn1.png') }}" alt="Logo">
-                <div class="text-box">
-                    <h2>KNN</h2>
-                    <h7>10/02/2025 18:45h</h7>
-                    <p>No modelo de classificação aplicado à base de dados "nome da base", o algoritmo KNN, configurado com os parâmetros n_neighbors = 7, metric = minkowski e p = 2, obteve 98% de acurácia no treinamento, 97% no teste e 97,23% na validação cruzada.</p>
-                    <div class="icon-buttons">
-                        <button type="button" onclick="downloadFile()" style="border: none;" title="Baixar arquivo CSV">
-                            <i class='bx bx-cloud-download'></i>
-                        </button>
-                        <button type="button" onclick="copyToClipboard()" style="border: none;" title="Copiar o código-fonte KNN">
-                            <i class='bx bx-copy-alt' ></i>
-                        </button>
-                    </div>
-                    <span class="left-container-arrow"></span>
-                </div>
-            </div>
-            
-        
-
-       
-            <div class="containertimeline right-container">
-                <img src="{{ url_for('static', filename='img/knn1.png') }}" alt="Logo">
-                <div class="text-box">
-                    <h2>KNN</h2>
-                    <h7>10/02/2025 18:45h</h7>
-                    <p>No modelo de classificação aplicado à base de dados "nome da base", o algoritmo KNN, configurado com os parâmetros n_neighbors = 7, metric = minkowski e p = 2, obteve 98% de acurácia no treinamento, 97% no teste e 97,23% na validação cruzada.</p>
-                    <div class="icon-buttons">
-                        <button type="button" onclick="downloadFile()" style="border: none;" title="Baixar arquivo CSV">
-                            <i class='bx bx-cloud-download'></i>
-                        </button>
-                        <button type="button" onclick="copyToClipboard()" style="border: none;" title="Copiar o código-fonte KNN">
-                            <i class='bx bx-copy-alt' ></i>
-                        </button>
-                    </div>
-                    <span class="right-container-arrow"></span>
-                </div>
-            </div>
-
-        
-            <div class="containertimeline left-container">
-                <img src="{{ url_for('static', filename='img/knn1.png') }}" alt="Logo">
-                <div class="text-box">
-                    <h2>KNN</h2>
-                    <h7>10/02/2025 18:45h</h7>
-                    <p>No modelo de classificação aplicado à base de dados "nome da base", o algoritmo KNN, configurado com os parâmetros n_neighbors = 7, metric = minkowski e p = 2, obteve 98% de acurácia no treinamento, 97% no teste e 97,23% na validação cruzada.</p>
-                    <div class="icon-buttons">
-                        <button type="button" onclick="downloadFile()" style="border: none;" title="Baixar arquivo CSV">
-                            <i class='bx bx-cloud-download'></i>
-                        </button>
-                        <button type="button" onclick="copyToClipboard()" style="border: none;" title="Copiar o código-fonte KNN">
-                            <i class='bx bx-copy-alt' ></i>
-                        </button>
-                    </div>
-                    <span class="left-container-arrow"></span>
-                </div>
-            </div>
-            
-        
-
-       
-            <div class="containertimeline right-container">
-                <img src="{{ url_for('static', filename='img/knn1.png') }}" alt="Logo">
-                <div class="text-box">
-                    <h2>KNN</h2>
-                    <h7>10/02/2025 18:45h</h7>
-                    <p>No modelo de classificação aplicado à base de dados "nome da base", o algoritmo KNN, configurado com os parâmetros n_neighbors = 7, metric = minkowski e p = 2, obteve 98% de acurácia no treinamento, 97% no teste e 97,23% na validação cruzada.</p>
-                    <div class="icon-buttons">
-                        <button type="button" onclick="downloadFile()" style="border: none;" title="Baixar arquivo CSV">
-                            <i class='bx bx-cloud-download'></i>
-                        </button>
-                        <button type="button" onclick="copyToClipboard()" style="border: none;" title="Copiar o código-fonte KNN">
-                            <i class='bx bx-copy-alt' ></i>
-                        </button>
-                    </div>
-                    <span class="right-container-arrow"></span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
+        <div class="timeline"></div>
+         
+    </div>  
         <div class="container">
             <footer class="mt-5 py-3 text-black">
               <div class="container text-center">
@@ -170,8 +90,8 @@
 
       <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
       <script src="{{ url_for('static', filename='script/firebase-init.js') }}"></script>
-      <script src="{{ url_for('static', filename='script/logout.js') }}"></script>
       <script src="{{ url_for('static', filename='script/logout.js') }}"></script>
       <script src="{{ url_for('static', filename='script/auth-guard.js') }}"></script>
       <script type="text/javascript" src="{{ url_for('static', filename='script/historic.js') }}"></script> 

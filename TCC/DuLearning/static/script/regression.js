@@ -1,5 +1,8 @@
 let spinner = document.getElementById('spinner');
 spinner.style.display = 'none';
+var parametersColection = {}
+var filename;
+
 function stars() {
     const count = 500;
     const scene = document.querySelector(".scene");
@@ -135,10 +138,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Se a opção selecionada for "SIMPLE LINEAR" e houver um arquivo CSV selecionado
         if (selectedOption === "SIMPLE LINEAR" || selectedOption === "POLYNOMIAL" && csvFileInput.files.length > 0) {
             handleCSVFile(csvFileInput.files[0]);
+            parametersColection = {}
         }
         else if (selectedOption === "SUPPORT VECTORS(SVR)") {
             console.log("chegou");
-            var parametersColection = {
+            parametersColection = {
                 kernel: "text"
             };
             var keys = Object.keys(parametersColection);
@@ -160,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         else if (selectedOption === "DECISION TREE") {
             console.log("chegou");
-            var parametersColection = {
+            parametersColection = {
                 max_depth: "number",
                 random_state: "number"
             };
@@ -182,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         else if (selectedOption === "RANDOM FOREST") {
             console.log("chegou");
-            var parametersColection = {
+            parametersColection = {
                 n_estimators: "number",
                 criterion: "text",
                 max_depth: "number",
@@ -206,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         else if (selectedOption === "XGBOOST") {
             console.log("chegou xg");
-            var parametersColection = {
+            parametersColection = {
                 n_estimators: "number",
                 max_depth: "number",
                 learning_rate: "number",
@@ -231,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         else if (selectedOption === "LIGHT GBM") {
             console.log("chegou");
-            var parametersColection = {
+            parametersColection = {
                 num_leaves: "number",
                 max_depth: "number",
                 learning_rate: "number",
@@ -257,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         else if (selectedOption === "CATBOOST") {
             console.log("chegou");
-            var parametersColection = {
+            parametersColection = {
                 iterations: "number",
                 learning_rate: "number",
                 depth: "number",
@@ -286,6 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Se houver um arquivo CSV selecionado e a opção selecionada for "SIMPLE LINEAR"
         if (regressionSelect.value === "simple_linear_regression" || regressionSelect.value === "polynomial_regression" && csvFileInput.files.length > 0) {
             handleCSVFile(csvFileInput.files[0]);
+            parametersColection = {}
         }
     });
 
@@ -426,7 +431,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // reader.onerror = function (e) {
             //     console.error("Erro ao ler o arquivo: ", e);
               };
-
+              filename = file.name.split(".csv")[0];
               reader.readAsText(file);
         });
 
@@ -445,7 +450,8 @@ document.addEventListener("DOMContentLoaded", function () {
             formData.append("separator", separator);
             formData.append("posicao", document.getElementById("posicao").textContent)
             formData.append("deployBoolean",deployBoolean)
-            console.log(formData);
+
+         
             fetch("/regressionPost", {
                 method: "POST",
                 body: formData,
@@ -458,7 +464,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then((data) => {
                     spinner.style.display = 'none';
-                    console.log(`Coeficiente_linear: ${data.Coeficiente_linear}`);
                     let resultText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}%<br>`;
                     resultText += `Coeficiente de determinação do teste: ${data.determinationCoefficientTest}%<br>`;
                     resultText += `Erro médio absoluto: ${data.abs}<br>`;
@@ -474,6 +479,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("result1").innerHTML = `<div class="preformatted-text">${resultText1}</div>`;
                     
                     document.getElementById("windowcode").innerHTML = data.code;
+
+                    
+                    const classifier = formData.get('regression');
+                    const parameters = {};
+                    formData.forEach((value, key) => {
+                        if (key.startsWith('parameters')) { // Filtra apenas as chaves que começam com 'parameters'
+                            parameters[key] = value; // Adiciona ao objeto
+                        }
+                    });
+                    const today = new Date();
+                    const dataAtual = today.toISOString().split('T')[0];
+                    
+                    
+
+                    saveTransaction(classifier, filename,parameters,data.determinationCoefficientTraining,data.determinationCoefficientTest,data.abs,data.MeanSquaredError,dataAtual)
                 })                                           
                 .catch((error) => {
                     console.error("Erro:", error);
@@ -485,4 +505,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 });
+
+
+function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTraining, CoefficientTest,abs,MeanSquaredError,date) {
+  
+    const result = {};
+    const values = Object.values(Parameters);
+    Object.keys(parametersColection).forEach((key, index) => {
+        result[key] = values[index]; 
+    });
+
+
+
+    // Criar a transação
+    const transaction = {
+        Algorithm: Algorithm,
+        NameDatabase: NameDatabase,
+        Parameters:result,
+        CoefficientTraining: CoefficientTraining,
+        CoefficientTest: CoefficientTest,
+        abs:abs,
+        MeanSquaredError:MeanSquaredError,
+        date: date,
+        type: "Regressão",
+        user: {
+            uid: firebase.auth().currentUser.uid
+        }
+    }
+
+    // Adicionar ao Firestore
+    firebase.firestore()
+        .collection('transactions')
+        .add(transaction)
+        .then(()=>{
+            console.log("Cadastrado no DBA");
+        })
+        .catch(error =>{
+            alert("Erro ao salvar transação!");
+        })
+}
+
 

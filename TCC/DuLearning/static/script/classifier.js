@@ -1,6 +1,7 @@
 let spinner = document.getElementById('spinner');
 spinner.style.display = 'none';
-
+var filename;
+var parametersColection;
 
 
 function stars() {
@@ -104,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const parametersDiv = document.getElementById("parameters");
             parametersDiv.innerHTML = "";
             if (textClassifier === "Random Forest") {
-                var parametersColection = {
+                parametersColection = {
                     n_estimators: "number",
                     criterion: "text",
                     random_state: "number",
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (textClassifier === "SVM") {
                 console.log("chegou");
-                var parametersColection = {
+                parametersColection = {
                     kernel: "text",
                     random_state: "number",
                     C: "number",
@@ -153,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (textClassifier === "LOGISTICS REGRESSION") {
                 console.log("chegou");
-                var parametersColection = {
+                parametersColection = {
                     random_state: "number",
                     max_iter: "number",
                     penalty: "text",
@@ -180,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (textClassifier === "KNN") {
                 console.log("chegou");
-                var parametersColection = {
+                parametersColection = {
                     n_neighbors: "number",
                     metric: "text",
                     p: "number",
@@ -204,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (textClassifier === "DECISION TREE") {
                 console.log("chegou");
-                var parametersColection = {
+                parametersColection = {
                     criterion: "text",
                     random_state: "number",
                     max_depth: "text",
@@ -228,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (textClassifier === "XGBOOST") {
                 console.log("chegou");
-                var parametersColection = {
+                parametersColection = {
                     max_depth: "number",
                     learning_rate: "number",
                     n_estimators: "number",
@@ -254,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (textClassifier === "LIGHTGBM") {
                 console.log("chegou");
-                var parametersColection = {
+                parametersColection = {
                     num_leaves: "number",
                     objective: "text",
                     max_depth: "number",
@@ -281,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (textClassifier === "CATBOOST") {
                 console.log("chegou");
-                var parametersColection = {
+                parametersColection = {
                     task_type: "text",
                     iterations: "number",
                     learning_rate: "number",
@@ -376,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // reader.onerror = function (e) {
         //     console.error("Erro ao ler o arquivo: ", e);
          };
-
+        filename = file.name.split(".csv")[0];
         reader.readAsText(file);
         });
 
@@ -388,9 +389,11 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault();
             const formData = new FormData(this);
             formData.append("separator", separator);
-            formData.append("deployBoolean",deployBoolean)
-            console.log(formData);
+            formData.append("deployBoolean",deployBoolean);
 
+            
+           
+   
             fetch("/predict", {
                 method: "POST",
                 body: formData,
@@ -415,8 +418,24 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
 
                     document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>"+resultText+"</p>"}</div>`;
-                    console.log(data.code)
                     document.getElementById("windowcode").innerHTML = data.code;
+                    
+                    
+                   
+                    const classifier = formData.get('classifier');
+                    const parameters = {};
+                    formData.forEach((value, key) => {
+                        if (key.startsWith('parameters')) { // Filtra apenas as chaves que começam com 'parameters'
+                            parameters[key] = value; // Adiciona ao objeto
+                        }
+                    });
+                    const today = new Date();
+                    const dataAtual = today.toISOString().split('T')[0];
+                    
+                    
+
+                    saveTransaction(classifier,"0", filename,parameters,data.accuracy_test,data.accuracy_training,dataAtual)
+
                                        
                 })         
                 .catch((error) => {
@@ -428,4 +447,49 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 });
 
+
+
+
+
+
+
+
+
+
+function saveTransaction(Algorithm, CrossValidation, NameDatabase, Parameters, TestAccuracy, TrainingAccuracy, date) {
+  
+    const result = {};
+    const values = Object.values(Parameters);
+    Object.keys(parametersColection).forEach((key, index) => {
+        result[key] = values[index]; 
+    });
+
+
+
+    // Criar a transação
+    const transaction = {
+        Algorithm: Algorithm,
+        CrossValidation: CrossValidation,
+        NameDatabase: NameDatabase,
+        Parameters:result,
+        TestAccuracy: TestAccuracy,
+        TrainingAccuracy: TrainingAccuracy,
+        date: date,
+        type: "Classificação",
+        user: {
+            uid: firebase.auth().currentUser.uid
+        }
+    }
+
+    // Adicionar ao Firestore
+    firebase.firestore()
+        .collection('transactions')
+        .add(transaction)
+        .then(()=>{
+            console.log("Cadastrado no DBA");
+        })
+        .catch(error =>{
+            alert("Erro ao salvar transação!");
+        })
+}
 
