@@ -59,7 +59,7 @@ function formatarParametros(parameters) {
     }
 
     return Object.entries(parameters)
-        .map(([key, value]) => `${key} =  ${value}`)
+        .map(([key, value]) => `<span class="key">${key}</span> =  <span class="value">${value}</span>`)
         .join(", ");
 }
 
@@ -81,7 +81,7 @@ function createTimeline(transactions) {
                 <h2>${transaction.Algorithm || "Sem título"}</h2>
                 <h7>${transaction.date}</h7>
                 <p>${transaction.type}</p>
-                <h7>No modelo de ${transaction.type || "nenhum modelo de classificação"} aplicado à base de dados "${transaction.NameDatabase || "base de dados desconhecida"}", o algoritmo ${transaction.Algorithm || "Sem título"}, configurado com os parâmetros ${formatarParametros(transaction.Parameters) || "Sem parametros"}, obteve ${transaction.TrainingAccuracy || "Sem acuracia de treino"}% de acurácia no treinamento, ${transaction.TestAccuracy || "Sem acuracia de teste"}% no teste e ${transaction.CrossValidation || "Sem validação cruzada"}% na validação cruzada.</h7>
+                <h7>No modelo de ${transaction.type || "nenhum modelo de classificação"} aplicado à base de dados "${transaction.NameDatabase || "base de dados desconhecida"}", o algoritmo ${transaction.Algorithm || "Sem título"}, configurado com os parâmetros ${formatarParametros(transaction.Parameters) || "Sem parametros"}, obteve <span class="percents">${transaction.TrainingAccuracy || "Sem acuracia de treino"}%</span> de acurácia no treinamento, <span class="percents">${transaction.TestAccuracy || "Sem acuracia de teste"}%</span> no teste e <span class="percents">${transaction.CrossValidation || "Sem validação cruzada"}%</span> na validação cruzada.</h7>
                 <div class="icon-buttons">
                     <button type="button" onclick="downloadFile()" style="border: none;" title="Baixar arquivo CSV">
                         <i class='bx bx-cloud-download'></i>
@@ -99,7 +99,7 @@ function createTimeline(transactions) {
                 <h2>${transaction.Algorithm || "Sem título"}</h2>
                 <h7>${transaction.date}</h7>
                 <p>${transaction.type}</p>
-                <h7>No modelo de ${transaction.type || "nenhum modelo de regressão"} aplicado à base de dados "${transaction.NameDatabase || "base de dados desconhecida"}", o algoritmo ${transaction.Algorithm || "sem título"}, configurado com os parâmetros ${formatarParametros(transaction.Parameters) || "{}"}, obteve um coeficiente de determinação do treinamento ${transaction.CoefficientTraining || "sem coeficiente de treino"}% e de teste ${transaction.CoefficientTest || "sem coeficiente de teste"}%, um erro médio absoluto de  ${transaction.abs || "sem erro médio absoluto"} e raiz erro quadrático médio de ${transaction.MeanSquaredError || "sem erro quadrático médio"}.</h7>
+                <h7>No modelo de ${transaction.type || "nenhum modelo de regressão"} aplicado à base de dados "${transaction.NameDatabase || "base de dados desconhecida"}", o algoritmo ${transaction.Algorithm || "sem título"}, configurado com os parâmetros ${formatarParametros(transaction.Parameters) || "{}"}, obteve um coeficiente de determinação do treinamento <span class="percents">${transaction.CoefficientTraining || "sem coeficiente de treino"}%</span> e de teste <span class="percents">${transaction.CoefficientTest || "sem coeficiente de teste"}%</span>, um erro médio absoluto de  <span class="percents">${transaction.abs || "sem erro médio absoluto"}</span> e raiz erro quadrático médio de <span class="percents">${transaction.MeanSquaredError || "sem erro quadrático médio"}</span>.</h7>
                 <div class="icon-buttons">
                     <button type="button" onclick="downloadFile()" style="border: none;" title="Baixar arquivo CSV">
                         <i class='bx bx-cloud-download'></i>

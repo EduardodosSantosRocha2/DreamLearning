@@ -2,7 +2,7 @@ let spinner = document.getElementById('spinner');
 spinner.style.display = 'none';
 var filename;
 var parametersColection;
-
+var datalistOptions;
 
 function stars() {
     const count = 500;
@@ -101,9 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
             var select = document.querySelector("#classifier");
             var option = select.children[select.selectedIndex];
             var textClassifier = option.textContent;
-            console.log(textClassifier);
-            const parametersDiv = document.getElementById("parameters");
-            parametersDiv.innerHTML = "";
+            
             if (textClassifier === "Random Forest") {
                 parametersColection = {
                     n_estimators: "number",
@@ -111,21 +109,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     random_state: "number",
                     max_depth: "number",
                 };
-                var keys = Object.keys(parametersColection);
-                for (var i = 0; i < 4; i++) {
-                    console.log(keys[i]);
-                    console.log(parametersColection[keys[i]]);
-                    const parametersLabel = document.createElement("label");
-                    parametersLabel.textContent = keys[i] + ":";
-                    parametersDiv.appendChild(parametersLabel);
-                    const parametersInput = document.createElement("input");
-                    parametersInput.type = parametersColection[keys[i]];
-                    parametersInput.step = "0.0000000001";
-                    parametersInput.name = "parameters" + (i + 1);
-                    parametersInput.className  = "nes-input";
-                    parametersDiv.appendChild(parametersInput);
-                    parametersDiv.appendChild(document.createElement("br"));
-                }
+                
+                datalistOptions = {
+                    n_estimators: [100, 150, 200, 250],
+                    criterion: ["gini", "entropy","log_loss"],
+                    random_state: [0, 1, 2, 3, 4, 5],
+                    max_depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                };
+
+                createParameters(4, parametersColection, datalistOptions);
+                
             }
 
             if (textClassifier === "SVM") {
@@ -135,21 +128,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     random_state: "number",
                     C: "number",
                 };
-                var keys = Object.keys(parametersColection);
-                for (var i = 0; i < 3; i++) {
-                    console.log(keys[i]);
-                    console.log(parametersColection[keys[i]]);
-                    const parametersLabel = document.createElement("label");
-                    parametersLabel.textContent = keys[i] + ":";
-                    parametersDiv.appendChild(parametersLabel);
-                    const parametersInput = document.createElement("input");
-                    parametersInput.type = parametersColection[keys[i]];
-                    parametersInput.step = "0.0000000001";
-                    parametersInput.name = "parameters" + (i + 1);
-                    parametersInput.className  = "nes-input";
-                    parametersDiv.appendChild(parametersInput);
-                    parametersDiv.appendChild(document.createElement("br"));
-                }
+                
+                datalistOptions = {
+                    kernel: ["linear", "poly", "rbf", "sigmoid", "precomputed"],
+                    random_state: [0, 1, 2, 3, 4, 5],
+                    C: [1, 2, 5, 10]
+                };
+
+                createParameters(3, parametersColection, datalistOptions);
             }
 
             if (textClassifier === "LOGISTICS REGRESSION") {
@@ -162,21 +148,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     C: "number",
                     solver: "text",
                 };
-                var keys = Object.keys(parametersColection);
-                for (var i = 0; i < 6; i++) {
-                    console.log(keys[i]);
-                    console.log(parametersColection[keys[i]]);
-                    const parametersLabel = document.createElement("label");
-                    parametersLabel.textContent = keys[i] + ":";
-                    parametersDiv.appendChild(parametersLabel);
-                    const parametersInput = document.createElement("input");
-                    parametersInput.type = parametersColection[keys[i]];
-                    parametersInput.step = "0.0000000001";
-                    parametersInput.name = "parameters" + (i + 1);
-                    parametersInput.className  = "nes-input";
-                    parametersDiv.appendChild(parametersInput);
-                    parametersDiv.appendChild(document.createElement("br"));
-                }
+                
+                datalistOptions = {
+                    random_state: [0, 1, 2, 3, 4, 5],
+                    max_iter: [100, 200, 300, 400, 500],
+                    penalty: ["l1", "l2"],
+                    tol: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
+                    C: [1, 2, 5, 10],
+                    solver: ["lbfgs", "liblinear", "newton-cg", "newton-cholesky", "sag", "saga"]
+                };
+
+                createParameters(6, parametersColection, datalistOptions);
             }
 
             if (textClassifier === "KNN") {
@@ -184,23 +166,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 parametersColection = {
                     n_neighbors: "number",
                     metric: "text",
-                    p: "number",
                 };
-                var keys = Object.keys(parametersColection);
-                for (var i = 0; i < 3; i++) {
-                    console.log(keys[i]);
-                    console.log(parametersColection[keys[i]]);
-                    const parametersLabel = document.createElement("label");
-                    parametersLabel.textContent = keys[i] + ":";
-                    parametersDiv.appendChild(parametersLabel);
-                    const parametersInput = document.createElement("input");
-                    parametersInput.type = parametersColection[keys[i]];
-                    parametersInput.step = "0.0000000001";
-                    parametersInput.name = "parameters" + (i + 1);
-                    parametersInput.className  = "nes-input";
-                    parametersDiv.appendChild(parametersInput);
-                    parametersDiv.appendChild(document.createElement("br"));
-                }
+                
+                datalistOptions = {
+                    n_neighbors: [1, 3, 5, 7, 9],
+                    metric: ["minkowski", "euclidean", "manhattan", "chebyshev", "hamming", "cosine"]
+                };
+
+                createParameters(2, parametersColection, datalistOptions);
             }
 
             if (textClassifier === "DECISION TREE") {
@@ -210,21 +183,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     random_state: "number",
                     max_depth: "text",
                 };
-                var keys = Object.keys(parametersColection);
-                for (var i = 0; i < 3; i++) {
-                    console.log(keys[i]);
-                    console.log(parametersColection[keys[i]]);
-                    const parametersLabel = document.createElement("label");
-                    parametersLabel.textContent = keys[i] + ":";
-                    parametersDiv.appendChild(parametersLabel);
-                    const parametersInput = document.createElement("input");
-                    parametersInput.type = parametersColection[keys[i]];
-                    parametersInput.step = "0.0000000001";
-                    parametersInput.name = "parameters" + (i + 1);
-                    parametersInput.className  = "nes-input";
-                    parametersDiv.appendChild(parametersInput);
-                    parametersDiv.appendChild(document.createElement("br"));
-                }
+                
+                datalistOptions = {
+                    criterion: ["gini", "entropy", "log_loss"],
+                    random_state: [0, 1, 2, 3, 4, 5],
+                    max_depth:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                };
+
+                createParameters(3, parametersColection, datalistOptions);
             }
 
             if (textClassifier === "XGBOOST") {
@@ -236,21 +202,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     objective: "text",
                     random_state: "number",
                 };
-                var keys = Object.keys(parametersColection);
-                for (var i = 0; i < 5; i++) {
-                    console.log(keys[i]);
-                    console.log(parametersColection[keys[i]]);
-                    const parametersLabel = document.createElement("label");
-                    parametersLabel.textContent = keys[i] + ":";
-                    parametersDiv.appendChild(parametersLabel);
-                    const parametersInput = document.createElement("input");
-                    parametersInput.type = parametersColection[keys[i]];
-                    parametersInput.step = "0.0000000001";
-                    parametersInput.name = "parameters" + (i + 1);
-                    parametersInput.className  = "nes-input";
-                    parametersDiv.appendChild(parametersInput);
-                    parametersDiv.appendChild(document.createElement("br"));
-                }
+                
+                datalistOptions = {
+                    max_depth:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    learning_rate: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
+                    n_estimators: [100, 150, 200, 250],
+                    objective: ["binary:logistic","binary:logitraw","binary:hinge", "count:poisson", "survival:cox", "survival:aft", "multi:softmax", "multi:softprob", "rank:ndcg", "rank:map", "rank:pairwise"],
+                    random_state: [0, 1, 2, 3, 4, 5]
+                };
+
+                createParameters(5, parametersColection, datalistOptions);
             }
 
             if (textClassifier === "LIGHTGBM") {
@@ -263,21 +224,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     max_bin: "number",
                     num_boost_round: "number",
                 };
-                var keys = Object.keys(parametersColection);
-                for (var i = 0; i < 6; i++) {
-                    console.log(keys[i]);
-                    console.log(parametersColection[keys[i]]);
-                    const parametersLabel = document.createElement("label");
-                    parametersLabel.textContent = keys[i] + ":";
-                    parametersDiv.appendChild(parametersLabel);
-                    const parametersInput = document.createElement("input");
-                    parametersInput.type = parametersColection[keys[i]];
-                    parametersInput.step = "0.0000000001";
-                    parametersInput.name = "parameters" + (i + 1);
-                    parametersInput.className  = "nes-input";
-                    parametersDiv.appendChild(parametersInput);
-                    parametersDiv.appendChild(document.createElement("br"));
-                }
+                
+                datalistOptions = {
+                    num_leaves: [100, 150, 200, 250],
+                    objective: ["binary", "multiclass", "multiclassova", "ova", "xentropy", "xentlambda"],
+                    max_depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    learning_rate: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
+                    max_bin: [100, 150, 200, 250],
+                    num_boost_round: [100, 150, 200, 250],
+                };
+
+                createParameters(6, parametersColection, datalistOptions);
             }
 
             if (textClassifier === "CATBOOST") {
@@ -290,23 +247,65 @@ document.addEventListener("DOMContentLoaded", function() {
                     random_state: "number",
                     eval_metric: "text",
                 };
-                var keys = Object.keys(parametersColection);
-                for (var i = 0; i < 6; i++) {
-                    console.log(keys[i]);
-                    console.log(parametersColection[keys[i]]);
-                    const parametersLabel = document.createElement("label");
-                    parametersLabel.textContent = keys[i] + ":";
-                    parametersDiv.appendChild(parametersLabel);
-                    const parametersInput = document.createElement("input");
-                    parametersInput.type = parametersColection[keys[i]];
-                    parametersInput.step = "0.0000000001";
-                    parametersInput.name = "parameters" + (i + 1);
-                    parametersInput.className  = "nes-input";
-                    parametersDiv.appendChild(parametersInput);
-                    parametersDiv.appendChild(document.createElement("br"));
-                }
+                
+                datalistOptions = {
+                    task_type: ["CPU", "GPU"],
+                    iterations: [100, 150, 200, 250],
+                    learning_rate: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
+                    depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    random_state: [0, 1, 2, 3, 4, 5],
+                    eval_metric: ["Accuracy","Logloss", "AUC"],
+                };
+
+                createParameters(6, parametersColection, datalistOptions);
             }
         });
+
+
+
+    function createParameters(size,parametersColection, datalistOptions){
+        const datalists = document.querySelectorAll('datalist');
+        datalists.forEach(datalist => datalist.remove());
+
+        const parametersDiv = document.getElementById("parameters");
+        parametersDiv.innerHTML = "";
+
+        var keys = Object.keys(parametersColection);
+        for (var i = 0; i < size; i++) {
+            console.log(keys[i]);
+            console.log(parametersColection[keys[i]]);
+            const parametersLabel = document.createElement("label");
+            parametersLabel.textContent = keys[i] + ":";
+            parametersDiv.appendChild(parametersLabel);
+            const parametersInput = document.createElement("input");
+            parametersInput.type = parametersColection[keys[i]];
+            parametersInput.step = "0.0000000001";
+            parametersInput.name = "parameters" + (i + 1);
+            parametersInput.className  = "nes-input";
+
+            if (datalistOptions[keys[i]]) {
+                const datalistID = `datalist-${keys[i]}`;
+                parametersInput.setAttribute("list", datalistID);
+                
+                const dataList = document.createElement("datalist");
+                dataList.id = datalistID;
+
+                datalistOptions[keys[i]].forEach((optionValue)=>{
+                    const option = document.createElement("option");
+                    option.value = optionValue;
+                    dataList.appendChild(option);
+                })
+
+                parametersDiv.appendChild(dataList);
+            }   
+
+
+            parametersDiv.appendChild(parametersInput);
+            parametersDiv.appendChild(document.createElement("br"));
+            
+        }
+    }    
+
     document
         .getElementById("csv_file")
         .addEventListener("change", function (event) {
@@ -419,6 +418,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>"+resultText+"</p>"}</div>`;
                     document.getElementById("windowcode").innerHTML = data.code;
+                
+                    
                     
                     
                    
@@ -446,11 +447,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
         });
 });
-
-
-
-
-
 
 
 

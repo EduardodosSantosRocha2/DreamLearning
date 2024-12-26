@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 *{
     margin: 0;
     padding: 0;
@@ -37,6 +39,7 @@
     background: #fff;
     border-radius: 50%;
     animation: animate linear infinite;
+    z-index: 1;
 }
 
 @keyframes animate {
@@ -62,7 +65,7 @@ footer {
 
 .timeline{
     position: relative;
-    max-width: 1600px;
+    max-width: 1200px;
     margin: 100px auto;
 }
 
@@ -252,4 +255,19 @@ button i{
 
 button i:hover{
     color: #3751e0;
- }
+}
+
+.key{
+    color: #9370DB;
+    
+}
+
+.value{
+    color: #6A5ACD;
+    font-size: 11px;
+}
+
+.percents{
+    color: #9966CC;
+    font-size: 11px;
+}

@@ -2,6 +2,7 @@ let spinner = document.getElementById('spinner');
 spinner.style.display = 'none';
 var parametersColection = {}
 var filename;
+var datalistOptions;
 
 function stars() {
     const count = 500;
@@ -145,22 +146,12 @@ document.addEventListener("DOMContentLoaded", function () {
             parametersColection = {
                 kernel: "text"
             };
-            var keys = Object.keys(parametersColection);
-            for (var i = 0; i < 1; i++) {
-                console.log(keys[i]);
-                console.log(parametersColection[keys[i]]);
-                const parametersLabel = document.createElement("label");
-                parametersLabel.textContent = keys[i] + ":";
-                parametersDiv.appendChild(parametersLabel);
-                const parametersInput = document.createElement("input");
-                parametersInput.type = parametersColection[keys[i]];
-                parametersInput.step = "0.0000000001";
-                parametersInput.name = "parameters" + (i + 1);
-                parametersInput.classList.add("nes-input");
-                parametersInput.className  = "nes-input";
-                parametersDiv.appendChild(parametersInput);
-                parametersDiv.appendChild(document.createElement("br"));
-            }
+            
+            datalistOptions = {
+                kernel: ["linear", "poly", "rbf", "sigmoid", "precomputed"]
+            };
+
+            createParameters(1, parametersColection, datalistOptions);
         }
         else if (selectedOption === "DECISION TREE") {
             console.log("chegou");
@@ -168,21 +159,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 max_depth: "number",
                 random_state: "number"
             };
-            var keys = Object.keys(parametersColection);
-            for (var i = 0; i < 2; i++) {
-                console.log(keys[i]);
-                console.log(parametersColection[keys[i]]);
-                const parametersLabel = document.createElement("label");
-                parametersLabel.textContent = keys[i] + ":";
-                parametersDiv.appendChild(parametersLabel);
-                const parametersInput = document.createElement("input");
-                parametersInput.type = parametersColection[keys[i]];
-                parametersInput.step = "0.0000000001";
-                parametersInput.name = "parameters" + (i + 1);
-                parametersInput.className  = "nes-input";
-                parametersDiv.appendChild(parametersInput);
-                parametersDiv.appendChild(document.createElement("br"));
-            }
+            
+            datalistOptions = {
+                max_depth:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                random_state: [0, 1, 2, 3, 4, 5]
+            };
+
+            createParameters(2, parametersColection, datalistOptions);
         }
         else if (selectedOption === "RANDOM FOREST") {
             console.log("chegou");
@@ -192,21 +175,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 max_depth: "number",
                 random_state: "number"
             };
-            var keys = Object.keys(parametersColection);
-            for (var i = 0; i < 4; i++) {
-                console.log(keys[i]);
-                console.log(parametersColection[keys[i]]);
-                const parametersLabel = document.createElement("label");
-                parametersLabel.textContent = keys[i] + ":";
-                parametersDiv.appendChild(parametersLabel);
-                const parametersInput = document.createElement("input");
-                parametersInput.type = parametersColection[keys[i]];
-                parametersInput.step = "0.0000000001";
-                parametersInput.name = "parameters" + (i + 1);
-                parametersInput.className  = "nes-input";
-                parametersDiv.appendChild(parametersInput);
-                parametersDiv.appendChild(document.createElement("br"));
-            }
+            
+            datalistOptions = {
+                n_estimators: [100, 150, 200, 250],
+                criterion: ["squared_error", "absolute_error","friedman_mse", "poisson"],
+                max_depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                random_state: [0, 1, 2, 3, 4, 5]
+            };
+
+            createParameters(4, parametersColection, datalistOptions);
         }
         else if (selectedOption === "XGBOOST") {
             console.log("chegou xg");
@@ -217,21 +194,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 objective: "text",
                 random_state: "number"
             };
-            var keys = Object.keys(parametersColection);
-            for (var i = 0; i < 5; i++) {
-                console.log(keys[i]);
-                console.log(parametersColection[keys[i]]);
-                const parametersLabel = document.createElement("label");
-                parametersLabel.textContent = keys[i] + ":";
-                parametersDiv.appendChild(parametersLabel);
-                const parametersInput = document.createElement("input");
-                parametersInput.type = parametersColection[keys[i]];
-                parametersInput.step = "0.0000000001";
-                parametersInput.name = "parameters" + (i + 1);
-                parametersDiv.appendChild(parametersInput);
-                parametersInput.className  = "nes-input";
-                parametersDiv.appendChild(document.createElement("br"));
-            }
+            
+            datalistOptions = {
+                n_estimators: [100, 150, 200, 250],
+                max_depth:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                learning_rate: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
+                objective: ["reg:squarederror", "reg:squaredlogerror", "reg:logistic", "reg:pseudohubererror", "reg:absoluteerror", "reg:quantileerror","reg:gamma","reg:tweedie", "count:poisson", "survival:cox", "survival:aft", "multi:softmax", "multi:softprob", "rank:ndcg", "rank:map", "rank:pairwise"],
+                random_state: [0, 1, 2, 3, 4, 5]
+            };
+
+            createParameters(5, parametersColection, datalistOptions);
         }
         else if (selectedOption === "LIGHT GBM") {
             console.log("chegou");
@@ -242,21 +214,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 n_estimators: "number",
                 random_state: "number"
             };
-            var keys = Object.keys(parametersColection);
-            for (var i = 0; i < 5; i++) {
-                console.log(keys[i]);
-                console.log(parametersColection[keys[i]]);
-                const parametersLabel = document.createElement("label");
-                parametersLabel.textContent = keys[i] + ":";
-                parametersDiv.appendChild(parametersLabel);
-                const parametersInput = document.createElement("input");
-                parametersInput.type = parametersColection[keys[i]];
-                parametersInput.step = "0.0000000001";
-                parametersInput.name = "parameters" + (i + 1);
-                parametersInput.className  = "nes-input";
-                parametersDiv.appendChild(parametersInput);
-                parametersDiv.appendChild(document.createElement("br"));
-            }
+            
+            datalistOptions = {
+                num_leaves: [100, 150, 200, 250],
+                max_depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                learning_rate: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
+                n_estimators: [100, 150, 200, 250],
+                random_state: [0, 1, 2, 3, 4, 5]      
+            };
+
+            createParameters(5, parametersColection, datalistOptions);
         }
 
         else if (selectedOption === "CATBOOST") {
@@ -268,23 +235,60 @@ document.addEventListener("DOMContentLoaded", function () {
                 random_state: "number",
 
             };
-            var keys = Object.keys(parametersColection);
-            for (var i = 0; i < 4; i++) {
-                console.log(keys[i]);
-                console.log(parametersColection[keys[i]]);
-                const parametersLabel = document.createElement("label");
-                parametersLabel.textContent = keys[i] + ":";
-                parametersDiv.appendChild(parametersLabel);
-                const parametersInput = document.createElement("input");
-                parametersInput.type = parametersColection[keys[i]];
-                parametersInput.step = "0.0000000001";
-                parametersInput.name = "parameters" + (i + 1);
-                parametersInput.className  = "nes-input";
-                parametersDiv.appendChild(parametersInput);
-                parametersDiv.appendChild(document.createElement("br"));
-            }
+            
+            datalistOptions = {
+                iterations: [100, 150, 200, 250],
+                learning_rate: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
+                depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                random_state: [0, 1, 2, 3, 4, 5],
+            };
+
+            createParameters(4, parametersColection, datalistOptions);
         }
     });
+
+    function createParameters(size,parametersColection, datalistOptions){
+        const datalists = document.querySelectorAll('datalist');
+        datalists.forEach(datalist => datalist.remove());
+
+        const parametersDiv = document.getElementById("parameters");
+        parametersDiv.innerHTML = "";
+
+        var keys = Object.keys(parametersColection);
+        for (var i = 0; i < size; i++) {
+            console.log(keys[i]);
+            console.log(parametersColection[keys[i]]);
+            const parametersLabel = document.createElement("label");
+            parametersLabel.textContent = keys[i] + ":";
+            parametersDiv.appendChild(parametersLabel);
+            const parametersInput = document.createElement("input");
+            parametersInput.type = parametersColection[keys[i]];
+            parametersInput.step = "0.0000000001";
+            parametersInput.name = "parameters" + (i + 1);
+            parametersInput.className  = "nes-input";
+
+            if (datalistOptions[keys[i]]) {
+                const datalistID = `datalist-${keys[i]}`;
+                parametersInput.setAttribute("list", datalistID);
+                
+                const dataList = document.createElement("datalist");
+                dataList.id = datalistID;
+
+                datalistOptions[keys[i]].forEach((optionValue)=>{
+                    const option = document.createElement("option");
+                    option.value = optionValue;
+                    dataList.appendChild(option);
+                })
+
+                parametersDiv.appendChild(dataList);
+            }   
+
+
+            parametersDiv.appendChild(parametersInput);
+            parametersDiv.appendChild(document.createElement("br"));
+            
+        }
+    } 
 
     csvFileInput.addEventListener("change", function () {
         // Se houver um arquivo CSV selecionado e a opção selecionada for "SIMPLE LINEAR"
