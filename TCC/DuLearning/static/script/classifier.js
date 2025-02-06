@@ -380,6 +380,9 @@ document.addEventListener("DOMContentLoaded", function() {
         reader.readAsText(file);
         });
 
+
+
+
     document
         .getElementById("prediction-form")
         .addEventListener("submit", function (event) {
@@ -389,6 +392,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const formData = new FormData(this);
             formData.append("separator", separator);
             formData.append("deployBoolean",deployBoolean);
+           
 
             
            

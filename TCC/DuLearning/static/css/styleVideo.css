@@ -16,6 +16,37 @@ body{
    background: linear-gradient(#111425,#3751e0);
 }
 
+.scene {
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(#111425,#3751e0);
+    background-attachment: fixed;
+    overflow: hidden;
+    
+}
+
+.scene i {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: animate linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        opacity: 0;
+        transform: translateY();
+    }
+    10%, 90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+}
+
+
 .center{
     margin-top: 1%;
     width: 100%; 
@@ -522,6 +553,7 @@ header section .bi-chevron-left, .bi-chevron-right{
 header section .bi-chevron-right{
     left: unset;
     right: 3%;
+    background: rgb(255, 255, 255, .3);
 }
 
 
@@ -535,13 +567,24 @@ header section:hover .bi-chevron-left{
 
 
 iframe {
-    width: 60%; /* Largura total do iframe */
-    height: 450px; /* Altura fixa para o iframe */
+    width: 70%; 
+    height: 500px;
+    z-index: 2;
+    border: solid;
+    border-radius: 10px; 
 }
 
 
+.checkbox-config{
+    display: inline-block;
+    margin-bottom: 10px;
+}
 
-
+.config-label{
+    display: inline; 
+    font-weight: bold;
+    font-size: 15px;
+}
 
 
 

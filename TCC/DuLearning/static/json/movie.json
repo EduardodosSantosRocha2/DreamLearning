@@ -7,7 +7,18 @@
     "sposter": "static/img/randomForest.png",
     "bposter": "static/img/randomForest1.png",
     "genre": "AM",
-    "url": "/videoAulaRandomForest"
+    "url": "videoAulaRandomForest"
+},
+{
+    "name": "Naive Bayes",
+    "type": "Classificação",
+    "type2": "Regressão",
+    "conttypes":2,
+    "date": "2024",
+    "sposter": "static/img/naive.png",
+    "bposter": "static/img/naive1.png",
+    "genre": "AM",
+    "url": "/videoAulaNaiveBayes"
 },
 {
     "name": "SVM",
@@ -18,7 +29,7 @@
     "sposter": "static/img/svm.png",
     "bposter": "static/img/svm1.png",
     "genre": "AM",
-    "url": "videoAulaSvm.html"
+    "url": "/videoAulaSvm"
 },
 
 {
@@ -30,7 +41,7 @@
     "sposter": "static/img/regressaologistica.png",
     "bposter": "static/img/regressaologistica1.png",
     "genre": "AM",
-    "url": "videoAulaRegressaoLogistica.html"
+    "url": "/videoAulaRegressaoLogistica"
 },
 
 {
@@ -42,7 +53,7 @@
     "sposter": "static/img/knn.png",
     "bposter": "static/img/knn1.png",
     "genre": "AM",
-    "url": "videoAulaKnn.html"
+    "url": "/videoAulaKnn"
 },
 
 {
@@ -54,7 +65,7 @@
     "sposter": "static/img/arvore.png",
     "bposter": "static/img/arvore1.png",
     "genre": "AM",
-    "url": "videoAulaArvoreDecisao.html"
+    "url": "/videoAulaArvoreDecisao"
 },
 
 {
@@ -66,7 +77,7 @@
     "sposter": "static/img/xgboost.png",
     "bposter": "static/img/xgboost1.png",
     "genre": "AM",
-    "url": "videoAulaXGboost.html"
+    "url": "/videoAulaXGboost"
 },
 {
     "name": "LightGBM",
@@ -77,7 +88,7 @@
     "sposter": "static/img/lightgbm.png",
     "bposter": "static/img/lightgbm1.png",
     "genre": "AM",
-    "url": "videoAulaLightGBM.html"
+    "url": "/videoAulaLightGBM"
 },
 {
     "name": "CatBoost",
@@ -88,7 +99,7 @@
     "sposter": "static/img/catboost.png",
     "bposter": "static/img/catboost1.png",
     "genre": "AM",
-    "url": "videoAulaCatBoost.html"
+    "url": "/videoAulaCatBoost"
 },
 {
     "name": "Regressão Linear",
@@ -99,7 +110,7 @@
     "sposter": "static/img/regressaoLinear.png",
     "bposter": "static/img/regressaoLinear1.png",
     "genre": "AM",
-    "url": "videoAulaRegressaoLinear.html"
+    "url": "/videoAulaRegressaoLinear"
 },
 {
     "name": "Regressão Linear Multipla",
@@ -110,7 +121,7 @@
     "sposter": "static/img/regressaoLinearmultipla.png",
     "bposter": "static/img/regressaoLinearmultipla1.png",
     "genre": "AM",
-    "url": "videoAulaRegressaoLinearMultipla.html"
+    "url": "/videoAulaRegressaoLinearMultipla"
 }, 
 {
     "name": "Regressão Polinomial",
@@ -121,7 +132,7 @@
     "sposter": "static/img/regressaopolinomial.png",
     "bposter": "static/img/regressaopolinomial1.png",
     "genre": "AM",
-    "url": "videoAulaRegressaoPolinomial.html"
+    "url": "/videoAulaRegressaoPolinomial"
 },
 {
     "name": "Regras de Associação",
@@ -132,6 +143,6 @@
     "sposter": "static/img/regrasAssociacao.png",
     "bposter": "static/img/regrasAssociacao1.png",
     "genre": "AM",
-    "url": "videoAulaRegrasdeAssociacao.html"
+    "url": "/videoAulaRegrasdeAssociacao"
 }
 ]

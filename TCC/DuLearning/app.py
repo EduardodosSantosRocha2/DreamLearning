@@ -73,6 +73,20 @@ warnings.filterwarnings("ignore")
 
 import google.generativeai as geneai
 
+from classifier_data import classifierData
+
+
+
+# Gemini 
+from flask import Flask, request, jsonify, render_template
+import datetime
+import markdown
+import google.generativeai as geneai
+
+GOOGLE_GEMINI_API_KEY = "AIzaSyBkSzcTf_FBw73YXNZ8X4B1SRE1Dp9E6nI"
+geneai.configure(api_key=GOOGLE_GEMINI_API_KEY)
+model = geneai.GenerativeModel("gemini-1.5-flash-8b")
+
 app = Flask(__name__)
 
 
@@ -116,12 +130,113 @@ def videoAulas():
 def videoAulasRandomForest():
     return render_template("videoAulaRandomForest.html")
 
+@app.route("/videoAulaNaiveBayes")
+def videoAulaNaiveBayes():
+    return render_template("videoAulaNaiveBayes.html")
+
+@app.route("/videoAulaSvm")
+def videoAulaSvm():
+    return render_template("videoAulaSvm.html")
+
+
+@app.route("/videoAulaRegressaoLogistica")
+def videoAulaRegressaoLogistica():
+    return render_template("videoAulaRegressaoLogistica.html")
+
+
+@app.route("/videoAulaKnn")
+def videoAulaKnn():
+    return render_template("videoAulaKnn.html")
+
+
+@app.route("/videoAulaArvoreDecisao")
+def videoAulaArvoreDecisao():
+    return render_template("videoAulaArvoreDecisao.html")
+
+
+@app.route("/videoAulaXGboost")
+def videoAulaXGboost():
+    return render_template("videoAulaXGboost.html")
+
+
+@app.route("/videoAulaLightGBM")
+def videoAulaLightGBM():
+    return render_template("videoAulaLightGBM.html")
+
+
+@app.route("/videoAulaCatBoost")
+def videoAulaCatBoost():
+    return render_template("videoAulaCatBoost.html")
+
+
+@app.route("/videoAulaRegressaoLinear")
+def videoAulaRegressaoLinear():
+    return render_template("videoAulaRegressaoLinear.html")
+
+
+@app.route("/videoAulaRegressaoLinearMultipla")
+def videoAulaRegressaoLinearMultipla():
+    return render_template("videoAulaRegressaoLinearMultipla.html")
+
+
+@app.route("/videoAulaRegrasdeAssociacao")
+def videoAulaRegrasdeAssociacao():
+    return render_template("videoAulaRegrasdeAssociacao.html")
+
 @app.route("/Historico")
 def historic():
     return render_template("historico.html")
 
-# Rota para fazer previsões
+
 @app.route("/predict", methods=["POST"])
+def teste():
+    # Recebe os dados enviados pelo formulário
+    classifier_type = request.form["classifier"]
+    print(classifier_type)
+    csv_file = request.files["csv_file"]      
+    separator = request.form.get('separator')
+    # Lê o arquivo CSV
+
+    csv_data = pd.read_csv(io.BytesIO(csv_file.read()),sep = separator, encoding = 'utf-8') 
+    csv_tranform = csv_data.copy()
+
+    csv_deploy = ""
+    deployBoolean = request.form.get('deployBoolean')
+    if deployBoolean == "true":
+        csv_file_deploy = request.files["csv_deploy"]
+        csv_deploy = pd.read_csv(io.BytesIO(csv_file_deploy.read()), sep= separator, encoding='utf-8', header=None)
+        print(f"-----------------------------------------------------")
+        csv_deploy = csv_deploy.to_numpy().tolist()
+        print(csv_deploy)
+        print(f"-----------------------------------------------------")
+
+    
+    
+    classifier_data = classifierData()
+    
+    csv_data_encolder, meu_dicionario, meu_dicionarioencoder = classifier_data.encode_columns(csv_data)
+    x_treino, x_teste, y_treino, y_teste = classifier_data.train_test_split(csv_data_encolder)
+    resultado= classifier_data.train(classifier_type,x_treino, x_teste, y_treino, y_teste, separator, deployBoolean, csv_tranform, csv_data_encolder, csv_deploy, meu_dicionario, meu_dicionarioencoder)
+    return resultado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Rota para fazer previsões
+@app.route("/predict1", methods=["POST"])
 def predict():
     # Recebe os dados enviados pelo formulário
     classifier_type = request.form["classifier"]
@@ -199,9 +314,7 @@ def predict():
     name_Classifier_predict = ["LIGHTGBM"]
     
     code = f"""<span class="bib">import</span> numpy <span class="bib">as</span> np\n<span class="bib">import</span> pandas <span class="bib">as</span> pd\n<span>dataframe = pd.read_csv(</span><span class= "link">'Adicione o caminho para o seu csv',sep ='{separator}', encoding = 'utf-8'</span>)</span>\n<span class="bib">from</span> sklearn.preprocessing <span class="bib">import</span> LabelEncoder\n<span class="keyword">encoder = </span><span class="function">LabelEncoder()</span>\n<span class = "comment">#Itere sobre todas as colunas do DataFrame</span>\n<span class="for">for </span><span>coluna <span class = "columns">in</span> dataframe.<span class = "columns">columns</span>:</span>\n<span class = "comment">  #Verifica se o tipo da coluna é 'object' e se todos os elementos não são números</span>\n<span class="if">  if </span><span>dataframe[coluna].dtype == <span class= "object">'object'</span></span><span class= "columns">and not</span> dataframe[coluna].apply(<span class = "columns">lambda</span> x: <span class = "instance">isinstance</span>(x, (<span class = "intfloat">int, float</span>))).<span class = "instance">all()</span></span>:</span>\n<span class = "comment">    #Ajuste o encoder aos dados e transforme a coluna</span>\n   <span>dataframe[coluna] = encoder.</span><span class="function">fit_transform<span>(dataframe[coluna])</span></span>\n\n<span class="keyword">previsores</span><span> = dataframe.iloc[:, :-1]</span>\n<span class="keyword">alvo</span><span> = dataframe.iloc[:, -1]</span>\n<span class="bib">from</span> sklearn.model_selection <span class="bib">import</span> train_test_split\n<span class="keyword">x_treino, x_teste, y_treino, y_teste =</span> <span class="function">train_test_split(previsores,alvo, test_size = 0.3, random_state = 0)</span><span class="comment">#Base treino e teste</span>\n"""
-    codeCreateModel =   ""
-    infosCode = ""
-    infosPredict = ""
+
     
     # Escolhe o classificador com base na escolha do usuário
     if classifier_type == "Random Forest":
@@ -406,7 +519,7 @@ def predict():
 
     else:
     # Retorna a previsão
-        return jsonify({"accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3),"code":code, "codeCreateModel":codeCreateModel, "infosCode":infosCode, "infosPredict":infosPredict})
+        return jsonify({"accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3),"code":code})
 
 
 
@@ -1018,6 +1131,37 @@ def submit_selections_associationRules():
 #     geneai.configure(api_key=GOOGLE_GEMINI_API_KEY)
 #     model = geneai.GenerativeModel("gemini-1.5-pro-latest")
 #     return jsonify({"response": "oi"})
+
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    
+    
+    user_message = "Em no maximo 600 caracteres explique: "+ request.json.get("message")
+
+    
+    if not user_message:
+        return jsonify({"error": "Nenhuma mensagem recebida."}), 400
+    
+
+    chat = model.start_chat(history=[])
+    
+    # Envia a mensagem e obtém a resposta do bot
+    response = chat.send_message(user_message)
+    
+    # A resposta do modelo é armazenada com o papel "model"
+    bot_reply = response.text
+   
+    
+    # Converte a resposta do bot para markdown
+    bot_reply = markdown.markdown(bot_reply)
+    
+    return jsonify({
+        "user_message": user_message,
+        "bot_reply": bot_reply,
+        "timestamp": datetime.datetime.now().isoformat()
+    })
+
 
 
 if __name__ == "__main__":
