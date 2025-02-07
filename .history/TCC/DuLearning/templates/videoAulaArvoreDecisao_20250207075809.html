@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleVideo.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
     
-    <title>KNN</title>
+    <title>Arvore de Decisão</title>
 </head>
 <body>
 
@@ -82,7 +82,7 @@
         </nav>
 
         <div class="content">
-            <h1 id="title">KNN</h1>
+            <h1 id="title">Arvore de Decisão</h1>
             <!-- <div class="details">
                 <h6>A Netflix Original Film</h6>
                 <h5 id="gen">Thriller</h5>
@@ -98,7 +98,7 @@
         <div class="video-section">
             <!-- Vídeo do YouTube -->
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/z2fXuta8OK8?si=hzf6pZ9yA1kSWafu" title="YouTube video player"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/Zs0JXA8CCI8?si=Zl0p4OGUFfxSKXvT" title="YouTube video player"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
             </div>
             <!-- Texto abaixo do vídeo -->
@@ -151,29 +151,21 @@
         <div class="message bot"><p>Olá sonhador, por favor, marque os conhecimentos que você ainda não possui.</p></div>
             
             <div class="checkbox-config">
-                <input type="checkbox" id="instancias" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="instacias">O que são instâncias?</label>
+                <input type="checkbox" id="oqé" name="pre-conhecimentos" value="Arvoredecisao" />
+                <label class="config-label" for="oqé">O que é uma Árvore de Decisão?</label>
             </div>
             
             <div class="checkbox-config">
-                <input type="checkbox" id="classes" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="classes">  O que são classes?</label>
+                <input type="checkbox" id="montagem" name="pre-conhecimentos" value="Arvoredecisao" />
+                <label class="config-label" for="montagem">Como é montada uma Árvore de Decisão? O que é particionamento recursivo ("dividir e conquistar" e segmentar em grupos)?</label>
             </div>
 
             <div class="checkbox-config">
-                <input type="checkbox" id="metricas" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="metricas">O que são as métricas de cálculo de distância?
-
-
-
-
-
-
-
-                </label>
+                <input type="checkbox" id="hierarquia" name="pre-conhecimentos" value="Arvoredecisao" />
+                <label class="config-label" for="hierarquia"> O que é hierarquia e como ocorre a tomada de decisão?</label>
             </div>
 
-            
+        
 
     </div>
     <div id="chatbot-input">
