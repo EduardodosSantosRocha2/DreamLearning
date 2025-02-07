@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleVideo.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
     
-    <title>Regressão Logística</title>
+    <title>Regressão Linear Simples</title>
 </head>
 <body>
 
@@ -86,51 +86,23 @@
         </nav>
 
         <div class="content">
-            <h1 id="title">Regressão Logística</h1>
-            <!-- <div class="details">
-                <h6>A Netflix Original Film</h6>
-                <h5 id="gen">Thriller</h5>
-                <h4 id="date">2021</h4>
-                <h3 id="rate"><span>IMDB</span><i class="bi bi-star-fill"></i> 9.6</h3>
-            </div> -->
-            <div class="btns">
-                <!-- <a href="#" id="play">Assistir <i class="bi bi-play-fill"></i></a>
-                <a href="#" id="dowload_main"><i class="bi bi-cloud-arrow-down-fill"></i></a> -->
-            </div>
+            <h1 id="title">Regressão Linear Simples</h1><div class="btns"></div>
 
         </div>
         <div class="video-section">
             <!-- Vídeo do YouTube -->
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/Ufua5r9P4hk?si=anzmp66nFitYesmR" title="YouTube video player" title="YouTube video player"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/FOXSpDaCGVE?si=Fg4TrqWyjxhKmlT3" title="YouTube video player"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
             </div>
             <!-- Texto abaixo do vídeo -->
-            <div class="video-description">
-               <!-- <h2>The Boys</h2>
-                <p>
-                    A Terra é habitada por super-heróis que são um inspiração para a humanidade. Porém, esses protetores têm um lado sinistro que a maioria das pessoas desconhece. Se eles usam seus poderes para o mal, Hughie, Billy e o resto do time devem detê-los.
-                </p>
-            </div>-->
-        </div>
+            <div class="video-description"></div>
 
         <section>
             <h2>Populares</h2>
             <i class="bi bi-chevron-left" style="margin-top: 230px;"></i>
             <i class="bi bi-chevron-right" style="margin-top: 230px;"></i>
             <div class="cards">
-                 <!-- <a href="#" class="card">
-                    <img src="{{ url_for('static', filename='img/the boys.jpg') }}" alt="" class="poster">
-                    <div class="rest_card">
-                        <img src="{{ url_for('static', filename='img/the boys1.jpg') }}" alt="">
-                        <div class="cont">
-                            <h4>The Boys</h4>
-                            <div class="sub">
-                                <p>Action, 2021</p>
-                                <h3><span>IMDB</span><i class="bi bi-star-fill"></i> 9.6</h3>
-                            </div>
-                        </div>
-                    </div> -->
                 </a>
         </section>
 
@@ -155,27 +127,33 @@
         <div class="message bot"><p>Olá sonhador, por favor, marque os conhecimentos que você ainda não possui.</p></div>
             
             <div class="checkbox-config">
-                <input type="checkbox" id="classificaobinaria" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="classificaobinaria"> O que é uma classificação binária?</label>
+                <input type="checkbox" id="oqé" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="oqé">O que é regressão simples?</label>
             </div>
             
             <div class="checkbox-config">
-                <input type="checkbox" id="probabilida" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="probabilida">  O que é probabilidade na regressão logística? O que é a fórmula da função logística em "S" (famosa curva sigmoide)?
-                    </label>
-            </div>
-
-            <div class="checkbox-config">
                 <input type="checkbox" id="relacao" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="relacao">O que é a relação entre variáveis? E como a variável de entrada influencia a variável de saída?</label>
+                <label class="config-label" for="relacao">O que é uma relação entre variáveis?</label>
             </div>
 
             <div class="checkbox-config">
-                <input type="checkbox" id="principalobjetivo" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="principalobjetivo">Qual é o principal objetivo da regressão logística?</label>
+                <input type="checkbox" id="variavel" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="variavel">O que é uma variável dependente e uma variável independente?</label>
+            </div>
+
+            <div class="checkbox-config">
+                <input type="checkbox" id="linha" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="linha">O que é uma linha reta e como ela pode ser usada para fazer previsões?</label>
+            </div>
+
+            <div class="checkbox-config">
+                <input type="checkbox" id="erromedio" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="erromedio">O que é um erro médio absoluto?</label>
             </div>
 
            
+
+                  
 
     </div>
     <div id="chatbot-input">

@@ -12,6 +12,7 @@
     <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleRegression.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
   </head>
 
   <body>
@@ -138,7 +139,28 @@
        
       </div>
       
-    </div> 
+    </div>
+    
+    <div id="chatbot-button">
+      <img src="{{ url_for('static', filename='img/chatbot.png') }}" alt="Chatbot">
+  </div>
+  
+  
+  <div id="chatbot-container">
+      <div id="chatbot-header">
+          <span>DreamBot</span>
+          <button id="close-chatbot">&times;</button>
+      </div>
+      <div id="chatbot-content">
+          <div class="message bot"><p>Olá sonhador 😴, caso haja alguma dúvida em relação a algum algoritmo, por favor, não hesite em entrar em me perguntar😀</p>
+          </div>
+      </div>
+      <div id="chatbot-input">
+          <input type="text" id="user-message" placeholder="Digite sua dúvida..." />
+          <button id="send-button">Enviar</button>
+      </div>
+
+  </div>    
 
     <div class="container">
       <footer class="mt-5 py-3 text-black">
@@ -170,6 +192,7 @@
       <script src="{{ url_for('static', filename='script/firebase-init.js') }}"></script>
       <script src="{{ url_for('static', filename='script/logout.js') }}"></script>
       <script src="{{ url_for('static', filename='script/auth-guard.js') }}"></script>
+      <script src="{{ url_for('static', filename='script/chatbot.js') }}"></script>
       <script type="text/javascript" src="{{ url_for('static', filename='script/regression.js') }}"></script>
   </body>
 </html>

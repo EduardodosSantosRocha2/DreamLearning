@@ -179,6 +179,11 @@ def videoAulaRegressaoLinearMultipla():
     return render_template("videoAulaRegressaoLinearMultipla.html")
 
 
+
+@app.route("/videoAulaRegressaoPolinomial")
+def videoAulaRegressaoPolinomial():
+    return render_template("videoAulaRegressaoPolinomial.html")
+
 @app.route("/videoAulaRegrasdeAssociacao")
 def videoAulaRegrasdeAssociacao():
     return render_template("videoAulaRegrasdeAssociacao.html")

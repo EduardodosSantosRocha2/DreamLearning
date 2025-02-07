@@ -17,6 +17,7 @@
 }
 .navbar-nav{
     gap: 5px;
+    font-size: 15px;
 }
 
 .navbar-brand img {

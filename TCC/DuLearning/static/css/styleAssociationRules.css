@@ -36,6 +36,7 @@ label{
 }
 .navbar-nav{
     gap: 5px;
+    font-size: 15px;
 }
 .navbar-brand img {
     border-radius: 50%; /* Torna a logo redonda */

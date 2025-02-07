@@ -14,6 +14,7 @@
     <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/styleGraphicAnalysis.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}" />
 </head>
 
 <body>
@@ -107,6 +108,28 @@
 </div>
     
 
+<div id="chatbot-button">
+	<img src="{{ url_for('static', filename='img/chatbot.png') }}" alt="Chatbot">
+</div>
+
+
+<div id="chatbot-container">
+	<div id="chatbot-header">
+		<span>DreamBot</span>
+		<button id="close-chatbot">&times;</button>
+	</div>
+	<div id="chatbot-content">
+		<div class="message bot"><p>Olá sonhador 😴, caso haja alguma dúvida em relação a algum gráfico📈, por favor, não hesite em entrar em me perguntar😀</p>
+		</div>
+	</div>
+	<div id="chatbot-input">
+		<input type="text" id="user-message" placeholder="Digite sua dúvida..." />
+		<button id="send-button">Enviar</button>
+	</div>
+
+</div> 
+
+
 	
     
 <div class="container">
@@ -133,6 +156,7 @@
 	  <script>
 		  new window.VLibras.Widget('https://vlibras.gov.br/app');
 	  </script>
+	  <script src="{{ url_for('static', filename='script/chatbot.js') }}"></script>
 </body>
 
 </html>

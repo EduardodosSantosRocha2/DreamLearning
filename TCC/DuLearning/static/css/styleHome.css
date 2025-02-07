@@ -19,6 +19,11 @@
     animation: autoRun 20s linear infinite;
     z-index: 2;
 }
+
+.nes-btn .is-primary{
+    width: 10px;
+    height: 10px;
+}
 @keyframes autoRun{
     from{
         transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);
@@ -173,6 +178,7 @@ label{
 
 .navbar-nav{
     gap: 5px;
+    font-size: 15px;
 }
 
 .navbar-brand img {

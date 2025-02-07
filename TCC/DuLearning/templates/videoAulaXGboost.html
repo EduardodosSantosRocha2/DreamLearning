@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
-    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
-    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
-    <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleVideo.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
     
-    <title>Regressão Logística</title>
+    <title>XGBOOST</title>
 </head>
 <body>
 
@@ -86,7 +82,7 @@
         </nav>
 
         <div class="content">
-            <h1 id="title">Regressão Logística</h1>
+            <h1 id="title">XGbOOST</h1>
             <!-- <div class="details">
                 <h6>A Netflix Original Film</h6>
                 <h5 id="gen">Thriller</h5>
@@ -102,7 +98,7 @@
         <div class="video-section">
             <!-- Vídeo do YouTube -->
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/Ufua5r9P4hk?si=anzmp66nFitYesmR" title="YouTube video player" title="YouTube video player"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/LLsJ-yRLzKY?si=VqLRFeshv7qtMjy7" title="YouTube video player" title="YouTube video player"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
             </div>
             <!-- Texto abaixo do vídeo -->
@@ -155,27 +151,31 @@
         <div class="message bot"><p>Olá sonhador, por favor, marque os conhecimentos que você ainda não possui.</p></div>
             
             <div class="checkbox-config">
-                <input type="checkbox" id="classificaobinaria" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="classificaobinaria"> O que é uma classificação binária?</label>
+                <input type="checkbox" id="oqé" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="oqé">O que é uma Árvore de Decisão?</label>
             </div>
             
             <div class="checkbox-config">
-                <input type="checkbox" id="probabilida" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="probabilida">  O que é probabilidade na regressão logística? O que é a fórmula da função logística em "S" (famosa curva sigmoide)?
-                    </label>
+                <input type="checkbox" id="boosting" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="boosting">O que é ensemble e o que é boosting? Como ele difere de bagging?</label>
             </div>
 
             <div class="checkbox-config">
-                <input type="checkbox" id="relacao" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="relacao">O que é a relação entre variáveis? E como a variável de entrada influencia a variável de saída?</label>
+                <input type="checkbox" id="gradientes" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="gradientes">O que são gradientes e como eles são usados na otimização?</label>
             </div>
 
             <div class="checkbox-config">
-                <input type="checkbox" id="principalobjetivo" name="pre-conhecimentos" value="Floresta Aleatória" />
-                <label class="config-label" for="principalobjetivo">Qual é o principal objetivo da regressão logística?</label>
+                <input type="checkbox" id="overfitting" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="overfitting">O que é overfitting e como ele afeta o desempenho de um modelo?</label>
             </div>
 
-           
+            <div class="checkbox-config">
+                <input type="checkbox" id="poda" name="pre-conhecimentos" value="Floresta Aleatória" />
+                <label class="config-label" for="poda">O que é o método de "poda"?</label>
+            </div>
+
+                  
 
     </div>
     <div id="chatbot-input">

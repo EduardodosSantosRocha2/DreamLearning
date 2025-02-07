@@ -54,6 +54,7 @@ body{
     display:flex;
     align-items: center;
     justify-content: center;
+    
 }
 
 header{
@@ -258,9 +259,12 @@ header .content .search_user .search .card1 .cont h3{
     color: #000;
 }
 
+header .content .search_user .search .card1 .cont h3{
+    font-size: 10px;
+}
 
 header .content .search_user .search .card1 .cont p{
-    font-size: 10px;
+    font-size: 8px;
     /* color: rgb(255, 255, 255, .8); */
     color: #000;
 }
@@ -586,7 +590,13 @@ iframe {
     font-size: 15px;
 }
 
+#title{
+    font-size: large;
+}
 
+input::placeholder {
+    font-size: 14px !important;
+}
 
 @media screen and (max-width: 1250px){
     header video{
@@ -653,6 +663,7 @@ iframe {
 
 .navbar-nav{
     gap: 5px;
+    font-size: 15px;
 }
 
 .navbar-brand img {
