@@ -3,6 +3,20 @@ spinner.style.display = 'none';
 var parametersColection = {}
 var filename;
 var datalistOptions;
+var radioButtons = document.querySelectorAll('input[type="radio"]')
+const valCheckBox={
+    "Linear Simples":[],
+    "Linear Multipla":[],
+    "Polinomial":[],
+    "SVM": ["kernel"],
+    "Arvore de Decisão":["max_depth", "random_state"],
+    "Floresta Aleatória": ["n_estimator", "criterion","max_depht","random_state"],
+    "XGBOOST":["n_estimators", "max_depth", "learning_rate", "objective", "random_state"],
+    "LIGHTGBM":["num_leaves","max_depth","learning_rate", "n_estimators", "random_state"],
+    "CATBOOST":["iterations", "learning_rate", "depth", "random_state"]
+} 
+
+let values = Object.keys(valCheckBox);
 
 function stars() {
     const count = 500;
@@ -549,4 +563,47 @@ function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTrainin
         })
 }
 
+
+radioButtons.forEach(radio=>{
+    radio.addEventListener("change",()=>{
+        gerarCheckBox(radio.value);
+    });
+});
+
+
+function gerarCheckBox(typeAlg){
+   const chat = document.getElementById("checkboxs");
+   checkboxs.innerHTML="";
+   key = values
+   parametersAlg = valCheckBox[typeAlg]
+
+    parametersAlg.forEach(val=>{
+       
+
+        const div = document.createElement('div');
+        div.className="form-check form-check-inline"
+
+        const input = document.createElement('input');
+        input.type = "checkbox";
+        input.id = val;
+        input.name = val;
+        input.value = typeAlg;
+        input.className = "form-check-input";
+        
+        const label = document.createElement('label');
+        label.className="form-check-label";
+        label.htmlFor = val;
+
+        label.textContent = val;
+
+        div.appendChild(input);
+        div.appendChild(label);
+
+        chat.appendChild(div);
+
+   
+});
+    
+
+}
 

@@ -12,8 +12,10 @@
     <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleClassifier.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+    
 </head>
 
 <body>
@@ -142,8 +144,48 @@
             <button id="close-chatbot">&times;</button>
         </div>
         <div id="chatbot-content">
-            <div class="message bot"><p>Olá sonhador 😴, caso haja alguma dúvida em relação a algum algoritmo, por favor, não hesite em entrar em me perguntar😀</p>
+            <div class="message bot"><p>Olá, sonhador 😴! Selecione o algoritmo e o(s) parâmetro(s) sobre os quais deseja saber mais. 😀</p></div>
+                
+            <div class="container">
+            
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="Floresta Aleatória">Floresta Aleatória
+                </label>
+                
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="SVM">SVM
+                </label>
+
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="Regressão Logistica">Regressão Logistica
+                </label>
+                
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="KNN">KNN
+                </label>
+
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="Arvore de Decisão">Arvore de Decisão
+                </label>
+                
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="XGBOOST">XGBOOST
+                </label>
+
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="LIGHTGBM">LIGHTGBM
+                </label>
+                
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="CATBOOST" >CATBOOST
+                </label>
+
+
+
             </div>
+
+            <div id="checkboxs"></div>
+
         </div>
         <div id="chatbot-input">
             <input type="text" id="user-message" placeholder="Digite sua dúvida..." />

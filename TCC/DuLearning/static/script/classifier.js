@@ -3,6 +3,22 @@ spinner.style.display = 'none';
 var filename;
 var parametersColection;
 var datalistOptions;
+var radioButtons = document.querySelectorAll('input[type="radio"]')
+const valCheckBox={
+    "Floresta Aleatória": ["n_estimator", "criterion", "random_state", "max_depht"],
+    "SVM": ["kernel","random_state", "C"],
+    "Regressão Logistica":["random_state", "max_iter", "penalty","tol","C", "solver"],
+    "KNN":["n_neighbors", "metric"], 
+    "Arvore de Decisão":["criterion","random_state", "max_depth"],
+    "XGBOOST":["max_depth", "learning_rate", "n_estimators", "objective", "random_state"],
+    "LIGHTGBM":["num_leaves", "objective","max_depth", "learning_rate", "max_bin", "num_boost_round"],
+    "CATBOOST":["task_type", "iterations", "learning_rate", "depth", "random_state", "eval_metric"]
+} 
+
+let values = Object.keys(valCheckBox);
+
+
+
 
 function stars() {
     const count = 500;
@@ -492,4 +508,6 @@ function saveTransaction(Algorithm, CrossValidation, NameDatabase, Parameters, T
             alert("Erro ao salvar transação!");
         })
 }
+
+
 

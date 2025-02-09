@@ -227,3 +227,9 @@ code {
     z-index: 1000;
     display: none; 
 }
+
+
+#chatbot-content .container{
+    border: solid 1px black;
+    border-radius: 10px;
+}

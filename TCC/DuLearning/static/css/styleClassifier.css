@@ -244,3 +244,9 @@ li {
 strong {
     color: #eb7b7b;
 }
+
+
+#chatbot-content .container{
+    border: solid 1px black;
+    border-radius: 10px;
+}
