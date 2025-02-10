@@ -1141,9 +1141,9 @@ def submit_selections_associationRules():
 @app.route("/chat", methods=["POST"])
 def chat():
     
-    
-    user_message = "Em no maximo 600 caracteres explique: "+ request.json.get("message")
 
+    user_message = request.json.get("message")
+    
     
     if not user_message:
         return jsonify({"error": "Nenhuma mensagem recebida."}), 400

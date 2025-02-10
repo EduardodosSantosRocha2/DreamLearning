@@ -4,16 +4,16 @@ var filename;
 var parametersColection;
 var datalistOptions;
 var radioButtons = document.querySelectorAll('input[type="radio"]')
-const valCheckBox={
+const valCheckBox = {
     "Floresta Aleatória": ["n_estimator", "criterion", "random_state", "max_depht"],
-    "SVM": ["kernel","random_state", "C"],
-    "Regressão Logistica":["random_state", "max_iter", "penalty","tol","C", "solver"],
-    "KNN":["n_neighbors", "metric"], 
-    "Arvore de Decisão":["criterion","random_state", "max_depth"],
-    "XGBOOST":["max_depth", "learning_rate", "n_estimators", "objective", "random_state"],
-    "LIGHTGBM":["num_leaves", "objective","max_depth", "learning_rate", "max_bin", "num_boost_round"],
-    "CATBOOST":["task_type", "iterations", "learning_rate", "depth", "random_state", "eval_metric"]
-} 
+    "SVM": ["kernel", "random_state", "C"],
+    "Regressão Logistica": ["random_state", "max_iter", "penalty", "tol", "C", "solver"],
+    "KNN": ["n_neighbors", "metric"],
+    "Arvore de Decisão": ["criterion", "random_state", "max_depth"],
+    "XGBOOST": ["max_depth", "learning_rate", "n_estimators", "objective", "random_state"],
+    "LIGHTGBM": ["num_leaves", "objective", "max_depth", "learning_rate", "max_bin", "num_boost_round"],
+    "CATBOOST": ["task_type", "iterations", "learning_rate", "depth", "random_state", "eval_metric"]
+}
 
 let values = Object.keys(valCheckBox);
 
@@ -80,7 +80,7 @@ function showNotification(top, left, message = 'Código copiado!') {
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
     var separator = "";
     var deployBoolean = "";
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
             var select = document.querySelector("#classifier");
             var option = select.children[select.selectedIndex];
             var textClassifier = option.textContent;
-            
+
             if (textClassifier === "Random Forest") {
                 parametersColection = {
                     n_estimators: "number",
@@ -125,16 +125,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     random_state: "number",
                     max_depth: "number",
                 };
-                
+
                 datalistOptions = {
                     n_estimators: [100, 150, 200, 250],
-                    criterion: ["gini", "entropy","log_loss"],
+                    criterion: ["gini", "entropy", "log_loss"],
                     random_state: [0, 1, 2, 3, 4, 5],
                     max_depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                 };
 
                 createParameters(4, parametersColection, datalistOptions);
-                
+
             }
 
             if (textClassifier === "SVM") {
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     random_state: "number",
                     C: "number",
                 };
-                
+
                 datalistOptions = {
                     kernel: ["linear", "poly", "rbf", "sigmoid", "precomputed"],
                     random_state: [0, 1, 2, 3, 4, 5],
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     C: "number",
                     solver: "text",
                 };
-                
+
                 datalistOptions = {
                     random_state: [0, 1, 2, 3, 4, 5],
                     max_iter: [100, 200, 300, 400, 500],
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     n_neighbors: "number",
                     metric: "text",
                 };
-                
+
                 datalistOptions = {
                     n_neighbors: [1, 3, 5, 7, 9],
                     metric: ["minkowski", "euclidean", "manhattan", "chebyshev", "hamming", "cosine"]
@@ -199,11 +199,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     random_state: "number",
                     max_depth: "text",
                 };
-                
+
                 datalistOptions = {
                     criterion: ["gini", "entropy", "log_loss"],
                     random_state: [0, 1, 2, 3, 4, 5],
-                    max_depth:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                    max_depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                 };
 
                 createParameters(3, parametersColection, datalistOptions);
@@ -218,12 +218,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     objective: "text",
                     random_state: "number",
                 };
-                
+
                 datalistOptions = {
-                    max_depth:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    max_depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     learning_rate: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
                     n_estimators: [100, 150, 200, 250],
-                    objective: ["binary:logistic","binary:logitraw","binary:hinge", "count:poisson", "survival:cox", "survival:aft", "multi:softmax", "multi:softprob", "rank:ndcg", "rank:map", "rank:pairwise"],
+                    objective: ["binary:logistic", "binary:logitraw", "binary:hinge", "count:poisson", "survival:cox", "survival:aft", "multi:softmax", "multi:softprob", "rank:ndcg", "rank:map", "rank:pairwise"],
                     random_state: [0, 1, 2, 3, 4, 5]
                 };
 
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     max_bin: "number",
                     num_boost_round: "number",
                 };
-                
+
                 datalistOptions = {
                     num_leaves: [100, 150, 200, 250],
                     objective: ["binary", "multiclass", "multiclassova", "ova", "xentropy", "xentlambda"],
@@ -263,14 +263,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     random_state: "number",
                     eval_metric: "text",
                 };
-                
+
                 datalistOptions = {
                     task_type: ["CPU", "GPU"],
                     iterations: [100, 150, 200, 250],
                     learning_rate: [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
                     depth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     random_state: [0, 1, 2, 3, 4, 5],
-                    eval_metric: ["Accuracy","Logloss", "AUC"],
+                    eval_metric: ["Accuracy", "Logloss", "AUC"],
                 };
 
                 createParameters(6, parametersColection, datalistOptions);
@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    function createParameters(size,parametersColection, datalistOptions){
+    function createParameters(size, parametersColection, datalistOptions) {
         const datalists = document.querySelectorAll('datalist');
         datalists.forEach(datalist => datalist.remove());
 
@@ -297,103 +297,103 @@ document.addEventListener("DOMContentLoaded", function() {
             parametersInput.type = parametersColection[keys[i]];
             parametersInput.step = "0.0000000001";
             parametersInput.name = "parameters" + (i + 1);
-            parametersInput.className  = "nes-input";
+            parametersInput.className = "nes-input";
 
             if (datalistOptions[keys[i]]) {
                 const datalistID = `datalist-${keys[i]}`;
                 parametersInput.setAttribute("list", datalistID);
-                
+
                 const dataList = document.createElement("datalist");
                 dataList.id = datalistID;
 
-                datalistOptions[keys[i]].forEach((optionValue)=>{
+                datalistOptions[keys[i]].forEach((optionValue) => {
                     const option = document.createElement("option");
                     option.value = optionValue;
                     dataList.appendChild(option);
                 })
 
                 parametersDiv.appendChild(dataList);
-            }   
+            }
 
 
             parametersDiv.appendChild(parametersInput);
             parametersDiv.appendChild(document.createElement("br"));
-            
+
         }
-    }    
+    }
 
     document
         .getElementById("csv_file")
         .addEventListener("change", function (event) {
             console.log("Evento de mudança detectado");
-        const file = event.target.files[0];
-        if (!file) {
-            console.error("Nenhum arquivo selecionado.");
-            return;
-        }
-        console.log("Arquivo selecionado: ", file);
-
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const text = e.target.result;
-            if (!text) {
-                console.error("Falha ao ler o arquivo.");
+            const file = event.target.files[0];
+            if (!file) {
+                console.error("Nenhum arquivo selecionado.");
                 return;
             }
-            console.log("Conteúdo do arquivo: ", text);
+            console.log("Arquivo selecionado: ", file);
 
-            const lines = text.split("\n");
-            if (lines.length === 0) {
-                console.error("Arquivo CSV vazio ou inválido.");
-                return;
-            }
+            const reader = new FileReader();
 
-            // Verifica se a primeira linha contém uma vírgula
-            if (lines[0].includes(",")) {
-                separator = ",";
-            }
-            // Se não, verifica se contém um ponto e vírgula
-            else if (lines[0].includes(";")) {
-                separator = ";";
-            } else {
-                console.error("Separador não reconhecido.");
-                return;
-            }
+            reader.onload = function (e) {
+                const text = e.target.result;
+                if (!text) {
+                    console.error("Falha ao ler o arquivo.");
+                    return;
+                }
+                console.log("Conteúdo do arquivo: ", text);
 
-            let header = lines[0].split(separator);
-            if (lines.length < 2) {
-                console.error("Arquivo CSV não contém dados suficientes.");
-                return;
-            }
-        //     let text_or_number = lines[1].split(separator);
+                const lines = text.split("\n");
+                if (lines.length === 0) {
+                    console.error("Arquivo CSV vazio ou inválido.");
+                    return;
+                }
 
-        //     console.log("Cabeçalho: ", header);
-        //     const featuresDiv = document.getElementById("features");
-        //     featuresDiv.innerHTML = "";
+                // Verifica se a primeira linha contém uma vírgula
+                if (lines[0].includes(",")) {
+                    separator = ",";
+                }
+                // Se não, verifica se contém um ponto e vírgula
+                else if (lines[0].includes(";")) {
+                    separator = ";";
+                } else {
+                    console.error("Separador não reconhecido.");
+                    return;
+                }
 
-        //     for (let i = 0; i < header.length - 1; i++) {
-        //         const featureLabel = document.createElement("label");
-        //         featureLabel.textContent = header[i] + ":";
-        //         featuresDiv.appendChild(featureLabel);
-        //         const featureInput = document.createElement("input");
-        //         if (!isNaN(text_or_number[i])) {
-        //             featureInput.type = "number";
-        //             featureInput.step = "0.0000000001";
-        //         } else {
-        //             featureInput.type = "text";
-        //         }
-        //         featureInput.name = "feature" + (i + 1);
-        //         featuresDiv.appendChild(featureInput);
-        //         featuresDiv.appendChild(document.createElement("br"));
-        //     }
-        // };
+                let header = lines[0].split(separator);
+                if (lines.length < 2) {
+                    console.error("Arquivo CSV não contém dados suficientes.");
+                    return;
+                }
+                //     let text_or_number = lines[1].split(separator);
 
-        // reader.onerror = function (e) {
-        //     console.error("Erro ao ler o arquivo: ", e);
-         };
-        filename = file.name.split(".csv")[0];
-        reader.readAsText(file);
+                //     console.log("Cabeçalho: ", header);
+                //     const featuresDiv = document.getElementById("features");
+                //     featuresDiv.innerHTML = "";
+
+                //     for (let i = 0; i < header.length - 1; i++) {
+                //         const featureLabel = document.createElement("label");
+                //         featureLabel.textContent = header[i] + ":";
+                //         featuresDiv.appendChild(featureLabel);
+                //         const featureInput = document.createElement("input");
+                //         if (!isNaN(text_or_number[i])) {
+                //             featureInput.type = "number";
+                //             featureInput.step = "0.0000000001";
+                //         } else {
+                //             featureInput.type = "text";
+                //         }
+                //         featureInput.name = "feature" + (i + 1);
+                //         featuresDiv.appendChild(featureInput);
+                //         featuresDiv.appendChild(document.createElement("br"));
+                //     }
+                // };
+
+                // reader.onerror = function (e) {
+                //     console.error("Erro ao ler o arquivo: ", e);
+            };
+            filename = file.name.split(".csv")[0];
+            reader.readAsText(file);
         });
 
 
@@ -407,12 +407,12 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault();
             const formData = new FormData(this);
             formData.append("separator", separator);
-            formData.append("deployBoolean",deployBoolean);
-           
+            formData.append("deployBoolean", deployBoolean);
 
-            
-           
-   
+
+
+
+
             fetch("/predict", {
                 method: "POST",
                 body: formData,
@@ -430,19 +430,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     spinner.style.display = 'none';
                     let resultText = `Acuracia teste: ${data.accuracy_test}%<br>`;
                     resultText += `Acuracia treino: ${data.accuracy_training}%<br>`;
-                    
+
                     // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
                     if (data.prediction !== undefined && data.prediction !== null) {
-                        resultText = `Previsão: ${data.prediction}<br>`+resultText;  
+                        resultText = `Previsão: ${data.prediction}<br>` + resultText;
                     }
 
-                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>"+resultText+"</p>"}</div>`;
+                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>" + resultText + "</p>"}</div>`;
                     document.getElementById("windowcode").innerHTML = data.code;
-                
-                    
-                    
-                    
-                   
+
+
+
+
+
                     const classifier = formData.get('classifier');
                     const parameters = {};
                     formData.forEach((value, key) => {
@@ -452,13 +452,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
                     const today = new Date();
                     const dataAtual = today.toISOString().split('T')[0];
-                    
-                    
 
-                    saveTransaction(classifier,"0", filename,parameters,data.accuracy_test,data.accuracy_training,dataAtual)
 
-                                       
-                })         
+
+                    saveTransaction(classifier, "0", filename, parameters, data.accuracy_test, data.accuracy_training, dataAtual)
+
+
+                })
                 .catch((error) => {
                     console.error("Erro:", error);
                     document.getElementById(
@@ -473,11 +473,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function saveTransaction(Algorithm, CrossValidation, NameDatabase, Parameters, TestAccuracy, TrainingAccuracy, date) {
-  
+
     const result = {};
     const values = Object.values(Parameters);
     Object.keys(parametersColection).forEach((key, index) => {
-        result[key] = values[index]; 
+        result[key] = values[index];
     });
 
 
@@ -487,7 +487,7 @@ function saveTransaction(Algorithm, CrossValidation, NameDatabase, Parameters, T
         Algorithm: Algorithm,
         CrossValidation: CrossValidation,
         NameDatabase: NameDatabase,
-        Parameters:result,
+        Parameters: result,
         TestAccuracy: TestAccuracy,
         TrainingAccuracy: TrainingAccuracy,
         date: date,
@@ -501,12 +501,54 @@ function saveTransaction(Algorithm, CrossValidation, NameDatabase, Parameters, T
     firebase.firestore()
         .collection('transactions')
         .add(transaction)
-        .then(()=>{
+        .then(() => {
             console.log("Cadastrado no DBA");
         })
-        .catch(error =>{
+        .catch(error => {
             alert("Erro ao salvar transação!");
         })
+}
+
+
+radioButtons.forEach(radio => {
+    radio.addEventListener("change", () => {
+        gerarCheckBox(radio.value);
+    });
+});
+
+
+function gerarCheckBox(typeAlg) {
+    const chat = document.getElementById("checkboxs");
+    checkboxs.innerHTML = "";
+    key = values
+    parametersAlg = valCheckBox[typeAlg]
+
+    parametersAlg.forEach(val => {
+
+
+        const div = document.createElement('div');
+        div.className = "form-check form-check-inline"
+
+        const input = document.createElement('input');
+        input.type = "checkbox";
+        input.id = val;
+        input.name = val;
+        input.value = typeAlg;
+        input.className = "form-check-input";
+
+        const label = document.createElement('label');
+        label.className = "form-check-label";
+        label.htmlFor = val;
+
+        label.textContent = val;
+
+        div.appendChild(input);
+        div.appendChild(label);
+
+        chat.appendChild(div);
+
+
+    });
 }
 
 

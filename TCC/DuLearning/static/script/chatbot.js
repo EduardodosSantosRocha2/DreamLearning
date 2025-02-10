@@ -49,17 +49,12 @@ const sendMessage = async () => {
         addMessage(userMessage, "user");
         userMessageInput.value = "";
     }
-
     
-
-    
-    
-
     try {
         const response = await fetch("/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: userMessage }),
+            body: JSON.stringify({ message: `Em no maximo 600 caracteres explique: ${userMessage} `}),
         });
 
         const data = await response.json();
