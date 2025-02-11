@@ -86,7 +86,7 @@ function createTimeline(transactions) {
                     <button type="button" onclick="downloadFile()" style="border: none;" title="Baixar arquivo CSV">
                         <i class='bx bx-cloud-download'></i>
                     </button>
-                    <button type="button" onclick="copyToClipboard()" style="border: none;" title="Copiar o código-fonte KNN">
+                    <button type="button" onclick="copyToClipboard()" style="border: none;" title="Copiar o código-fonte">
                         <i class='bx bx-copy-alt'></i>
                     </button>
                 </div>

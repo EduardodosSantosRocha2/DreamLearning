@@ -1,6 +1,14 @@
 @import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
 @import url('https://fonts.cdnfonts.com/css/poppins');
 
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .banner{
     width: 100%;
     height: 100vh;
@@ -305,11 +313,7 @@ footer {
 }
 
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
 
 body::before{
     position: absolute;
