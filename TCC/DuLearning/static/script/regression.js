@@ -2,6 +2,7 @@ let spinner = document.getElementById('spinner');
 spinner.style.display = 'none';
 var parametersColection = {}
 var filename;
+var csvBase64 = ""
 var datalistOptions;
 var radioButtons = document.querySelectorAll('input[type="radio"]')
 const valCheckBox={
@@ -60,33 +61,42 @@ function toggleCode() {
 function copyCode(event) {
     const code = document.querySelector('#codeBlock code').innerText;
     navigator.clipboard.writeText(code).then(() => {
-        showNotification(event.pageY, event.pageX, 'Copiado!');
+        pushNotify('success', 'Sucesso: ', "Código copiado para a área de transferência.");
     }, () => {
-        showNotification(event.pageY, event.pageX, 'Falha ao copiar o código.');
+        pushNotify('error', 'Falha: ', "Impossivel copiar para a área de transferência.");
     });
 }
 
-function showNotification(top, left, message = 'Código copiado!') {
-    const notification = document.getElementById('notification');
-    notification.querySelector('p').innerText = message;
-    notification.style.display = 'block';
-    notification.style.top = `${top - 50}px`; // Ajuste a posição vertical conforme necessário
-    notification.style.left = `${left - 100}px`; // Ajuste a posição horizontal conforme necessário
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 1500); // O balão ficará visível por 1.5 segundos
+function pushNotify(status,title,text){
+
+    Notiflix.Notify.init({
+        timeout: 2000,  
+        fontSize: '16px', 
+        useIcon: false, 
+        messageMaxLength: 200,  
+        position: 'right-top', 
+        success: {
+            background: '#DFF6DD',
+            textColor: '#000000'  
+        },
+        failure: {
+            background: '#F8D7DA', 
+            textColor: '#000000' 
+        }
+    });
+    
+    if(status === "success"){
+        Notiflix.Notify.success(title+text);
+    }else{
+        Notiflix.Notify.failure(title+text);
+    }
 }
 
-
-
-
-
-
-
-
-
-
-
+function csvToBase64(file, callback) {
+    const reader = new FileReader();
+    reader.onload = () => callback(reader.result.split(",")[1]);
+    reader.readAsDataURL(file);
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -423,33 +433,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("Arquivo CSV não contém dados suficientes.");
                     return;
                 }
-            //     let text_or_number = lines[1].split(separator);
-
-            //     console.log("Cabeçalho: ", header);
-
-            //     featuresDiv.innerHTML = "";
-
-            //     for (let i = 0; i < header.length - 1; i++) {
-            //         const featureLabel = document.createElement("label");
-            //         featureLabel.textContent = header[i] + ":";
-            //         featuresDiv.appendChild(featureLabel);
-            //         const featureInput = document.createElement("input");
-            //         if (!isNaN(text_or_number[i])) {
-            //             featureInput.type = "number";
-            //             featureInput.step = "0.0000000001";
-            //         } else {
-            //             featureInput.type = "text";
-            //         }
-            //         featureInput.name = "feature" + (i + 1);
-            //         featuresDiv.appendChild(featureInput);
-            //         featuresDiv.appendChild(document.createElement("br"));
-            //     }
-            // };
-
-            // reader.onerror = function (e) {
-            //     console.error("Erro ao ler o arquivo: ", e);
               };
               filename = file.name.split(".csv")[0];
+              csvToBase64(file, (base64) => {
+                csvBase64 = base64;
+              });
               reader.readAsText(file);
         });
 
@@ -509,9 +497,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const today = new Date();
                     const dataAtual = today.toISOString().split('T')[0];
                     
-                    
-
-                    saveTransaction(classifier, filename,parameters,data.determinationCoefficientTraining,data.determinationCoefficientTest,data.abs,data.MeanSquaredError,dataAtual)
+                    saveTransaction(classifier, filename,parameters,data.determinationCoefficientTraining,data.determinationCoefficientTest,data.abs,data.MeanSquaredError,btoa(data.code.replace(/<[^>]*>/g, '')),csvBase64,dataAtual)
                 })                                           
                 .catch((error) => {
                     console.error("Erro:", error);
@@ -525,7 +511,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTraining, CoefficientTest,abs,MeanSquaredError,date) {
+function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTraining, CoefficientTest,abs,MeanSquaredError,code, csv, date) {
   
     const result = {};
     const values = Object.values(Parameters);
@@ -535,7 +521,7 @@ function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTrainin
 
 
 
-    // Criar a transação
+    
     const transaction = {
         Algorithm: Algorithm,
         NameDatabase: NameDatabase,
@@ -544,6 +530,8 @@ function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTrainin
         CoefficientTest: CoefficientTest,
         abs:abs,
         MeanSquaredError:MeanSquaredError,
+        code:code,
+        csv: csv,
         date: date,
         type: "Regressão",
         user: {
@@ -561,6 +549,9 @@ function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTrainin
         .catch(error =>{
             alert("Erro ao salvar transação!");
         })
+
+
+
 }
 
 
@@ -606,4 +597,5 @@ function gerarCheckBox(typeAlg){
     
 
 }
+
 

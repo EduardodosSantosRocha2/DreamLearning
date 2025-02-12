@@ -51,29 +51,36 @@ function toggleCode() {
 function copyCode(event) {
     const code = document.querySelector('#codeBlock code').innerText;
     navigator.clipboard.writeText(code).then(() => {
-        showNotification(event.pageY, event.pageX, 'Copiado!');
+        pushNotify('success', 'Sucesso: ', "Código copiado para a área de transferência.");
     }, () => {
-        showNotification(event.pageY, event.pageX, 'Falha ao copiar o código.');
+        pushNotify('error', 'Falha: ', "Impossivel copiar para a área de transferência.");
     });
 }
 
-function showNotification(top, left, message = 'Código copiado!') {
-    const notification = document.getElementById('notification');
-    notification.querySelector('p').innerText = message;
-    notification.style.display = 'block';
-    notification.style.top = `${top - 50}px`; // Ajuste a posição vertical conforme necessário
-    notification.style.left = `${left - 100}px`; // Ajuste a posição horizontal conforme necessário
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 1500); // O balão ficará visível por 1.5 segundos
+function pushNotify(status,title,text){
+
+    Notiflix.Notify.init({
+        timeout: 2000,  
+        fontSize: '16px', 
+        useIcon: false, 
+        messageMaxLength: 200,  
+        position: 'right-top', 
+        success: {
+            background: '#DFF6DD',
+            textColor: '#000000'  
+        },
+        failure: {
+            background: '#F8D7DA', 
+            textColor: '#000000' 
+        }
+    });
+    
+    if(status === "success"){
+        Notiflix.Notify.success(title+text);
+    }else{
+        Notiflix.Notify.failure(title+text);
+    }
 }
-
-
-
-
-
-
-
 
 
 function clearOptionsContainer() {

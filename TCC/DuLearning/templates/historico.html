@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Histórico</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+    
     <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
     <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
@@ -57,9 +59,7 @@
     
     <div class="scene"><div class="timeline"></div></div> 
 
-        
          
-     
         <div class="container">
             <footer class="mt-5 py-3 text-black">
               <div class="container text-center">
@@ -87,13 +87,16 @@
         new window.VLibras.Widget('https://vlibras.gov.br/app');
       </script>
 
+      
+      <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.6/dist/notiflix-aio-3.2.6.min.js"></script>
       <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
       <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
       <script src="{{ url_for('static', filename='script/firebase-init.js') }}"></script>
       <script src="{{ url_for('static', filename='script/logout.js') }}"></script>
       <script src="{{ url_for('static', filename='script/auth-guard.js') }}"></script>
-      <script type="text/javascript" src="{{ url_for('static', filename='script/historic.js') }}"></script> 
+      <script type="text/javascript" src="{{ url_for('static', filename='script/historic.js') }}"></script>
+       
       
   </body>
 </html>
