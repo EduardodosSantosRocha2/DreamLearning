@@ -272,6 +272,9 @@ def predict():
     # Inicialize o encoder
     encoder = LabelEncoder()
 
+    
+
+
     # Itere sobre todas as colunas do DataFrame
     for coluna in csv_data.columns:
         # Verifique se a coluna é do tipo 'object' e não é numérica
@@ -419,16 +422,12 @@ def predict():
     
     def print_accuracy_score_test(forecast_test, y_teste):
         accuracy_test = accuracy_score(y_teste, forecast_test)*100
-        print(f"Acuracia: {(accuracy_test):.5f}%\n")
-        print(confusion_matrix(y_teste, forecast_test))
         return accuracy_test
 
     
 
     def print_accuracy_score_traning(forecast_training,y_treino):
         accuracy_training = accuracy_score(y_treino, forecast_training)*100
-        print(f"Acuracia treino: {(accuracy_training):.5f}%\n")
-        print(confusion_matrix(y_treino, forecast_training))
         return accuracy_training
         
     
@@ -439,48 +438,16 @@ def predict():
 
     elif classifier_type in name_Classifier_predict:
         forecast_test, forecast_training = train_predict(clf,x_teste, x_treino, y_teste, y_treino)
+
+    
     
     accuracy_test =  print_accuracy_score_test(forecast_test, y_teste)
-    accuracy_training =  print_accuracy_score_traning(forecast_training,y_treino)
+    accuracy_training = print_accuracy_score_traning(forecast_training,y_treino)
 
     
-    #<span class="keyword">def</span> <span class="function">hello_world</span>():
-    #    <span class="keyword">print</span>(<span class="string">"Hello, World!"</span>)
-
-    
-
-    
-
-
-    # def is_not_nan(value):
-    #     return isinstance(value, (int, float)) and not math.isnan(value)
-
-    
-    # def is_not_nan(value):
-    #     try:
-    #         # Tenta converter o valor para float
-    #         float_value = float(value)
-    #     except ValueError:
-    #         # Se a conversão falhar, não é um número válido
-    #         return False
-    #     # Verifica se o valor convertido é NaN
-    #     return not math.isnan(float_value)
 
     
     if deployBoolean == "true":
-        # # Recebe as características do formulário
-        # features = []
-        # for i in range(1, X.shape[1] + 1):
-        #     form_value = request.form[f"feature{i}"]
-        #     if is_not_nan(form_value):
-        #         feature = float(form_value)
-        #         print(f"feature if {feature}")
-        #     else:
-        #         feature = form_value
-        #         print(f"feature else {feature}")
-        #     features.append(feature)
-
-        # print(f"features aaaaa: {features}")
         print(csv_data)
         print(csv_tranform)
 
@@ -1130,21 +1097,13 @@ def submit_selections_associationRules():
 
 
    
-# @app.route("/codeexplanation", methods=["POST"])
-# def codeexplanation():
-#     GOOGLE_GEMINI_API_KEY = "AIzaSyBkSzcTf_FBw73YXNZ8X4B1SRE1Dp9E6nI"
-#     geneai.configure(api_key=GOOGLE_GEMINI_API_KEY)
-#     model = geneai.GenerativeModel("gemini-1.5-pro-latest")
-#     return jsonify({"response": "oi"})
-
 
 @app.route("/chat", methods=["POST"])
 def chat():
     
 
     user_message = request.json.get("message")
-    
-    
+    print(user_message)
     if not user_message:
         return jsonify({"error": "Nenhuma mensagem recebida."}), 400
     

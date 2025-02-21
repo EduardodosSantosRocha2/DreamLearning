@@ -47,6 +47,8 @@ class classifierData:
 
         encoder = LabelEncoder()
 
+        
+
         """
         (PT-BR)
         Itere sobre todas as colunas do DataFrame
@@ -78,6 +80,10 @@ class classifierData:
     
 
     def train(self,classifier_type, x_treino, x_teste, y_treino, y_teste, separator, deployBoolean, csv_tranform, csv_data, csv_deploy,meu_dicionario,meu_dicionarioencoder):
+        # "Variavel da matriz de confusão treino e teste"
+        confusionMatrixTest = "";
+        confusionMatrixTraning = "";
+        
         # Recebe as características do parametros
         parameters = []
         i = 1
@@ -168,16 +174,18 @@ class classifierData:
         elif classifier_type in name_Classifier_predict:
             forecast_test, forecast_training = self.train_predict(clf,x_teste, x_treino, y_teste, y_treino)
         
-        accuracy_test =  self.print_accuracy_score_test(forecast_test, y_teste)
-        accuracy_training =  self.print_accuracy_score_traning(forecast_training,y_treino)
+        accuracy_test, confusionMatrixTest =  self.print_accuracy_score_test(forecast_test, y_teste)
+        accuracy_training, confusionMatrixTraning =  self.print_accuracy_score_traning(forecast_training,y_treino)
 
 
         if deployBoolean == "true":
             val = self.deployBooleanTrue(csv_data, csv_tranform, csv_deploy, meu_dicionario, meu_dicionarioencoder, clf)
-            return jsonify({"prediction": f"{val}","accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3)})
+            return jsonify({"prediction": f"{val}","accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3), 
+                            "confusionMatrixTraning":confusionMatrixTraning.tolist(), "confusionMatrixTest":confusionMatrixTest.tolist()})
         
         else:
-            return jsonify({"accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3),"code":code})
+            return jsonify({"accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3),"code":code, 
+                            "confusionMatrixTraning":confusionMatrixTraning.tolist(), "confusionMatrixTest":confusionMatrixTest.tolist()})
 
 
 
@@ -217,7 +225,7 @@ class classifierData:
         accuracy_test = accuracy_score(y_teste, forecast_test)*100
         print(f"Acuracia: {(accuracy_test):.5f}%\n")
         print(confusion_matrix(y_teste, forecast_test))
-        return accuracy_test
+        return accuracy_test, confusion_matrix(y_teste, forecast_test)
 
         
 
@@ -225,7 +233,7 @@ class classifierData:
         accuracy_training = accuracy_score(y_treino, forecast_training)*100
         print(f"Acuracia treino: {(accuracy_training):.5f}%\n")
         print(confusion_matrix(y_treino, forecast_training))
-        return accuracy_training
+        return accuracy_training,confusion_matrix(y_treino, forecast_training)
     
     def deployBooleanTrue(self, csv_data, csv_tranform, csv_deploy, meu_dicionario, meu_dicionarioencoder, clf):
         print(csv_data)

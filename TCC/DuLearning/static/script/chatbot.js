@@ -54,9 +54,8 @@ const sendMessage = async () => {
         const response = await fetch("/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: `Em no maximo 600 caracteres explique: ${userMessage} `}),
+            body: JSON.stringify({ message: `Em no maximo 600 caracteres explique sobre: ${userMessage} `}),
         });
-
         const data = await response.json();
         addMessage(data.bot_reply, "bot");
     } catch (error) {

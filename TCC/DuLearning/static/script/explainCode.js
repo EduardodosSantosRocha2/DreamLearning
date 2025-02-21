@@ -10,7 +10,7 @@ const sendChatMessage = async () => {
         const response = await fetch("/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: `Explique resumidamente cada linha do código:  ${code}` }),
+            body: JSON.stringify({ message: `Explique resumidamente analisando linha a linha do código:  ${code}` }),
         });
 
         const data = await response.json();
@@ -19,7 +19,6 @@ const sendChatMessage = async () => {
         div.className = "message bot"
         div.innerHTML = data.bot_reply;
         modalBody.appendChild(div);
-
 
 
     } catch (error) {

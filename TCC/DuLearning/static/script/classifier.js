@@ -3,8 +3,9 @@ spinner.style.display = 'none';
 var filename;
 var parametersColection;
 var datalistOptions;
-var radioButtons = document.querySelectorAll('input[type="radio"]')
-var csvBase64 = ""
+var radioButtons = document.querySelectorAll('input[type="radio"]');
+var csvBase64 = "";
+var typeAlg ="";
 const valCheckBox = {
     "Floresta Aleatória": ["n_estimator", "criterion", "random_state", "max_depht"],
     "SVM": ["kernel", "random_state", "C"],
@@ -426,9 +427,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.json();
                 })
                 .then((data) => {
-                    document.getElementById(
-                        "result"
-                    ).innerText = "";
+
+                    
+                    document.getElementById("result").innerText = "";
                     spinner.style.display = 'none';
                     let resultText = `Acuracia teste: ${data.accuracy_test}%<br>`;
                     resultText += `Acuracia treino: ${data.accuracy_training}%<br>`;
@@ -437,8 +438,50 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (data.prediction !== undefined && data.prediction !== null) {
                         resultText = `Previsão: ${data.prediction}<br>` + resultText;
                     }
-
-                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>" + resultText + "</p>"}</div>`;
+                  
+                    
+                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>" + resultText + "</p>"} 
+                    <h4>Matriz confusão Treino</h4>
+                    </div> <div class="container my-3">
+                        <div class="row">
+                            <div class="col-6">
+                            <div class="border border-dark p-3">${data.confusionMatrixTraning[0][0]}</div>
+                            </div>
+                            <div class="col-6">
+                            <div class="border border-dark p-3">${data.confusionMatrixTraning[0][1]}</div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                            <div class="border border-dark p-3">${data.confusionMatrixTraning[1][0]}</div>
+                            </div>
+                            <div class="col-6">
+                            <div class="border border-dark p-3">${data.confusionMatrixTraning[1][1]}</div>
+                            </div>
+                        </div>
+                        </div>
+                        <br>
+                        <h4>Matriz confusão Teste</h4>
+                    </div> <div class="container my-3">
+                        <div class="row">
+                            <div class="col-6">
+                            <div class="border border-dark p-3">${data.confusionMatrixTest[0][0]}</div>
+                            </div>
+                            <div class="col-6">
+                            <div class="border border-dark p-3">${data.confusionMatrixTest[0][1]}</div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                            <div class="border border-dark p-3">${data.confusionMatrixTest[1][0]}</div>
+                            </div>
+                            <div class="col-6">
+                            <div class="border border-dark p-3">${data.confusionMatrixTest[1][1]}</div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        `;
                     document.getElementById("windowcode").innerHTML = data.code;
 
 
@@ -516,7 +559,8 @@ function saveTransaction(Algorithm, CrossValidation, NameDatabase, Parameters, T
 
 radioButtons.forEach(radio => {
     radio.addEventListener("change", () => {
-        gerarCheckBox(radio.value);
+        typeAlg =  radio.value;
+        gerarCheckBox(typeAlg);
     });
 });
 
