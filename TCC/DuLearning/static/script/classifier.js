@@ -35,11 +35,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var separator = "";
     var deployBoolean = "";
+    var crossVal = "";
 
 
-
+    const radioButtonsCrossValidation = document.querySelectorAll('input[name="answer-dark 1"]');
     const radioButtons = document.querySelectorAll('input[name="answer-dark"]');
     const deployDiv = document.querySelector('.deploy');
+
+    function toggleCrossValidation() {
+        const selectedValue = document.querySelector('input[name="answer-dark 1"]:checked').value;
+    
+        console.log("Escolha: " + selectedValue)
+        if (selectedValue === 'yes') {
+            crossVal = "true";
+        } else {
+            crossVal = "false";
+        }
+    }
 
     function toggleDeployDiv() {
         const selectedValue = document.querySelector('input[name="answer-dark"]:checked').value;
@@ -48,17 +60,27 @@ document.addEventListener("DOMContentLoaded", function () {
             deployDiv.style.display = 'block';
             deployBoolean = "true";
         } else {
+            document.getElementById("result1").innerHTML = ""
             deployDiv.style.display = 'none';
             deployBoolean = "false";
         }
     }
 
+
+    // Adiciona o event listener para cada rádio button
+    radioButtonsCrossValidation.forEach(radio => {
+        radio.addEventListener('change', toggleCrossValidation);
+    });
+    
     // Adiciona o event listener para cada rádio button
     radioButtons.forEach(radio => {
         radio.addEventListener('change', toggleDeployDiv);
     });
 
+    
+
     // Verifica o estado inicial dos rádios
+    toggleCrossValidation();
     toggleDeployDiv();
 
 
@@ -339,6 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const formData = new FormData(this);
             formData.append("separator", separator);
             formData.append("deployBoolean", deployBoolean);
+            formData.append("crossVal", crossVal);
 
 
             fetch("/predict", {
@@ -358,6 +381,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     spinner.style.display = 'none';
                     let resultText = `Acuracia teste: ${data.accuracy_test}%<br>`;
                     resultText += `Acuracia treino: ${data.accuracy_training}%<br>`;
+                    if (crossVal === "true"){
+                        resultText += `Acuracia validação cruzada: ${data.crossVal}%<br>`;
+                    }
 
                     // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
                     if (data.prediction !== undefined && data.prediction !== null) {
@@ -425,7 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-                    saveTransaction(classifier, "0", filename, parameters, data.accuracy_test, data.accuracy_training,btoa(data.code.replace(/<[^>]*>/g, '')),csvBase64, dataAtual)
+                    saveTransaction(classifier, data.crossVal || "0", filename, parameters, data.accuracy_test, data.accuracy_training,btoa(data.code.replace(/<[^>]*>/g, '')),csvBase64, dataAtual)
 
 
                 })

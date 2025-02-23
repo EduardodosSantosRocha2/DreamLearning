@@ -25,7 +25,11 @@
     margin-top: 2%;
 }
 
-
+.preformatted-text {
+    margin-top: 2%;
+    word-wrap: break-word;
+}
+  
 
 
 /* Estilos para a navbar */

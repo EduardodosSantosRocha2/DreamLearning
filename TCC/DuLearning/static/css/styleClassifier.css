@@ -260,3 +260,8 @@ strong {
 .modal-body{
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.preformatted-text {
+    margin-top: 2%;
+    word-wrap: break-word;
+}

@@ -25,8 +25,18 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 # treinamento
 from sklearn.model_selection import train_test_split
 
+#Validação cruzada
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+
 
 class classifierData:
+
+    global parameters
+    parameters = []
+
+    global categoricas
+    categoricas = []
     
     def encode_columns(self, csv_data):
         """
@@ -96,7 +106,7 @@ class classifierData:
             i += 1
         print(f"Olha eles: {parameters}")
 
-        name_Classifier_fit = ["Random Forest", "SVM","LOGISTICS REGRESSION","KNN","DECISION TREE","XGBOOST"]
+        name_Classifier_fit = ["Random Forest", "SVM","LOGISTICS REGRESSION","KNN","DECISION TREE","XGBOOST","CATBOOST"]
         name_Classifier_predict = ["LIGHTGBM"]
         
         code = f"""<span class="bib">import</span> numpy <span class="bib">as</span> np\n<span class="bib">import</span> pandas <span class="bib">as</span> pd\n<span>dataframe = pd.read_csv(</span><span class= "link">'Adicione o caminho para o seu csv',sep ='{separator}', encoding = 'utf-8'</span>)</span>\n<span class="bib">from</span> sklearn.preprocessing <span class="bib">import</span> LabelEncoder\n<span class="keyword">encoder = </span><span class="function">LabelEncoder()</span>\n<span class = "comment">#Itere sobre todas as colunas do DataFrame</span>\n<span class="for">for </span><span>coluna <span class = "columns">in</span> dataframe.<span class = "columns">columns</span>:</span>\n<span class = "comment">  #Verifica se o tipo da coluna é 'object' e se todos os elementos não são números</span>\n<span class="if">  if </span><span>dataframe[coluna].dtype == <span class= "object">'object'</span></span><span class= "columns">and not</span> dataframe[coluna].apply(<span class = "columns">lambda</span> x: <span class = "instance">isinstance</span>(x, (<span class = "intfloat">int, float</span>))).<span class = "instance">all()</span></span>:</span>\n<span class = "comment">    #Ajuste o encoder aos dados e transforme a coluna</span>\n   <span>dataframe[coluna] = encoder.</span><span class="function">fit_transform<span>(dataframe[coluna])</span></span>\n\n<span class="keyword">previsores</span><span> = dataframe.iloc[:, :-1]</span>\n<span class="keyword">alvo</span><span> = dataframe.iloc[:, -1]</span>\n<span class="bib">from</span> sklearn.model_selection <span class="bib">import</span> train_test_split\n<span class="keyword">x_treino, x_teste, y_treino, y_teste =</span> <span class="function">train_test_split(previsores,alvo, test_size = 0.3, random_state = 0)</span><span class="comment">#Base treino e teste</span>\n"""
@@ -159,16 +169,16 @@ class classifierData:
 
             # Código a ser executado após o treinamento
 
-        elif classifier_type == "catboost":
-            categoricas = []
+        elif classifier_type == "CATBOOST":
+            print(categoricas)
             clf = CatBoostClassifier(task_type=parameters[0], iterations=int(parameters[1]), learning_rate=float(parameters[2]), depth = int(parameters[3]), random_state = int(parameters[4]),
-                                eval_metric=int(parameters[5]))
+                                eval_metric=parameters[5])
         else:
             return jsonify({"error": "Classificador inválido."}), 400
 
 
         if classifier_type in name_Classifier_fit:
-            forecast_test, forecast_training = self.train_fit(clf,x_teste, x_treino, y_teste, y_treino)
+            forecast_test, forecast_training = self.train_fit(clf,x_teste, x_treino, y_teste, y_treino, classifier_type)
             
 
         elif classifier_type in name_Classifier_predict:
@@ -178,26 +188,48 @@ class classifierData:
         accuracy_training, confusionMatrixTraning =  self.print_accuracy_score_traning(forecast_training,y_treino)
 
 
+        response = {
+            "accuracy_test": round(accuracy_test, 3),
+            "accuracy_training": round(accuracy_training, 3),
+            "confusionMatrixTraning": confusionMatrixTraning.tolist(),
+            "confusionMatrixTest": confusionMatrixTest.tolist(),
+            "code": code
+        }
+
         if deployBoolean == "true":
             val = self.deployBooleanTrue(csv_data, csv_tranform, csv_deploy, meu_dicionario, meu_dicionarioencoder, clf)
-            return jsonify({"prediction": f"{val}","accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3), 
-                            "confusionMatrixTraning":confusionMatrixTraning.tolist(), "confusionMatrixTest":confusionMatrixTest.tolist()})
-        
-        else:
-            return jsonify({"accuracy_test": round((accuracy_test), 3) ,"accuracy_training": round((accuracy_training), 3),"code":code, 
-                            "confusionMatrixTraning":confusionMatrixTraning.tolist(), "confusionMatrixTest":confusionMatrixTest.tolist()})
+            response["prediction"] = f"{val}"
+
+
+        crossVal = request.form.get('crossVal')
+        if crossVal == "true":
+            # (PT-BR) Separa as características e o alvo Separates (EN) the features and the target
+            x = csv_data.iloc[:, :-1]
+            y = csv_data.iloc[:, -1]
+            crossValValue = self.crossValidation(clf,x,y,classifier_type)
+            response["crossVal"] = round(crossValValue, 3)
+
+        return jsonify(response)
 
 
 
 
-    def train_fit(self, clf,x_teste, x_treino, y_teste, y_treino):
+    def train_fit(self, clf,x_teste, x_treino, y_teste, y_treino, classifier_type):
         print("chegou na funçao train_fit")
         # Treina o modelo
-        clf.fit(x_treino, y_treino)# Treina o modelo
+        
+        if classifier_type == "CATBOOST":
+            clf.fit(x_treino, y_treino, cat_features=categoricas, eval_set=(x_teste, y_teste))
+
+        else:
+            clf.fit(x_treino, y_treino)# Treina o modelo
         #Avaliação do algoritmo
         forecast_test = clf.predict(x_teste)#Avaliação do teste
         #Avaliação de treino
         forecast_training = clf.predict(x_treino)#Avaliação de treino
+        print("forecast_test:", forecast_test)
+        print("forecast_training:", forecast_training)
+
         return forecast_test, forecast_training
 
         
@@ -259,6 +291,8 @@ class classifierData:
         
         print(f"Printando o deploy : {deploy}")
         prediction = clf.predict(deploy)
+
+        print(prediction)
         
         
         if(csv_tranform.iloc[:, -1].dtype == 'object'):
@@ -275,3 +309,12 @@ class classifierData:
     
         else: 
             return prediction.tolist()
+        
+    def crossValidation(self, model, x, y, classifier_type):
+        if classifier_type == "LIGHTGBM":
+            model  = lgbm.LGBMClassifier(num_leaves = int(parameters[0]), objective = parameters[1],
+                        max_depth = int(parameters[2]), learning_rate = float(parameters[3]), max_bin =int(parameters[4])) 
+        
+        kfold = KFold(n_splits = 30, shuffle=True, random_state = 5)
+        result = cross_val_score(model,x,y,cv = kfold) 
+        return result.mean()*100

@@ -37,11 +37,25 @@ document.addEventListener("DOMContentLoaded", function () {
     var reader;
     var selectedOption = "";
     var deployBoolean = "";
+    var crossVal = "";
 
 
-
+    const radioButtonsCrossValidation = document.querySelectorAll('input[name="answer-dark 1"]');
     const radioButtons = document.querySelectorAll('input[name="answer-dark"]');
     const deployDiv = document.querySelector('.deploy');
+
+
+    
+    function toggleCrossValidation() {
+        const selectedValue = document.querySelector('input[name="answer-dark 1"]:checked').value;
+    
+        console.log("Escolha: " + selectedValue)
+        if (selectedValue === 'yes') {
+            crossVal = "true";
+        } else {
+            crossVal = "false";
+        }
+    }
 
     function toggleDeployDiv() {
         const selectedValue = document.querySelector('input[name="answer-dark"]:checked').value;
@@ -50,10 +64,16 @@ document.addEventListener("DOMContentLoaded", function () {
             deployDiv.style.display = 'block';
             deployBoolean = "true";
         } else {
+            document.getElementById("result1").innerHTML = ""
             deployDiv.style.display = 'none';
             deployBoolean = "false";
         }
     }
+
+    // Adiciona o event listener para cada rádio button
+    radioButtonsCrossValidation.forEach(radio => {
+        radio.addEventListener('change', toggleCrossValidation);
+    });
 
     // Adiciona o event listener para cada rádio button
     radioButtons.forEach(radio => {
@@ -61,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Verifica o estado inicial dos rádios
+    toggleCrossValidation();
     toggleDeployDiv();
 
 
@@ -383,6 +404,7 @@ document.addEventListener("DOMContentLoaded", function () {
             formData.append("separator", separator);
             formData.append("posicao", document.getElementById("posicao").textContent)
             formData.append("deployBoolean",deployBoolean)
+            formData.append("crossVal",crossVal)
 
          
             fetch("/regressionPost", {
@@ -401,15 +423,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     resultText += `Coeficiente de determinação do teste: ${data.determinationCoefficientTest}%<br>`;
                     resultText += `Erro médio absoluto: ${data.abs}<br>`;
                     resultText += `Raiz erro quadrático médio: ${data.MeanSquaredError}`;
+                    if (crossVal === "true"){
+                        resultText += `Acuracia validação cruzada: ${data.crossVal}%<br>`;
+                    }
+
                     resultText1 = "";
-                    
                     // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
                     if (data.prediction !== undefined && data.prediction !== null) {
                         resultText1 = `Previsão: ${data.prediction}<br>`;
                     }
                 
-                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText}</div>`;
-                    document.getElementById("result1").innerHTML = `<div class="preformatted-text">${resultText1}</div>`;
+                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText1+resultText}</div>`;
                     
                     document.getElementById("windowcode").innerHTML = data.code;
 
@@ -424,7 +448,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const today = new Date();
                     const dataAtual = today.toISOString().split('T')[0];
                     
-                    saveTransaction(classifier, filename,parameters,data.determinationCoefficientTraining,data.determinationCoefficientTest,data.abs,data.MeanSquaredError,btoa(data.code.replace(/<[^>]*>/g, '')),csvBase64,dataAtual)
+                    saveTransaction(classifier, filename,parameters,data.determinationCoefficientTraining,data.determinationCoefficientTest,data.abs,data.MeanSquaredError,btoa(data.code.replace(/<[^>]*>/g, '')),csvBase64,dataAtual, data.crossVal || "0")
                 })                                           
                 .catch((error) => {
                     console.error("Erro:", error);
@@ -438,7 +462,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTraining, CoefficientTest,abs,MeanSquaredError,code, csv, date) {
+function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTraining, CoefficientTest,abs,MeanSquaredError,code, csv, date,CrossValidation) {
   
     const result = {};
     const values = Object.values(Parameters);
@@ -457,6 +481,7 @@ function saveTransaction(Algorithm, NameDatabase, Parameters, CoefficientTrainin
         CoefficientTest: CoefficientTest,
         abs:abs,
         MeanSquaredError:MeanSquaredError,
+        CrossValidation: CrossValidation,
         code:code,
         csv: csv,
         date: date,
