@@ -6,6 +6,7 @@ const userMessageInput = document.getElementById("user-message");
 const chatContent = document.getElementById("chatbot-content");
 
 
+
 function pegarSelecionados() {
     let selecionados = [];
     document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
@@ -71,6 +72,8 @@ closeChatbotButton.addEventListener("click", () => {
 chatbotButton.addEventListener("click", () => {
     chatbotContainer.style.display = "flex"; // Mostra o chatbot
     chatbotButton.style.display = "none";    // Esconde o botão de reabertura
+    
+
 });
 
 sendButton.addEventListener("click", sendMessage);

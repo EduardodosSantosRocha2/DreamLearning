@@ -52,7 +52,10 @@
     color: white;
     font-size: 20px;
     cursor: pointer;
+    padding: 5px;
 }
+
+
 
 .message {
     margin: 5px 0;
@@ -129,9 +132,6 @@ input#user-message{
     border: 2px #000000 solid;
 }
 
-
-
-
 .message.bot code{
     background-color: rgba(0, 0, 0, 0.200);
     font-size: 12px;
@@ -140,6 +140,14 @@ input#user-message{
     word-wrap: break-word;
     color: #513686;
 }
+
+
+
+[vw] {
+    left: 10px !important;
+    right: auto !important;
+}
+
 
 
 @media (max-width: 1024px) {
@@ -157,6 +165,7 @@ input#user-message{
         width: 28px;
         height: 28px;
     }
+    
 }
 
 @media (max-width: 768px) {
@@ -174,6 +183,7 @@ input#user-message{
         width: 25px;
         height: 25px;
     }
+   
 }
 
 @media (max-width: 480px) {
@@ -183,8 +193,8 @@ input#user-message{
     }
 
     #chatbot-button {
-        width: 45px;
-        height: 45px;
+        width: 30px;
+        height: 30px;
     }
 
     #chatbot-button img {
@@ -195,6 +205,7 @@ input#user-message{
     .message {
         max-width: 95%; 
     }
+    
 }
 
 

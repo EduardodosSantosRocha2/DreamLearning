@@ -19,44 +19,6 @@ const valCheckBox = {
 
 let values = Object.keys(valCheckBox);
 
-function toggleCode() {
-    const codeBlock = document.getElementById('codeBlock');
-    codeBlock.style.display = codeBlock.style.display === 'block' ? 'none' : 'block';
-}
-
-function copyCode(event) {
-    const code = document.querySelector('#codeBlock code').innerText;
-    navigator.clipboard.writeText(code).then(() => {
-        pushNotify('success', 'Sucesso: ', "Código copiado para a área de transferência.");
-    }, () => {
-        pushNotify('error', 'Falha: ', "Impossivel copiar para a área de transferência.");
-    });
-}
-
-function pushNotify(status,title,text){
-
-    Notiflix.Notify.init({
-        timeout: 2000,  
-        fontSize: '16px', 
-        useIcon: false, 
-        messageMaxLength: 200,  
-        position: 'right-top', 
-        success: {
-            background: '#DFF6DD',
-            textColor: '#000000'  
-        },
-        failure: {
-            background: '#F8D7DA', 
-            textColor: '#000000' 
-        }
-    });
-    
-    if(status === "success"){
-        Notiflix.Notify.success(title+text);
-    }else{
-        Notiflix.Notify.failure(title+text);
-    }
-}
 
 function csvToBase64(file, callback) {
     const reader = new FileReader();
