@@ -224,22 +224,6 @@ def teste():
     resultado= classifier_data.train(classifier_type,x_treino, x_teste, y_treino, y_teste, separator, deployBoolean, csv_tranform, csv_data_encolder, csv_deploy, meu_dicionario, meu_dicionarioencoder)
     return resultado
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Rota para fazer previsões
 @app.route("/predict1", methods=["POST"])
 def predict():
@@ -302,8 +286,6 @@ def predict():
 
     #Base treino e teste 
     x_treino, x_teste, y_treino, y_teste = train_test_split(X, y, test_size = 0.3, random_state = 0)#Base treino e teste 
-    
-   
     
 
     # Recebe as características do parametros

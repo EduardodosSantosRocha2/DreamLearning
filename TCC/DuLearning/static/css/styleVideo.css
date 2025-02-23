@@ -231,6 +231,7 @@ header .content .search_user .search .card1::before{
     background: #fff;
     backdrop-filter: blur(5px);
     border-radius: 5px;
+    z-index: -1;
 }
 
 
