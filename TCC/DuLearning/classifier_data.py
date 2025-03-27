@@ -295,20 +295,17 @@ class classifierData:
         print(prediction)
         
         
-        if(csv_tranform.iloc[:, -1].dtype == 'object'):
-            # Convertendo as chaves do dicionário em uma lista
+        if csv_tranform.iloc[:, -1].dtype == 'object':
             lista_chaves = list(meu_dicionarioencoder.keys())
-
-            # Obtendo a última chave
             ultima_chave = lista_chaves[-1]
+            
+            predicoes_decodificadas = [
+                meu_dicionario[ultima_chave][meu_dicionarioencoder[ultima_chave].index(pred)] for pred in prediction]
 
-            # Encontrando o índice da previsão na lista correspondente à última chave
-            indice_predicao = meu_dicionarioencoder[ultima_chave].index(prediction[0])
-
-            return  meu_dicionario[ultima_chave][indice_predicao]
-    
-        else: 
+            return predicoes_decodificadas
+        else:
             return prediction.tolist()
+
         
     def crossValidation(self, model, x, y, classifier_type):
         if classifier_type == "LIGHTGBM":

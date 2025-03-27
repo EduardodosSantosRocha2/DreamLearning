@@ -7,6 +7,9 @@
     height: auto; /* Mantém a proporção */
 }
 
+strong{
+    color: #eb7b7b;
+}
 .center {
     text-align: center;
     color: white;

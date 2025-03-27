@@ -572,7 +572,9 @@ def regressionPost():
     # print(f"features: {features}")
     if deployBoolean == "true":
         val = deployBooleanTrue(csv_data, csv_tranform, csv_deploy, meu_dicionario, meu_dicionarioencoder, reg)
+        val = [round(valor, 2) for valor in val]
         response["prediction"] = val
+    
 
     if crossVal == "true":
         x = csv_data.iloc[:, :-1]

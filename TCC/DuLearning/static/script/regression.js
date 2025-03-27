@@ -419,21 +419,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then((data) => {
                     spinner.style.display = 'none';
-                    let resultText = `Coeficiente de determinação do treinamento: ${data.determinationCoefficientTraining}%<br>`;
-                    resultText += `Coeficiente de determinação do teste: ${data.determinationCoefficientTest}%<br>`;
-                    resultText += `Erro médio absoluto: ${data.abs}<br>`;
-                    resultText += `Raiz erro quadrático médio: ${data.MeanSquaredError}`;
-                    if (crossVal === "true"){
-                        resultText += `Acuracia validação cruzada: ${data.crossVal}%<br>`;
-                    }
+                    let resultText = `
+                        <div class="p-3 rounded border border-dark rounded-lg" style="width: fit-content;">
+                            <p><strong>Coeficiente de determinação do treinamento:</strong> ${data.determinationCoefficientTraining}%</p>
+                            <p><strong>Coeficiente de determinação do teste:</strong> ${data.determinationCoefficientTest}%</p>
+                            <p><strong>Erro médio absoluto:</strong> ${data.abs}</p>
+                            <p><strong>Raiz erro quadrático médio:</strong> ${data.MeanSquaredError}%</p>
+                            ${crossVal === "true" ? `<p><strong>Acurácia validação cruzada:</strong> ${data.crossVal}%</p>` : ""}
+                            ${data.prediction !== undefined && data.prediction !== null ? `<p><strong>Previsão:</strong> ${data.prediction}</p>` : ""}
+                        </div>
+                    `;
 
-                    resultText1 = "";
-                    // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
-                    if (data.prediction !== undefined && data.prediction !== null) {
-                        resultText1 = `Previsão: ${data.prediction}<br>`;
-                    }
+                   
                 
-                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText1+resultText}</div>`;
+                
+                    document.getElementById("result").innerHTML = `<div class="preformatted-text">${resultText}</div>`;
                     
                     document.getElementById("windowcode").innerHTML = data.code;
 

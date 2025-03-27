@@ -379,17 +379,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                     document.getElementById("result").innerText = "";
                     spinner.style.display = 'none';
-                    let resultText = `Acuracia teste: ${data.accuracy_test}%<br>`;
-                    resultText += `Acuracia treino: ${data.accuracy_training}%<br>`;
-                    if (crossVal === "true"){
-                        resultText += `Acuracia validação cruzada: ${data.crossVal}%<br>`;
-                    }
 
-                    // Verifica se data.prediction não é vazio antes de adicionar ao texto resultante
-                    if (data.prediction !== undefined && data.prediction !== null) {
-                        resultText = `Previsão: ${data.prediction}<br>` + resultText;
-                    }
-                  
+
+                    let resultText = `
+                    <div class="p-3 rounded border border-dark rounded-lg mx-auto">
+                        <p><strong>Acuracia teste:</strong> ${data.accuracy_test}%</p>
+                        <p><strong>Acuracia treino:</strong> ${data.accuracy_training}%</p>
+                        ${crossVal === "true" ? `<p><strong>Acurácia validação cruzada:</strong> ${data.crossVal}%</p>` : ""}
+                        ${data.prediction !== undefined && data.prediction !== null ? `<p><strong>Previsão:</strong> ${data.prediction}</p>` : ""}
+                    </div>
+                `;
+
+
+                    console.log(data.prediction)
                     
                     document.getElementById("result").innerHTML = `<div class="preformatted-text">${"<p>" + resultText + "</p>"} 
                     <h4>Matriz confusão Treino</h4>
